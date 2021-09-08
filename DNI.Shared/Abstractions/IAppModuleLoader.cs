@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,7 +10,7 @@ namespace DNI.Shared.Abstractions
     /// <summary>
     /// Represents a loader of <see cref="IAppModule">modules</see>
     /// </summary>
-    public interface IAppModulesLoader : IDisposable
+    public interface IAppModuleLoader : IDisposable
     {
         /// <summary>
         /// Loads modules from a json file
@@ -28,5 +29,10 @@ namespace DNI.Shared.Abstractions
         /// Gets the modules loading into memory
         /// </summary>
         IEnumerable<IAppModule> Modules { get; }
+
+        /// <summary>
+        /// Gets the loaded assemblies
+        /// </summary>
+        IEnumerable<Assembly> LoadedAssemblies { get; }
     }
 }

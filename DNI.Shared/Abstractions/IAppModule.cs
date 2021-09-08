@@ -13,11 +13,6 @@ namespace DNI.Shared.Abstractions
     /// </summary>
     public interface IAppModule
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="services"></param>
-        void RegisterServices(IServiceCollection services);
         bool ValidateServices(IServiceProvider serviceProvider);
         Task RunAsync(CancellationToken cancellationToken);
         Task StopAsync(CancellationToken cancellationToken);

@@ -1,0 +1,7 @@
+{
+	"modules": [
+		{
+			"FullyQualifiedType": "DNI.Sandbox.SandboxModule, DNI.Sandbox"
+		}
+	]
+}
