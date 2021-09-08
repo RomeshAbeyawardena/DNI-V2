@@ -1,4 +1,5 @@
 ﻿using DNI.Shared.Abstractions;
+using DNI.Shared.Attributes;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,11 @@ namespace DNI.Sandbox
 {
     public class SandboxModule : IAppModule
     {
+        public SandboxModule(IFileProvider fileProvider)
+        {
+
+        }
+
         public static void RegisterServices(IServiceCollection services)
         {
             throw new NotSupportedException();

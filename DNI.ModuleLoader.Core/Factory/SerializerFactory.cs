@@ -11,9 +11,16 @@ namespace DNI.ModuleLoader.Core.Factory
 {
     public class SerializerFactory : ISerializerFactory
     {
+        private readonly IEnumerable<ISerializer> serializers;
+
+        public SerializerFactory(IEnumerable<ISerializer> serializers)
+        {
+            this.serializers = serializers;
+        }
+
         public ISerializer GetSerializer(SerializerType serializerType)
         {
-            throw new NotImplementedException();
+            return serializers.FirstOrDefault(a => a.Type == serializerType);
         }
     }
 }

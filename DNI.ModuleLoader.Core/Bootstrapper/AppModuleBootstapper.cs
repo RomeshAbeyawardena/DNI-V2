@@ -2,6 +2,7 @@
 using DNI.ModuleLoader.Core.Providers;
 using DNI.Shared.Abstractions;
 using DNI.Shared.Abstractions.Factories;
+using DNI.Shared.Serializers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -15,7 +16,7 @@ namespace DNI.ModuleLoader.Core.Bootstrapper
     public static class AppModuleBootstapper
     {
         /// <summary>
-        /// Bootstraps <typeparamref name="TAppModuleLoader"/> and injects necessary services to obtain an instance of <see cref="IAppModuleLoader"/> of <typeparamref name="TAppModuleLoader"/>
+        /// Bootstraps <typeparamref name="TAppModuleLoader"/> and injects basic services to obtain an instance of <see cref="IAppModuleLoader"/> of <typeparamref name="TAppModuleLoader"/>
         /// </summary>
         /// <typeparam name="TAppModuleLoader"></typeparam>
         /// <param name="services"></param>
@@ -25,7 +26,8 @@ namespace DNI.ModuleLoader.Core.Bootstrapper
         {
             services
                 .AddSingleton<IFileProvider, LocalFileProvider>()
-                .AddSingleton<ISerializerFactory, SerializerFactory>();
+                .AddSingleton<ISerializerFactory, SerializerFactory>()
+                .AddSingleton<ISerializer, JsonSerializer>();
             var serviceProvider = services.BuildServiceProvider();
             return serviceProvider.GetRequiredService<IAppModuleLoader>() as TAppModuleLoader;
         }

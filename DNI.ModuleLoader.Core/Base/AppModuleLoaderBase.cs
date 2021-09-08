@@ -23,6 +23,7 @@ namespace DNI.ModuleLoader.Core
         private readonly ILogger logger;
         private readonly ISerializerFactory serializerFactory;
         private readonly IFileProvider fileProvider;
+        private readonly IEnumerable<IAppModule> appModules;
         private IServiceProvider serviceProvider;
         private readonly IServiceCollection services;
         private readonly CancellationTokenSource cancellationTokenSource;
@@ -33,11 +34,13 @@ namespace DNI.ModuleLoader.Core
         public AppModuleLoaderBase(
             ILogger logger,
             ISerializerFactory serializer,
-            IFileProvider fileProvider)
+            IFileProvider fileProvider,
+            IEnumerable<IAppModule> appModules)
         {
             this.logger = logger;
             this.serializerFactory = serializer;
             this.fileProvider = fileProvider;
+            this.appModules = appModules;
             cancellationTokenSource = new CancellationTokenSource();
             this.services = new ServiceCollection();
         }
@@ -58,6 +61,7 @@ namespace DNI.ModuleLoader.Core
             LoadedAssemblies = LoadAssemblies(options);
 
             RegisterServices(moduleConfig.Modules, out var moduleTypes);
+
             LoadModules(moduleTypes, options);
         }
 
@@ -68,22 +72,34 @@ namespace DNI.ModuleLoader.Core
 
         }
 
+        private void InvokeRegisterServices(Type moduleType)
+        {
+            var registerServicesMethod = moduleType.GetMethod("RegisterServices", BindingFlags.Static);
+
+            if (registerServicesMethod != null)
+            {
+                registerServicesMethod.Invoke(null, new[] { services });
+            }
+        }
+
         private void RegisterServices(IEnumerable<ModuleInfo> modules, out IEnumerable<Type> moduleTypes)
         {
             RegisterServices(services);
             var moduleTypeList = new List<Type>();
             moduleTypes = moduleTypeList;
+
             foreach (var module in modules)
             {
                 var moduleType = Type.GetType(module.FullyQualifiedType);
                 moduleTypeList.Add(moduleType);
-                var registerServicesMethod = moduleType.GetMethod("RegisterServices", BindingFlags.Static);
-
-                if(registerServicesMethod != null)
-                {
-                    registerServicesMethod.Invoke(null, new[] { services });
-                }
+                InvokeRegisterServices(moduleType);
             }
+
+            foreach (var appModule in appModules)
+            {
+                InvokeRegisterServices(appModule.GetType());
+            }
+
 
             serviceProvider = services.BuildServiceProvider();
         }
@@ -95,13 +111,19 @@ namespace DNI.ModuleLoader.Core
             {
                 try
                 {
-                    var parameters = moduleType.GetConstructors(BindingFlags.Public)
-                        .FirstOrDefault(a => a.GetCustomAttribute<DefaultConstructorAttribute>() != null)
-                        .GetParameters()
-                        .Select(a => serviceProvider.GetService(a.ParameterType));
+                    var ctor = moduleType.GetConstructors()
+                        .FirstOrDefault();
 
-                    var appModule = Activator.CreateInstance(moduleType, parameters) as IAppModule;
-                    
+                    var instanceParameters = new List<object>();
+
+                    if (ctor != null)
+                    {
+                        var parameters = ctor.GetParameters();
+                        instanceParameters.AddRange(parameters.Select(a => serviceProvider.GetService(a.ParameterType)));
+                    }
+
+                    var appModule = Activator.CreateInstance(moduleType, instanceParameters.ToArray()) as IAppModule;
+                    moduleTaskList.Add(appModule.RunAsync(cancellationTokenSource.Token));
                 }
                 catch (Exception exception)
                 {

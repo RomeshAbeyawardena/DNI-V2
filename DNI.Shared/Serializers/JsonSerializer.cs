@@ -1,4 +1,5 @@
 ﻿using DNI.Shared.Abstractions;
+using DNI.Shared.Enumerations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,8 @@ namespace DNI.Shared.Serializers
 {
     public class JsonSerializer : ISerializer
     {
-        
+        public SerializerType Type => SerializerType.Json;
+
         public T Deserialize<T>(string plainText)
         {
             return SerializerProvider.Deserialize<T>(plainText);

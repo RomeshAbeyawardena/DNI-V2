@@ -1,5 +1,6 @@
 ﻿using DNI.Shared.Abstractions;
 using System;
+using System.IO;
 
 namespace DNI.Extensions
 {
@@ -7,7 +8,10 @@ namespace DNI.Extensions
     {
         public static string ReadAllLines(this IFile file)
         {
-            return string.Empty;
+            using (var fileStream = new FileStream(file.FullPath, FileMode.Open))
+            using (var streamReader = new StreamReader(fileStream))
+                return streamReader.ReadToEnd();
+            
         }
     }
 }

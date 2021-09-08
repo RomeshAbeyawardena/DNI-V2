@@ -20,7 +20,7 @@ namespace DNI.Extensions
         public static IServiceCollection Requires<TAppModule>(this IServiceCollection services)
             where TAppModule : class, IAppModule
         {
-            return services;
+            return services.AddSingleton<IAppModule, TAppModule>();
         }
     }
 }

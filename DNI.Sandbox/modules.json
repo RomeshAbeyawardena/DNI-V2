@@ -1,7 +1,8 @@
 {
-	"modules": [
+	"Modules": [
 		{
-			"FullyQualifiedType": "DNI.Sandbox.SandboxModule, DNI.Sandbox"
+			"FullyQualifiedType": "DNI.Sandbox.SandboxModule, DNI.Sandbox",
+			"ConfigFile": "modules/sandbox.config.json"
 		}
 	]
 }
