@@ -1,6 +1,4 @@
-﻿using DNI.ModuleLoader.Core.Factory;
-using DNI.ModuleLoader.Core.Modules;
-using DNI.ModuleLoader.Core.Providers;
+﻿using DNI.ModuleLoader.Core.Modules;
 using DNI.Shared.Abstractions;
 using DNI.Shared.Abstractions.Factories;
 using DNI.Shared.Serializers;

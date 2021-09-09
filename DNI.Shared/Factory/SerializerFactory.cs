@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DNI.ModuleLoader.Core.Factory
+namespace DNI.Shared.Factory
 {
     public class SerializerFactory : ISerializerFactory
     {

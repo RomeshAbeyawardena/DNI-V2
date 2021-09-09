@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DNI.ModuleLoader.Core.Providers
+namespace DNI.Shared.Providers
 {
     public class LocalFileProvider : IFileProvider
     {

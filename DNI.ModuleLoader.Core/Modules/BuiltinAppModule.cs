@@ -1,6 +1,5 @@
 ﻿using DNI.ModuleLoader.Core.Base;
-using DNI.ModuleLoader.Core.Factory;
-using DNI.ModuleLoader.Core.Providers;
+using DNI.Shared;
 using DNI.Shared.Abstractions;
 using DNI.Shared.Abstractions.Factories;
 using DNI.Shared.Serializers;
@@ -21,6 +20,7 @@ namespace DNI.ModuleLoader.Core.Modules
         public static void RegisterServices(IAppModuleCache appModuleCache, IServiceCollection services)
         {
             services
+                .AddSingleton(typeof(ISwitch<,>), typeof(DefaultSwitch<,>))
                 .AddSingleton(typeof(IAppModuleCache<>), typeof(AppModuleCache<>))
                 .Scan(scanner => scanner
                     .FromAssemblies(This.Assembly, Shared.This.Assembly)

@@ -3,15 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNI.Extensions", "DNI.Extensions\DNI.Extensions.csproj", "{84F0C942-7548-43E3-A0BC-E93566E17B56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNI.Extensions", "DNI.Extensions\DNI.Extensions.csproj", "{84F0C942-7548-43E3-A0BC-E93566E17B56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNI.ModuleLoader", "DNI.ModuleLoader\DNI.ModuleLoader.csproj", "{A3EDD375-F169-4835-90F8-F4C97EFFC919}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNI.ModuleLoader", "DNI.ModuleLoader\DNI.ModuleLoader.csproj", "{A3EDD375-F169-4835-90F8-F4C97EFFC919}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNI.ModuleLoader.Core", "DNI.ModuleLoader.Core\DNI.ModuleLoader.Core.csproj", "{CAB313F8-36A3-43D8-9550-AD2350847C06}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNI.ModuleLoader.Core", "DNI.ModuleLoader.Core\DNI.ModuleLoader.Core.csproj", "{CAB313F8-36A3-43D8-9550-AD2350847C06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNI.Shared", "DNI.Shared\DNI.Shared.csproj", "{7C90212F-03DF-400E-9F3E-162CFB8EF8B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNI.Shared", "DNI.Shared\DNI.Shared.csproj", "{7C90212F-03DF-400E-9F3E-162CFB8EF8B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNI.Sandbox", "DNI.Sandbox\DNI.Sandbox.csproj", "{E522247B-1082-46EB-B4DD-F745F5F910CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNI.Sandbox", "DNI.Sandbox\DNI.Sandbox.csproj", "{E522247B-1082-46EB-B4DD-F745F5F910CA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNI.Modules.Database", "DNI.Modules.Database\DNI.Modules.Database.csproj", "{E3D24A86-88A1-4C26-A745-5022FD621E3D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{CD174A01-B7CB-4932-9BB4-5091F460C9C4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,9 +25,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{84F0C942-7548-43E3-A0BC-E93566E17B56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -86,5 +87,26 @@ Global
 		{E522247B-1082-46EB-B4DD-F745F5F910CA}.Release|x64.Build.0 = Release|Any CPU
 		{E522247B-1082-46EB-B4DD-F745F5F910CA}.Release|x86.ActiveCfg = Release|Any CPU
 		{E522247B-1082-46EB-B4DD-F745F5F910CA}.Release|x86.Build.0 = Release|Any CPU
+		{E3D24A86-88A1-4C26-A745-5022FD621E3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3D24A86-88A1-4C26-A745-5022FD621E3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3D24A86-88A1-4C26-A745-5022FD621E3D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E3D24A86-88A1-4C26-A745-5022FD621E3D}.Debug|x64.Build.0 = Debug|Any CPU
+		{E3D24A86-88A1-4C26-A745-5022FD621E3D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E3D24A86-88A1-4C26-A745-5022FD621E3D}.Debug|x86.Build.0 = Debug|Any CPU
+		{E3D24A86-88A1-4C26-A745-5022FD621E3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3D24A86-88A1-4C26-A745-5022FD621E3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3D24A86-88A1-4C26-A745-5022FD621E3D}.Release|x64.ActiveCfg = Release|Any CPU
+		{E3D24A86-88A1-4C26-A745-5022FD621E3D}.Release|x64.Build.0 = Release|Any CPU
+		{E3D24A86-88A1-4C26-A745-5022FD621E3D}.Release|x86.ActiveCfg = Release|Any CPU
+		{E3D24A86-88A1-4C26-A745-5022FD621E3D}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E3D24A86-88A1-4C26-A745-5022FD621E3D} = {CD174A01-B7CB-4932-9BB4-5091F460C9C4}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E8A91895-6F74-4F0E-A49C-3BED950342FE}
 	EndGlobalSection
 EndGlobal
