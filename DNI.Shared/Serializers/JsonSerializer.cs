@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SerializerProvider = System.Text.Json.JsonSerializer;
+
 namespace DNI.Shared.Serializers
 {
     public class JsonSerializer : ISerializer
