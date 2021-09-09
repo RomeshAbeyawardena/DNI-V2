@@ -17,7 +17,7 @@ namespace DNI.Sandbox
 
         }
 
-        public static void RegisterServices(IServiceCollection services)
+        public static void RegisterServices(IAppModuleCache appModuleCache, IServiceCollection services)
         {
             
         }

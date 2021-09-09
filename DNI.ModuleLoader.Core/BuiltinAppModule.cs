@@ -8,7 +8,7 @@ namespace DNI.ModuleLoader.Core
 {
     public class BuiltinAppModule : IAppModule
     {
-        public static void RegisterServices(IServiceCollection services)
+        public static void RegisterServices(IAppModuleCache appModuleCache, IServiceCollection services)
         {
             throw new NotSupportedException();
         }
