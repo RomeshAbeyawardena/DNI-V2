@@ -17,13 +17,15 @@ namespace DNI.Shared.Abstractions
         /// </summary>
         /// <param name="moduleJsonPath">Path of the json file containing modules to load</param>
         /// <param name="assemblyPaths"><c>Optional:</c> Assembly paths to include in the search</param>
-        IEnumerable<Task> Load(string moduleJsonPath, params string[] assemblyPaths);
+        /// <returns>A list of <see cref="IAppModule">modules</see></returns>
+        IEnumerable<IAppModule> Load(string moduleJsonPath, params string[] assemblyPaths);
         /// <summary>
         /// Loads modules from a json string
         /// </summary>
         /// <param name="json">Valid JSON string containing a list of modules to load</param>
         /// <param name="options">Module loader options to be used for loading modules</param>
-        IEnumerable<Task> Load(string json, IAppModulesLoaderOptions options);
+        /// <returns>A list of <see cref="IAppModule">modules</see></returns>
+        IEnumerable<IAppModule> Load(string json, IAppModulesLoaderOptions options);
 
         /// <summary>
         /// Gets the modules loading into memory
@@ -34,5 +36,11 @@ namespace DNI.Shared.Abstractions
         /// Gets the loaded assemblies
         /// </summary>
         IEnumerable<Assembly> LoadedAssemblies { get; }
+
+        /// <summary>
+        /// Runs modules in order they were initialized
+        /// </summary>
+        /// <returns>A <see cref="Task"/> for each one</returns>
+        IEnumerable<Task> RunAsync();
     }
 }

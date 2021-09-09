@@ -15,12 +15,18 @@ namespace DNI.Sandbox
 {
     public class SandboxAppModuleLoader : AppModuleLoaderBase<SandboxAppModuleLoader>
     {
-        public SandboxAppModuleLoader(ILogger<SandboxAppModuleLoader> logger, ISerializerFactory serializer, IFileProvider fileProvider, IAppModuleCache<SandboxAppModuleLoader> appModules) 
+        public SandboxAppModuleLoader(
+            ILogger<SandboxAppModuleLoader> logger, 
+            ISerializerFactory serializer, 
+            IFileProvider fileProvider, 
+            IAppModuleCache<SandboxAppModuleLoader> appModules) 
             : base(logger, serializer, fileProvider, appModules)
         {
         }
 
-        public override void RegisterServices(IAppModuleCache<SandboxAppModuleLoader> appModuleCache, IServiceCollection services)
+        public override void RegisterServices(
+            IAppModuleCache<SandboxAppModuleLoader> appModuleCache, 
+            IServiceCollection services)
         {
             appModuleCache.RegisterModule<BuiltinAppModule>();
         }

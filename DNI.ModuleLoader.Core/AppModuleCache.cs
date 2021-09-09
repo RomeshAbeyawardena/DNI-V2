@@ -27,9 +27,10 @@ namespace DNI.ModuleLoader.Core
             registeredTypes.Add(appModuleType);
         }
 
-        public void RegisterModule<TAppModule>()
+        public IAppModuleCache<TAppModuleLoader> RegisterModule<TAppModule>()
         {
             RegisterModule(typeof(TAppModule));
+            return this;
         }
 
         IEnumerator IEnumerable.GetEnumerator()

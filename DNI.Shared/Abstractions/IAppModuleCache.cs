@@ -12,6 +12,6 @@ namespace DNI.Shared.Abstractions
     public interface IAppModuleCache<TAppModuleLoader> : IAppModuleCache
         where TAppModuleLoader : class, IAppModuleLoader
     {
-        void RegisterModule<TAppModule>();
+        IAppModuleCache<TAppModuleLoader> RegisterModule<TAppModule>();
     }
 }

@@ -18,8 +18,9 @@ namespace DNI.Sandbox
                 .AddLogging(opt => opt.AddConsole())
                 .RegisterAppModuleLoader<SandboxAppModuleLoader>();
             var s = AppModuleBootstapper.Bootstrap<SandboxAppModuleLoader>(services);
-                
-            await Task.WhenAll(s.Load("modules.json"));
+            var modules = s.Load("modules.json");
+
+            await Task.WhenAll(s.RunAsync());
             
         }
     }

@@ -1,4 +1,9 @@
-﻿using DNI.Shared.Abstractions;
+﻿using DNI.ModuleLoader.Core.Base;
+using DNI.ModuleLoader.Core.Factory;
+using DNI.ModuleLoader.Core.Providers;
+using DNI.Shared.Abstractions;
+using DNI.Shared.Abstractions.Factories;
+using DNI.Shared.Serializers;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading;
@@ -6,26 +11,32 @@ using System.Threading.Tasks;
 
 namespace DNI.ModuleLoader.Core.Modules
 {
-    public class MyService { }
-
-    public class BuiltinAppModule : IAppModule
+    public class BuiltinAppModule : AppModuleBase
     {
+        public BuiltinAppModule(IAppModuleCache appModuleCache) : base(appModuleCache)
+        {
+        }
+
         public static void RegisterServices(IAppModuleCache appModuleCache, IServiceCollection services)
         {
-            services.AddSingleton<MyService>();
+            services
+                .AddSingleton(typeof(IAppModuleCache<>), typeof(AppModuleCache<>))
+                .AddSingleton<IFileProvider, LocalFileProvider>()
+                .AddSingleton<ISerializerFactory, SerializerFactory>()
+                .AddSingleton<ISerializer, JsonSerializer>();
         }
 
-        public Task RunAsync(CancellationToken cancellationToken)
+        public override Task RunAsync(CancellationToken cancellationToken)
         {
             return Task.CompletedTask;
         }
 
-        public Task StopAsync(CancellationToken cancellationToken)
+        public override Task StopAsync(CancellationToken cancellationToken)
         {
             return Task.CompletedTask;
         }
 
-        public bool ValidateServices(IServiceProvider serviceProvider)
+        public override bool ValidateServices(IServiceProvider serviceProvider)
         {
             return true;
         }

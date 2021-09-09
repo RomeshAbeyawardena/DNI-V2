@@ -48,14 +48,14 @@ namespace DNI.ModuleLoader.Core
 
         public abstract void RegisterServices(IAppModuleCache<TAppModule> appModuleCache, IServiceCollection services);
 
-        public IEnumerable<Task> Load(string moduleJsonPath, params string[] assemblyPaths)
+        public IEnumerable<IAppModule> Load(string moduleJsonPath, params string[] assemblyPaths)
         {
             return Load(fileProvider
                 .GetFile(moduleJsonPath, System.IO.FileAccess.Read)
                 .ReadAllLines(), new DefaultAppModuleLoaderOptions { ModuleHintPaths = assemblyPaths });
         }
 
-        public IEnumerable<Task> Load(string json, IAppModulesLoaderOptions options)
+        public IEnumerable<IAppModule> Load(string json, IAppModulesLoaderOptions options)
         {
             var moduleConfig = serializerFactory
                 .Deserialize<AppModuleConfig>(SerializerType.Json, json);
@@ -63,7 +63,8 @@ namespace DNI.ModuleLoader.Core
 
             RegisterServices(moduleConfig.Modules, out var moduleTypes);
 
-            return LoadModules(moduleTypes, options);
+            Modules = LoadModules(moduleTypes, options);
+            return Modules;
         }
 
         private IEnumerable<Assembly> LoadAssemblies(IAppModulesLoaderOptions options)
@@ -105,9 +106,9 @@ namespace DNI.ModuleLoader.Core
             serviceProvider = services.BuildServiceProvider();
         }
 
-        private IEnumerable<Task> LoadModules(IEnumerable<Type> moduleTypes, IAppModulesLoaderOptions options)
+        private IEnumerable<IAppModule> LoadModules(IEnumerable<Type> moduleTypes, IAppModulesLoaderOptions options)
         {
-            var moduleTaskList = new List<Task>();
+            var moduleTaskList = new List<IAppModule>();
             foreach (var moduleType in moduleTypes)
             {
                 try
@@ -124,7 +125,7 @@ namespace DNI.ModuleLoader.Core
                     }
 
                     var appModule = Activator.CreateInstance(moduleType, instanceParameters.ToArray()) as IAppModule;
-                    moduleTaskList.Add(appModule.RunAsync(cancellationTokenSource.Token));
+                    moduleTaskList.Add(appModule);
                 }
                 catch (Exception exception)
                 {
@@ -137,6 +138,11 @@ namespace DNI.ModuleLoader.Core
                 }
             }
             return moduleTaskList;
+        }
+
+        public IEnumerable<Task> RunAsync()
+        {
+            return Modules.ForEach(a => a.RunAsync(cancellationTokenSource.Token));
         }
 
         public void Dispose()
@@ -152,5 +158,6 @@ namespace DNI.ModuleLoader.Core
                 cancellationTokenSource.Dispose();
             }
         }
+
     }
 }

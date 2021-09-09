@@ -1,4 +1,5 @@
 ﻿using DNI.ModuleLoader.Core.Factory;
+using DNI.ModuleLoader.Core.Modules;
 using DNI.ModuleLoader.Core.Providers;
 using DNI.Shared.Abstractions;
 using DNI.Shared.Abstractions.Factories;
@@ -24,11 +25,7 @@ namespace DNI.ModuleLoader.Core.Bootstrapper
         public static TAppModuleLoader Bootstrap<TAppModuleLoader>(IServiceCollection services)
             where TAppModuleLoader : class, IAppModuleLoader
         {
-            services
-                .AddSingleton(typeof(IAppModuleCache<>), typeof(AppModuleCache<>))
-                .AddSingleton<IFileProvider, LocalFileProvider>()
-                .AddSingleton<ISerializerFactory, SerializerFactory>()
-                .AddSingleton<ISerializer, JsonSerializer>();
+            BuiltinAppModule.RegisterServices(null, services);
             var serviceProvider = services.BuildServiceProvider();
             return serviceProvider.GetRequiredService<IAppModuleLoader>() as TAppModuleLoader;
         }
