@@ -4,13 +4,15 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DNI.ModuleLoader.Core
+namespace DNI.ModuleLoader.Core.Modules
 {
+    public class MyService { }
+
     public class BuiltinAppModule : IAppModule
     {
         public static void RegisterServices(IAppModuleCache appModuleCache, IServiceCollection services)
         {
-            throw new NotSupportedException();
+            services.AddSingleton<MyService>();
         }
 
         public Task RunAsync(CancellationToken cancellationToken)

@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 
 namespace DNI.Sandbox
 {
+    public class SandboxService { }
+
     public class SandboxModule : IAppModule
     {
         public SandboxModule(IFileProvider fileProvider)
@@ -19,7 +21,7 @@ namespace DNI.Sandbox
 
         public static void RegisterServices(IAppModuleCache appModuleCache, IServiceCollection services)
         {
-            
+            services.AddSingleton<SandboxService>();
         }
 
         public Task RunAsync(CancellationToken cancellationToken)

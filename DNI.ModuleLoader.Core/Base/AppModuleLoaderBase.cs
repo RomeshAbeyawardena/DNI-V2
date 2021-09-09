@@ -48,14 +48,14 @@ namespace DNI.ModuleLoader.Core
 
         public abstract void RegisterServices(IAppModuleCache<TAppModule> appModuleCache, IServiceCollection services);
 
-        public void Load(string moduleJsonPath, params string[] assemblyPaths)
+        public IEnumerable<Task> Load(string moduleJsonPath, params string[] assemblyPaths)
         {
-            Load(fileProvider
+            return Load(fileProvider
                 .GetFile(moduleJsonPath, System.IO.FileAccess.Read)
                 .ReadAllLines(), new DefaultAppModuleLoaderOptions { ModuleHintPaths = assemblyPaths });
         }
 
-        public void Load(string json, IAppModulesLoaderOptions options)
+        public IEnumerable<Task> Load(string json, IAppModulesLoaderOptions options)
         {
             var moduleConfig = serializerFactory
                 .Deserialize<AppModuleConfig>(SerializerType.Json, json);
@@ -63,7 +63,7 @@ namespace DNI.ModuleLoader.Core
 
             RegisterServices(moduleConfig.Modules, out var moduleTypes);
 
-            LoadModules(moduleTypes, options);
+            return LoadModules(moduleTypes, options);
         }
 
         private IEnumerable<Assembly> LoadAssemblies(IAppModulesLoaderOptions options)
