@@ -19,7 +19,7 @@ namespace DNI.Sandbox
 
         public static void RegisterServices(IServiceCollection services)
         {
-            throw new NotSupportedException();
+            
         }
 
         public Task RunAsync(CancellationToken cancellationToken)

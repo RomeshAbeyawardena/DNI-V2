@@ -5,8 +5,9 @@ namespace DNI.Extensions
 
     public static class AppModuleCacheExtensions 
     {
-        public static void RegisterModule<TAppModule>(this IAppModuleCache appModuleCache)
+        public static void RegisterModule<TAppModule, TAppModuleLoader>(this IAppModuleCache<TAppModuleLoader> appModuleCache)
             where TAppModule : class, IAppModule
+            where TAppModuleLoader: class, IAppModuleLoader
         {
             appModuleCache.RegisterModule(typeof(TAppModule));
         }

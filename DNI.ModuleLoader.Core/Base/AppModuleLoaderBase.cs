@@ -18,12 +18,13 @@ using System.Threading.Tasks;
 namespace DNI.ModuleLoader.Core
 {
     /// <inheritdoc cref="IAppModule"/>
-    public abstract class AppModuleLoaderBase : IAppModuleLoader
+    public abstract class AppModuleLoaderBase<TAppModule> : IAppModuleLoader
+        where TAppModule : class, IAppModuleLoader
     {
         private readonly ILogger logger;
         private readonly ISerializerFactory serializerFactory;
         private readonly IFileProvider fileProvider;
-        private readonly IEnumerable<IAppModule> appModules;
+        private readonly IAppModuleCache<TAppModule> appModuleCache;
         private IServiceProvider serviceProvider;
         private readonly IServiceCollection services;
         private readonly CancellationTokenSource cancellationTokenSource;
@@ -35,17 +36,17 @@ namespace DNI.ModuleLoader.Core
             ILogger logger,
             ISerializerFactory serializer,
             IFileProvider fileProvider,
-            IEnumerable<IAppModule> appModules)
+            IAppModuleCache<TAppModule> appModuleCache)
         {
             this.logger = logger;
             this.serializerFactory = serializer;
             this.fileProvider = fileProvider;
-            this.appModules = appModules;
+            this.appModuleCache = appModuleCache;
             cancellationTokenSource = new CancellationTokenSource();
             this.services = new ServiceCollection();
         }
 
-        public abstract void RegisterServices(IServiceCollection services);
+        public abstract void RegisterServices(IAppModuleCache<TAppModule> appModuleCache, IServiceCollection services);
 
         public void Load(string moduleJsonPath, params string[] assemblyPaths)
         {
@@ -74,17 +75,17 @@ namespace DNI.ModuleLoader.Core
 
         private void InvokeRegisterServices(Type moduleType)
         {
-            var registerServicesMethod = moduleType.GetMethod("RegisterServices", BindingFlags.Static);
+            var registerServicesMethod = moduleType.GetMethod("RegisterServices", BindingFlags.Public | BindingFlags.Static);
 
             if (registerServicesMethod != null)
             {
-                registerServicesMethod.Invoke(null, new[] { services });
+                registerServicesMethod.Invoke(null, new object[] { appModuleCache, services });
             }
         }
 
         private void RegisterServices(IEnumerable<ModuleInfo> modules, out IEnumerable<Type> moduleTypes)
         {
-            RegisterServices(services);
+            RegisterServices(appModuleCache, services);
             var moduleTypeList = new List<Type>();
             moduleTypes = moduleTypeList;
 
@@ -95,9 +96,9 @@ namespace DNI.ModuleLoader.Core
                 InvokeRegisterServices(moduleType);
             }
 
-            foreach (var appModule in appModules)
+            foreach (var appModule in appModuleCache)
             {
-                InvokeRegisterServices(appModule.GetType());
+                InvokeRegisterServices(appModule);
             }
 
 

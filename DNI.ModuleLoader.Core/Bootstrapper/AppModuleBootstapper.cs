@@ -25,6 +25,7 @@ namespace DNI.ModuleLoader.Core.Bootstrapper
             where TAppModuleLoader : class, IAppModuleLoader
         {
             services
+                .AddSingleton(typeof(IAppModuleCache<>), typeof(AppModuleCache<>))
                 .AddSingleton<IFileProvider, LocalFileProvider>()
                 .AddSingleton<ISerializerFactory, SerializerFactory>()
                 .AddSingleton<ISerializer, JsonSerializer>();

@@ -12,16 +12,16 @@ using System.Threading.Tasks;
 
 namespace DNI.Sandbox
 {
-    public class SandboxAppModuleLoader : AppModuleLoaderBase
+    public class SandboxAppModuleLoader : AppModuleLoaderBase<SandboxAppModuleLoader>
     {
-        public SandboxAppModuleLoader(ILogger<SandboxAppModuleLoader> logger, ISerializerFactory serializer, IFileProvider fileProvider, IEnumerable<IAppModule> appModules) 
+        public SandboxAppModuleLoader(ILogger<SandboxAppModuleLoader> logger, ISerializerFactory serializer, IFileProvider fileProvider, IAppModuleCache<SandboxAppModuleLoader> appModules) 
             : base(logger, serializer, fileProvider, appModules)
         {
         }
 
-        public override void RegisterServices(IServiceCollection services)
+        public override void RegisterServices(IAppModuleCache<SandboxAppModuleLoader> appModuleCache, IServiceCollection services)
         {
-            services.Requires<BuiltinAppModule>();
+            appModuleCache.RegisterModule<BuiltinAppModule>();
         }
     }
 }
