@@ -8,7 +8,7 @@ namespace DNI.Extensions
     {
         public static string ReadAllLines(this IFile file)
         {
-            using (var fileStream = new FileStream(file.FullPath, FileMode.Open))
+            using (var fileStream = file.GetFileStream(FileMode.Open))
             using (var streamReader = new StreamReader(fileStream))
                 return streamReader.ReadToEnd();
             
