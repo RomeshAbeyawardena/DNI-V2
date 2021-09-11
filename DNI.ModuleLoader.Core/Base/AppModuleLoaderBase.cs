@@ -24,7 +24,7 @@ namespace DNI.ModuleLoader.Core
         private readonly ILogger logger;
         private readonly ISerializerFactory serializerFactory;
         private readonly IFileProvider fileProvider;
-        private readonly IAppModuleCache<TAppModule> appModuleCache;
+        private readonly IGlobalAppModuleCache<TAppModule> appModuleCache;
         private IServiceProvider serviceProvider;
         private readonly IServiceCollection services;
         private readonly CancellationTokenSource cancellationTokenSource;
@@ -36,7 +36,7 @@ namespace DNI.ModuleLoader.Core
             ILogger logger,
             ISerializerFactory serializer,
             IFileProvider fileProvider,
-            IAppModuleCache<TAppModule> appModuleCache)
+            IGlobalAppModuleCache<TAppModule> appModuleCache)
         {
             this.logger = logger;
             this.serializerFactory = serializer;
@@ -46,7 +46,7 @@ namespace DNI.ModuleLoader.Core
             this.services = new ServiceCollection();
         }
 
-        public abstract void RegisterServices(IAppModuleCache<TAppModule> appModuleCache, IServiceCollection services);
+        public abstract void RegisterServices(IGlobalAppModuleCache<TAppModule> appModuleCache, IServiceCollection services);
 
         public IEnumerable<IAppModule> Load(string moduleJsonPath, params string[] assemblyPaths)
         {

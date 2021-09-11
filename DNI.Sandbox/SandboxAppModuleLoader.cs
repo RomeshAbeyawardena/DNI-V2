@@ -19,13 +19,13 @@ namespace DNI.Sandbox
             ILogger<SandboxAppModuleLoader> logger, 
             ISerializerFactory serializer, 
             IFileProvider fileProvider, 
-            IAppModuleCache<SandboxAppModuleLoader> appModules) 
+            IGlobalAppModuleCache<SandboxAppModuleLoader> appModules) 
             : base(logger, serializer, fileProvider, appModules)
         {
         }
 
         public override void RegisterServices(
-            IAppModuleCache<SandboxAppModuleLoader> appModuleCache, 
+            IGlobalAppModuleCache<SandboxAppModuleLoader> appModuleCache, 
             IServiceCollection services)
         {
             appModuleCache.RegisterModule<BuiltinAppModule>();

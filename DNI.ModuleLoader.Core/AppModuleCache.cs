@@ -1,41 +1,21 @@
-namespace DNI.ModuleLoader.Core 
+﻿using DNI.ModuleLoader.Core.Base;
+using DNI.Shared.Abstractions;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DNI.ModuleLoader.Core
 {
-    using System;
-    using DNI.Shared.Abstractions;
-    using System.Collections.Generic;
-    using System.Collections;
-
-    public class AppModuleCache<TAppModuleLoader> : IAppModuleCache<TAppModuleLoader>
-        where TAppModuleLoader : class, IAppModuleLoader
+    public class AppModuleCache<TAppModule> : AppModuleCacheBase, IAppModuleCache<TAppModule>
+        where TAppModule : class, IAppModule
     {
-        private readonly List<Type> registeredTypes;
-
-        public AppModuleCache()
+        IAppModuleCache<TAppModule> IAppModuleCache<TAppModule>.RegisterModule<TRequiredAppModule>()
         {
-            registeredTypes = new List<Type>();
-        }
-
-        public IEnumerable<Type> RegisteredTypes { get; }
-
-        public IEnumerator<Type> GetEnumerator()
-        {
-            return registeredTypes.GetEnumerator();
-        }
-
-        public void RegisterModule(Type appModuleType)
-        {
-            registeredTypes.Add(appModuleType);
-        }
-
-        public IAppModuleCache<TAppModuleLoader> RegisterModule<TAppModule>()
-        {
-            RegisterModule(typeof(TAppModule));
+            RegisterModule(typeof(TRequiredAppModule));
             return this;
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
     }
 }
