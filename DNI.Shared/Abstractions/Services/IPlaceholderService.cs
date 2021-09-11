@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DNI.Shared.Abstractions.Services
 {
-    public interface IPlaceholderService
+    public interface IPlaceholderService : IService
     {
         IEnumerable<PlaceholderInfo> ExtractPlaceholders(string value, char startCharacter, char endCharacter);
         string ReplacePlaceholders(string value, IEnumerable<PlaceholderInfo> placeholders, IDictionary<string, string> replacements);

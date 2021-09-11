@@ -1,4 +1,6 @@
-﻿using DNI.Shared.Abstractions.Services;
+﻿using DNI.Shared.Abstractions;
+using DNI.Shared.Abstractions.Services;
+using DNI.Shared.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +9,14 @@ using System.Threading.Tasks;
 
 namespace DNI.Shared.Services
 {
-    public class PlaceholderService : IPlaceholderService
+    public class PlaceholderService : ServiceBase, IPlaceholderService
     {
+        public PlaceholderService(IServiceConfig serviceConfig)
+            : base(serviceConfig)
+        {
+
+        }
+
         public IEnumerable<PlaceholderInfo> ExtractPlaceholders(string value, char startCharacter, char endCharacter)
         {
             var placeholderInfoList = new List<PlaceholderInfo>();
@@ -56,13 +64,19 @@ namespace DNI.Shared.Services
                 var str = $"{placeholder.StartCharacter}{placeholder.Value}{placeholder.EndCharacter}";
                 if(replacementsFactory.TryGetValue(placeholder.Value, out var factory))
                 {
-                    value = value.Replace(str, factory?.Invoke(str) ?? throw new NullReferenceException());
+                    var replacementValue = factory?.Invoke(str);
+
+                    if (replacementValue == null && ServiceConfig.ThrowOnHandledExceptions)
+                    {
+                        throw new NullReferenceException("Value returned by anonymous factory method was null");
+                    }
+
+                    value = value.Replace(str, replacementValue ?? string.Empty);
                 }
             }
 
             return value;
         }
-
 
         private static Func<string, string> GetReplacementFactory(string arg)
         {
