@@ -11,8 +11,9 @@ namespace DNI.Modules.Database
 {
     public class EntityFrameworkAppConfig : ConfigBase, IEntityFrameworkAppConfig
     {
+        public const string ConfigName = "EntityFramework";
         public EntityFrameworkAppConfig(ISerializerFactory serializerFactory) 
-            : base(serializerFactory)
+            : base(serializerFactory, ConfigName)
         {
             Bind(this);
         }

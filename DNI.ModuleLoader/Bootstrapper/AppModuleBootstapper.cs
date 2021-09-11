@@ -23,7 +23,7 @@ namespace DNI.ModuleLoader.Bootstrapper
         public static TAppModuleLoader Bootstrap<TAppModuleLoader>(IServiceCollection services)
             where TAppModuleLoader : class, IAppModuleLoader
         {
-            BuiltinAppModule.RegisterServices(null, services);
+            BuiltinAppModule.RegisterServices(null, null, services);
             var serviceProvider = services.BuildServiceProvider();
             return serviceProvider.GetRequiredService<IAppModuleLoader>() as TAppModuleLoader;
         }

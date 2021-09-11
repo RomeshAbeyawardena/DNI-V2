@@ -14,10 +14,11 @@ namespace DNI.Shared.Base
     {
         private readonly ISerializerFactory serializerFactory;
         
-
-        public ConfigBase(ISerializerFactory serializerFactory)
+        public string ConfigFileName { get; set; }
+        public ConfigBase(ISerializerFactory serializerFactory, string configFileName)
         {
             this.serializerFactory = serializerFactory;
+            ConfigFileName = configFileName;
         }
 
         public void Load(IFile file, SerializerType serializerType)

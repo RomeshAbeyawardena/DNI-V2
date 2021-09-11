@@ -5,6 +5,7 @@ using DNI.Shared.Abstractions.Services;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using DNI.Extensions;
 
 namespace DNI.Sandbox
 {
@@ -13,6 +14,12 @@ namespace DNI.Sandbox
         public MyNonGlobalModule(IAppModuleCache<MyNonGlobalModule> appModuleCache) : base(appModuleCache)
         {
         }
+
+        public static void RegisterServices(IAppModuleCache appModuleCache, IAppModuleConfig<SandboxModule> appModuleConfig, IServiceCollection services)
+        {
+            appModuleCache.RegisterModule<EntityFramework>
+        }
+
 
         public override Task RunAsync(CancellationToken cancellationToken)
         {

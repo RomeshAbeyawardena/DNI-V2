@@ -1,4 +1,5 @@
 ﻿using DNI.Shared.Abstractions;
+using DNI.Shared.Base;
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
@@ -9,30 +10,14 @@ using System.Threading.Tasks;
 
 namespace DNI.ModuleLoader.Core.Base
 {
-    public abstract class AppModuleCacheBase : IAppModuleCache
+    public abstract class AppModuleCacheBase : CollectionBase<Type>, IAppModuleCache
     {
-        private readonly ConcurrentBag<Type> registeredTypes;
-
-        public AppModuleCacheBase()
-        {
-            registeredTypes = new ConcurrentBag<Type>();
-        }
-
-        public IEnumerable<Type> RegisteredTypes { get; }
-
-        public IEnumerator<Type> GetEnumerator()
-        {
-            return registeredTypes.GetEnumerator();
-        }
+        public IEnumerable<Type> RegisteredTypes => Items;
 
         public virtual void RegisterModule(Type appModuleType, IConfig config = null)
         {
-            registeredTypes.Add(appModuleType);
+            Items.Add(appModuleType);
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
     }
 }

@@ -16,8 +16,14 @@ namespace DNI.ModuleLoader.Modules
     public abstract class WebAppModule<TAppModule> : AppModuleBase<WebAppModule<TAppModule>>
         where TAppModule : class, IAppModule
     {
-        public WebAppModule(IAppModuleCache<WebAppModule<TAppModule>> appModuleCache)
-            : base(appModuleCache) { }
+        private readonly IAppModuleConfig<WebAppModule<TAppModule>> appModuleConfig;
+
+        public WebAppModule(IAppModuleCache<WebAppModule<TAppModule>> appModuleCache,
+            IAppModuleConfig<WebAppModule<TAppModule>> appModuleConfig)
+            : base(appModuleCache)
+        {
+            this.appModuleConfig = appModuleConfig;
+        }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args);
@@ -29,7 +35,7 @@ namespace DNI.ModuleLoader.Modules
             {
                 webBuilder
                 .UseStartup<TAppModule>()
-                .ConfigureServices(services => RegisterServices(AppModuleCache, services));
+                .ConfigureServices(services => RegisterServices(AppModuleCache, appModuleConfig, services));
             }).RunConsoleAsync();
         }
 
@@ -38,7 +44,7 @@ namespace DNI.ModuleLoader.Modules
             return Task.CompletedTask;
         }
 
-        public static void RegisterServices(IAppModuleCache appModuleCache, IServiceCollection services)
+        public static void RegisterServices(IAppModuleCache appModuleCache, IAppModuleConfig<WebAppModule<TAppModule>> appModuleConfig, IServiceCollection services)
         {
             services
                 .AddControllers();

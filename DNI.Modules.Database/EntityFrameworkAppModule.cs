@@ -1,6 +1,7 @@
 ﻿using DNI.ModuleLoader.Core.Base;
 using DNI.Modules.Database.Abstractions;
 using DNI.Shared.Abstractions;
+using DNI.Shared.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -20,9 +21,16 @@ namespace DNI.Modules.Database
             this.config = config;
         }
 
-        public static void RegisterServices(IAppModuleCache appModuleCache, IServiceCollection services)
+        public static void RegisterServices(IAppModuleCache appModuleCache, IAppModuleConfig<EntityFrameworkAppModule<TDbContext>> appModuleConfig, IServiceCollection services)
         {
+            appModuleConfig.AddConfiguration<EntityFrameworkAppConfig>();
+            services.AddSingleton<IEntityFrameworkAppConfig>(GetEntityFrameworkConfig);
             services.AddDbContext<TDbContext>();
+        }
+
+        private static IEntityFrameworkAppConfig GetEntityFrameworkConfig(IServiceProvider arg)
+        {
+            arg.GetRequiredService<IConf>()
         }
 
         public override Task RunAsync(CancellationToken cancellationToken)

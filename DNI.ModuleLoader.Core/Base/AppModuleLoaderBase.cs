@@ -39,7 +39,8 @@ namespace DNI.ModuleLoader.Core
 
         }
 
-        private bool InvokeUseGlobalAppModuleCache(Type moduleType)
+        
+        private static bool InvokeUseGlobalAppModuleCache(Type moduleType)
         {
             var useGlobalAppModuleCacheMethod = moduleType.GetMethod("UseGlobalAppModuleCache", BindingFlags.Public | BindingFlags.Static);
 
@@ -60,7 +61,8 @@ namespace DNI.ModuleLoader.Core
 
             if (registerServicesMethod != null)
             {
-                registerServicesMethod.Invoke(null, new object[] { appModuleCacheInstance, services });
+                var appModuleConfigType = typeof(IAppModuleConfig<>);
+                registerServicesMethod.Invoke(null, new object[] { appModuleCacheInstance, GetService(appModuleConfigType.MakeGenericType(moduleType)), services });
             }
         }
 

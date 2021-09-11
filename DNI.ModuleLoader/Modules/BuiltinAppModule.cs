@@ -21,12 +21,13 @@ namespace DNI.ModuleLoader.Modules
 
         public static bool UseGlobalAppModuleCache() => true;
 
-        public static void RegisterServices(IAppModuleCache appModuleCache, IServiceCollection services)
+        public static void RegisterServices(IAppModuleCache appModuleCache, IAppModuleConfig<BuiltinAppModule> appModuleConfig, IServiceCollection services)
         {
             services
                 .AddSingleton(typeof(ISwitch<,>), typeof(DefaultSwitch<,>))
                 .AddSingleton(typeof(IGlobalAppModuleCache<>), typeof(GlobalModuleCache<>))
                 .AddSingleton(typeof(IAppModuleCache<>), typeof(AppModuleCache<>))
+                .AddSingleton(typeof(IAppModuleConfig<>), typeof(AppModuleConfig<>))
                 .Scan(scanner => scanner
                     .FromAssemblies(Core.This.Assembly, Shared.This.Assembly)
                     .AddClasses(c => c.Where(t => OfTypes(t, Types)))

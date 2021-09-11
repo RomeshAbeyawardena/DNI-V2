@@ -25,7 +25,7 @@ namespace DNI.Sandbox
             this.fileProvider = fileProvider;
         }
 
-        public static void RegisterServices(IAppModuleCache appModuleCache, IServiceCollection services)
+        public static void RegisterServices(IAppModuleCache appModuleCache, IAppModuleConfig<SandboxModule> appModuleConfig, IServiceCollection services)
         {
             appModuleCache
                 .RegisterModule<MyNonGlobalModule>()

@@ -22,7 +22,7 @@ namespace DNI.Sandbox
         }
 
         public override void RegisterServices(
-            IGlobalAppModuleCache<SandboxAppModuleLoader> appModuleCache, 
+            IGlobalAppModuleCache<SandboxAppModuleLoader> appModuleCache,
             IServiceCollection services)
         {
             appModuleCache.RegisterModule<BuiltinAppModule>();

@@ -13,7 +13,7 @@ namespace DNI.ModuleLoader.Modules
     {
         public IServiceProvider ServiceProvider => throw new NotImplementedException();
 
-        public static void RegisterServices(IAppModuleCache appModuleCache, IServiceCollection services)
+        public static void RegisterServices(IAppModuleCache appModuleCache, IAppModuleConfig<DatabaseAppModule> appModuleConfig, IServiceCollection services)
         {
 
         }

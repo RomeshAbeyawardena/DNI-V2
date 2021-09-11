@@ -9,6 +9,7 @@ namespace DNI.Shared.Abstractions
 {
     public interface IConfig : IDictionary<string, object>
     {
+        string ConfigFileName { get; set; }
         void Load(IFile file, SerializerType serializerType);
     }
 }

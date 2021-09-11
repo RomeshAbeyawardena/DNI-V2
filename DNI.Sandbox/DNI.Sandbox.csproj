@@ -9,6 +9,7 @@
     <ProjectReference Include="..\DNI.Extensions\DNI.Extensions.csproj" />
     <ProjectReference Include="..\DNI.ModuleLoader.Core\DNI.ModuleLoader.Core.csproj" />
     <ProjectReference Include="..\DNI.ModuleLoader\DNI.ModuleLoader.csproj" />
+    <ProjectReference Include="..\DNI.Modules.Database\DNI.Modules.Database.csproj" />
     <ProjectReference Include="..\DNI.Shared\DNI.Shared.csproj" />
   </ItemGroup>
 
