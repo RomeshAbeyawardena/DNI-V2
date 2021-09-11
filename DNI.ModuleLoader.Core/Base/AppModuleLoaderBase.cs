@@ -30,7 +30,6 @@ namespace DNI.ModuleLoader.Core
         private readonly IServiceCollection services;
         private readonly CancellationTokenSource cancellationTokenSource;
 
-
         private IEnumerable<Assembly> LoadAssemblies(IAppModulesLoaderOptions options)
         {
             var files = options.ModuleHintPaths.SelectMany(hintPath => fileProvider.GetFiles(hintPath, "*.dll"));
@@ -63,21 +62,38 @@ namespace DNI.ModuleLoader.Core
             }
         }
 
+        private void ListModules(IEnumerable<Type> moduleTypes)
+        {
+            var stringBuilder = new StringBuilder();
+            foreach(var moduleType in moduleTypes)
+            {
+                stringBuilder.AppendFormat("\r\n\t- {0}", moduleType);
+            }
+
+            logger.LogInformation(stringBuilder.ToString());
+        }
+
         private IEnumerable<Type> RegisterAppModuleServices(IEnumerable<Type> moduleTypes)
         {
+            var count = moduleTypes.Count();
             var moduleTypeList = new List<Type>();
-            
-            foreach (var appModuleType in moduleTypes)
+            if (count > 0)
             {
-                var isGlobal = InvokeUseGlobalAppModuleCache(appModuleType);
-                InvokeRegisterServices(appModuleType, isGlobal);
-                moduleTypeList.Add(appModuleType);
+                logger.LogInformation("Registering {0} modules...", count);
+                ListModules(moduleTypes);
+                foreach (var appModuleType in moduleTypes)
+                {
+                    var isGlobal = InvokeUseGlobalAppModuleCache(appModuleType);
+                    InvokeRegisterServices(appModuleType, isGlobal);
+                    moduleTypeList.Add(appModuleType);
 
-                var appModuleCacheType = typeof(IAppModuleCache<>);
-                var genericAppModuleCacheType = appModuleCacheType.MakeGenericType(appModuleType);
-                var appModuleCache = GetService(genericAppModuleCacheType) as IAppModuleCache;
-
-                moduleTypeList.AddRange(RegisterAppModuleServices(appModuleCache));
+                    var appModuleCacheType = typeof(IAppModuleCache<>);
+                    var genericAppModuleCacheType = appModuleCacheType.MakeGenericType(appModuleType);
+                    var appModuleCache = GetService(genericAppModuleCacheType) as IAppModuleCache;
+                    logger.LogInformation("Registering child modules for {0}...", appModuleType);
+                    ListModules(appModuleCache);
+                    moduleTypeList.AddRange(RegisterAppModuleServices(appModuleCache));
+                }
             }
 
             return moduleTypeList;
@@ -136,11 +152,9 @@ namespace DNI.ModuleLoader.Core
         }
 
         private TService GetService<TService>()
+            where TService : class
         {
-            return parentServiceProvider.GetService<TService>() 
-                ?? (serviceProvider != null 
-                    ? serviceProvider.GetService<TService>() 
-                    : default);
+            return GetService(typeof(TService)) as TService;
         }
 
         private object GetService(Type type)
@@ -193,7 +207,12 @@ namespace DNI.ModuleLoader.Core
 
         public IEnumerable<Task> RunAsync()
         {
-            return Modules.ForEach(a => a.RunAsync(cancellationTokenSource.Token));
+            if (Modules.All(a => a.ValidateServices(serviceProvider)))
+            {
+                return Modules.ForEach(a => a.RunAsync(cancellationTokenSource.Token));
+            }
+
+            throw new InvalidOperationException("Service validation failed");
         }
 
         public void Dispose()

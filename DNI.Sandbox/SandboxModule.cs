@@ -14,28 +14,6 @@ namespace DNI.Sandbox
 {
     public class SandboxService { }
 
-    public class MyNonGlobalModule : AppModuleBase<MyNonGlobalModule>
-    {
-        public MyNonGlobalModule(IAppModuleCache<MyNonGlobalModule> appModuleCache) : base(appModuleCache)
-        {
-        }
-
-        public override Task RunAsync(CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task StopAsync(CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool ValidateServices(IServiceProvider serviceProvider)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
     public class SandboxModule : AppModuleBase<SandboxModule>
     {
         private readonly IFileProvider fileProvider;
@@ -65,7 +43,7 @@ namespace DNI.Sandbox
 
         public override bool ValidateServices(IServiceProvider serviceProvider)
         {
-            throw new NotImplementedException();
+            return true;
         }
     }
 }
