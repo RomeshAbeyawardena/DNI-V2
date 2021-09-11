@@ -1,6 +1,6 @@
 ﻿using DNI.Extensions;
 using DNI.ModuleLoader.Core;
-using DNI.ModuleLoader.Core.Bootstrapper;
+using DNI.ModuleLoader.Bootstrapper;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;

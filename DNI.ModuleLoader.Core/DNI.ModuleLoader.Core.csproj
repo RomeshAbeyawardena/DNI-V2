@@ -5,24 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" /> 
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.0" />
     <PackageReference Include="Scrutor" Version="3.3.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="../../Lib/Microsoft.AspNetCore.Routing.dll" Version="5.0.0" />
-    <Reference Include="../../Lib/Microsoft.AspNetCore.Diagnostics.dll" Version="5.0.0" />
-    <Reference Include="../../Lib/Microsoft.AspNetCore.Hosting.dll" Version="5.0.0" />
-    <Reference Include="../../Lib/Microsoft.AspNetCore.Hosting.Abstractions.dll" Version="5.0.0" />
-    <Reference Include="../../Lib/Microsoft.AspNetCore.dll" Version="5.0.0" />
-    <Reference Include="../../Lib/Microsoft.AspNetCore.Mvc.dll" Version="5.0.0" />
-    <Reference Include="../../Lib/Microsoft.AspNetCore.Mvc.Core.dll" Version="5.0.0" />
-    <Reference Include="../../Lib/Microsoft.AspNetCore.Http.Abstractions.dll" Version="5.0.0" />
-  </ItemGroup>
-   
   <ItemGroup>
     <ProjectReference Include="..\DNI.Extensions\DNI.Extensions.csproj" />
     <ProjectReference Include="..\DNI.Shared\DNI.Shared.csproj" />

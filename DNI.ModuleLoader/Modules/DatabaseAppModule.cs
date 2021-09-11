@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DNI.ModuleLoader.Core.Modules
+namespace DNI.ModuleLoader.Modules
 {
     public class DatabaseAppModule : IAppModule
     {

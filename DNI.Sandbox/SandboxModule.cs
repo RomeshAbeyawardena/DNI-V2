@@ -1,6 +1,6 @@
 ﻿using DNI.Extensions;
 using DNI.ModuleLoader.Core.Base;
-using DNI.ModuleLoader.Core.Modules;
+using DNI.ModuleLoader.Modules;
 using DNI.Shared.Abstractions;
 using DNI.Shared.Attributes;
 using Microsoft.Extensions.DependencyInjection;

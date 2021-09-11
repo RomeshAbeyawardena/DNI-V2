@@ -1,4 +1,4 @@
-﻿using DNI.ModuleLoader.Core.Modules;
+﻿using DNI.ModuleLoader.Modules;
 using DNI.Shared.Abstractions;
 using DNI.Shared.Abstractions.Factories;
 using DNI.Shared.Serializers;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DNI.ModuleLoader.Core.Bootstrapper
+namespace DNI.ModuleLoader.Bootstrapper
 {
     public static class AppModuleBootstapper
     {

@@ -1,4 +1,5 @@
-﻿using DNI.ModuleLoader.Core.Base;
+﻿using DNI.ModuleLoader.Core;
+using DNI.ModuleLoader.Core.Base;
 using DNI.Shared;
 using DNI.Shared.Abstractions;
 using DNI.Shared.Abstractions.Factories;
@@ -9,7 +10,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DNI.ModuleLoader.Core.Modules
+namespace DNI.ModuleLoader.Modules
 {
     public class BuiltinAppModule : AppModuleBase<BuiltinAppModule>
     {
@@ -27,7 +28,7 @@ namespace DNI.ModuleLoader.Core.Modules
                 .AddSingleton(typeof(IGlobalAppModuleCache<>), typeof(GlobalModuleCache<>))
                 .AddSingleton(typeof(IAppModuleCache<>), typeof(AppModuleCache<>))
                 .Scan(scanner => scanner
-                    .FromAssemblies(This.Assembly, Shared.This.Assembly)
+                    .FromAssemblies(Core.This.Assembly, Shared.This.Assembly)
                     .AddClasses(c => c.Where(t => OfTypes(t, Types)))
                     .AsImplementedInterfaces());
         }
