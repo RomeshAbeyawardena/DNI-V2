@@ -22,6 +22,7 @@ namespace DNI.ModuleLoader.Core.Modules
             services
                 .AddSingleton(typeof(ISwitch<,>), typeof(DefaultSwitch<,>))
                 .AddSingleton(typeof(IGlobalAppModuleCache<>), typeof(GlobalModuleCache<>))
+                .AddSingleton(typeof(IAppModuleCache<>), typeof(AppModuleCache<>))
                 .Scan(scanner => scanner
                     .FromAssemblies(This.Assembly, Shared.This.Assembly)
                     .AddClasses(c => c.Where(t => OfTypes(t, "Service", "Provider", "Factory", "Serializer")))
