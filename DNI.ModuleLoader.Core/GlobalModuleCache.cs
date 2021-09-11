@@ -9,7 +9,7 @@ namespace DNI.ModuleLoader.Core
     public class GlobalModuleCache<TAppModuleLoader> : AppModuleCacheBase, IGlobalAppModuleCache<TAppModuleLoader>
         where TAppModuleLoader : class, IAppModuleLoader
     {
-        public IGlobalAppModuleCache<TAppModuleLoader> RegisterModule<TAppModule>()
+        public IGlobalAppModuleCache<TAppModuleLoader> RegisterModule<TAppModule>(IConfig config)
             where TAppModule : IAppModule
         {
             RegisterModule(typeof(TAppModule));

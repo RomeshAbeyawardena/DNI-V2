@@ -1,4 +1,5 @@
 ﻿using DNI.ModuleLoader.Core.Base;
+using DNI.Modules.Database.Abstractions;
 using DNI.Shared.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,8 +12,12 @@ namespace DNI.Modules.Database
     public class EntityFrameworkAppModule<TDbContext> : AppModuleBase<EntityFrameworkAppModule<TDbContext>>
         where TDbContext: DbContext, new()
     {
-        public EntityFrameworkAppModule(IAppModuleCache<EntityFrameworkAppModule<TDbContext>> appModuleCache) : base(appModuleCache)
+        private readonly IEntityFrameworkAppConfig config;
+
+        public EntityFrameworkAppModule(IAppModuleCache<EntityFrameworkAppModule<TDbContext>> appModuleCache,
+            IEntityFrameworkAppConfig config) : base(appModuleCache)
         {
+            this.config = config;
         }
 
         public static void RegisterServices(IAppModuleCache appModuleCache, IServiceCollection services)

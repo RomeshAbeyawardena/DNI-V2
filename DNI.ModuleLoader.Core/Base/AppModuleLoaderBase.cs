@@ -5,6 +5,7 @@ using DNI.Shared.Abstractions;
 using DNI.Shared.Abstractions.Factories;
 using DNI.Shared.Attributes;
 using DNI.Shared.Enumerations;
+using DNI.Shared.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;

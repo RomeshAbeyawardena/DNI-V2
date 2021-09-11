@@ -11,7 +11,9 @@ namespace DNI.ModuleLoader.Core.Base
     public abstract class AppModuleBase<TAppModule> : IAppModule
         where TAppModule : class, IAppModule
     {
-        private IModuleServiceProvider moduleServiceProvider;
+#pragma warning disable 0649 //Should always be injected 
+        private IModuleServiceProvider moduleServiceProvider = null;
+#pragma warning disable 0649
         public AppModuleBase(IAppModuleCache<TAppModule> appModuleCache)
         {
             AppModuleCache = appModuleCache;

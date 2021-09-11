@@ -13,7 +13,13 @@ namespace DNI.ModuleLoader.Core
         private readonly IServiceProvider baseServiceProvider;
         private readonly IServiceProvider serviceProvider;
 
-        public ModuleServiceProvider(
+        internal ModuleServiceProvider()
+            : this(null, null)
+        {
+
+        }
+
+        internal ModuleServiceProvider(
             IServiceProvider baseServiceProvider,
             IServiceProvider serviceProvider)
         {

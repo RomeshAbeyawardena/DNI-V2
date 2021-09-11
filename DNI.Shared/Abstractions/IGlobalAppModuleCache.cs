@@ -1,21 +1,5 @@
-namespace DNI.Shared.Abstractions 
+namespace DNI.Shared.Abstractions
 {
-    using System;
-    using System.Collections.Generic;
-
-    public interface IAppModuleCache : IEnumerable<Type>
-    {
-        IEnumerable<Type> RegisteredTypes { get; }
-        void RegisterModule(Type appModuleType);
-    }
-
-    public interface IAppModuleCache<TAppModule> : IAppModuleCache
-        where TAppModule : class, IAppModule
-    {
-        IAppModuleCache<TAppModule> RegisterModule<TRequiredAppModule>()
-            where TRequiredAppModule : class, IAppModule;
-    }
-
     public interface IGlobalAppModuleCache<TAppModuleLoader> : IAppModuleCache
         where TAppModuleLoader : class, IAppModuleLoader
     {
@@ -24,7 +8,7 @@ namespace DNI.Shared.Abstractions
         /// </summary>
         /// <typeparam name="TAppModule"></typeparam>
         /// <returns></returns>
-        IGlobalAppModuleCache<TAppModuleLoader> RegisterModule<TAppModule>()
+        IGlobalAppModuleCache<TAppModuleLoader> RegisterModule<TAppModule>(IConfig config = null)
             where TAppModule : IAppModule;
     }
 }

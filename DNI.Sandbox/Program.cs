@@ -1,4 +1,5 @@
 ﻿using DNI.Extensions;
+using DNI.ModuleLoader.Core;
 using DNI.ModuleLoader.Core.Bootstrapper;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -19,7 +20,7 @@ namespace DNI.Sandbox
                 .RegisterAppModuleLoader<SandboxAppModuleLoader>();
             var s = AppModuleBootstapper.Bootstrap<SandboxAppModuleLoader>(services);
             var modules = s.Load("modules.json");
-
+            
             await Task.WhenAll(s.RunAsync());
             
         }

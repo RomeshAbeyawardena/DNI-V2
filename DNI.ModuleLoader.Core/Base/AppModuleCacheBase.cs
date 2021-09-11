@@ -25,7 +25,7 @@ namespace DNI.ModuleLoader.Core.Base
             return registeredTypes.GetEnumerator();
         }
 
-        public virtual void RegisterModule(Type appModuleType)
+        public virtual void RegisterModule(Type appModuleType, IConfig config = null)
         {
             registeredTypes.Add(appModuleType);
         }

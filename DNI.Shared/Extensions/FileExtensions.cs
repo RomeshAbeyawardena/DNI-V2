@@ -2,7 +2,7 @@
 using System;
 using System.IO;
 
-namespace DNI.Extensions
+namespace DNI.Shared.Extensions
 {
     public static class FileExtensions
     {

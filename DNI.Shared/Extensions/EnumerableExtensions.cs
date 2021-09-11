@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DNI.Extensions
+namespace DNI.Shared.Extensions
 {
     public static class EnumerableExtensions
     {

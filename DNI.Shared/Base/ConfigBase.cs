@@ -1,6 +1,7 @@
 ﻿using DNI.Shared.Abstractions;
 using DNI.Shared.Abstractions.Factories;
 using DNI.Shared.Enumerations;
+using DNI.Shared.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,18 +13,18 @@ namespace DNI.Shared.Base
     public abstract class ConfigBase : DictionaryBase<string, object>, IConfig
     {
         private readonly ISerializerFactory serializerFactory;
-        private readonly IFileProvider fileProvider;
+        
 
         public ConfigBase(ISerializerFactory serializerFactory)
         {
             this.serializerFactory = serializerFactory;
-            this.fileProvider = fileProvider;
         }
 
         public void Load(IFile file, SerializerType serializerType)
         {
-            //serializerFactory.GetSerializer(serializerType)
-            //    .Deserialize<IDictionary<string, object>>(file.ReadAlLines()) ;
+            serializerFactory.GetSerializer(serializerType)
+                .Deserialize<IDictionary<string, object>>(file.ReadAllLines())
+                .ForEach(a => Add(a.Key, a.Value));
         }
 
         public void Bind(object target)

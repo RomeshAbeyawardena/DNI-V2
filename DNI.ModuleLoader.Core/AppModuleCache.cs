@@ -12,7 +12,7 @@ namespace DNI.ModuleLoader.Core
     public class AppModuleCache<TAppModule> : AppModuleCacheBase, IAppModuleCache<TAppModule>
         where TAppModule : class, IAppModule
     {
-        IAppModuleCache<TAppModule> IAppModuleCache<TAppModule>.RegisterModule<TRequiredAppModule>()
+        IAppModuleCache<TAppModule> IAppModuleCache<TAppModule>.RegisterModule<TRequiredAppModule>(IConfig config)
         {
             RegisterModule(typeof(TRequiredAppModule));
             return this;
