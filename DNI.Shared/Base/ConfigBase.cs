@@ -22,8 +22,8 @@ namespace DNI.Shared.Base
 
         public void Load(IFile file, SerializerType serializerType)
         {
-            serializerFactory.GetSerializer(serializerType)
-                .Deserialize<IDictionary<string, object>>(file.ReadAlLines());
+            //serializerFactory.GetSerializer(serializerType)
+            //    .Deserialize<IDictionary<string, object>>(file.ReadAlLines()) ;
         }
 
         public void Bind(object target)

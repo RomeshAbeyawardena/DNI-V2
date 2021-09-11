@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNI.Modules.Database", "DNI
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{CD174A01-B7CB-4932-9BB4-5091F460C9C4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNI.Shared.UnitTests", "DNI.Shared.UnitTests\DNI.Shared.UnitTests.csproj", "{813AB032-C3F3-4F53-A33C-DCF71FDD9483}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,18 @@ Global
 		{E3D24A86-88A1-4C26-A745-5022FD621E3D}.Release|x64.Build.0 = Release|Any CPU
 		{E3D24A86-88A1-4C26-A745-5022FD621E3D}.Release|x86.ActiveCfg = Release|Any CPU
 		{E3D24A86-88A1-4C26-A745-5022FD621E3D}.Release|x86.Build.0 = Release|Any CPU
+		{813AB032-C3F3-4F53-A33C-DCF71FDD9483}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{813AB032-C3F3-4F53-A33C-DCF71FDD9483}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{813AB032-C3F3-4F53-A33C-DCF71FDD9483}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{813AB032-C3F3-4F53-A33C-DCF71FDD9483}.Debug|x64.Build.0 = Debug|Any CPU
+		{813AB032-C3F3-4F53-A33C-DCF71FDD9483}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{813AB032-C3F3-4F53-A33C-DCF71FDD9483}.Debug|x86.Build.0 = Debug|Any CPU
+		{813AB032-C3F3-4F53-A33C-DCF71FDD9483}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{813AB032-C3F3-4F53-A33C-DCF71FDD9483}.Release|Any CPU.Build.0 = Release|Any CPU
+		{813AB032-C3F3-4F53-A33C-DCF71FDD9483}.Release|x64.ActiveCfg = Release|Any CPU
+		{813AB032-C3F3-4F53-A33C-DCF71FDD9483}.Release|x64.Build.0 = Release|Any CPU
+		{813AB032-C3F3-4F53-A33C-DCF71FDD9483}.Release|x86.ActiveCfg = Release|Any CPU
+		{813AB032-C3F3-4F53-A33C-DCF71FDD9483}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
