@@ -39,7 +39,6 @@ namespace DNI.ModuleLoader.Core
 
         }
 
-        
         private static bool InvokeUseGlobalAppModuleCache(Type moduleType)
         {
             var useGlobalAppModuleCacheMethod = moduleType.GetMethod("UseGlobalAppModuleCache", BindingFlags.Public | BindingFlags.Static);
@@ -62,7 +61,15 @@ namespace DNI.ModuleLoader.Core
             if (registerServicesMethod != null)
             {
                 var appModuleConfigType = typeof(IAppModuleConfig<>);
-                registerServicesMethod.Invoke(null, new object[] { appModuleCacheInstance, GetService(appModuleConfigType.MakeGenericType(moduleType)), services });
+
+                var appModuleConfig = GetService(appModuleConfigType.MakeGenericType(moduleType)) as IAppModuleConfig;
+
+                registerServicesMethod.Invoke(null, new object[] { appModuleCacheInstance, appModuleConfig, services });
+
+                foreach(var configType in appModuleConfig)
+                {
+                    CreateInstance(configType);
+                }
             }
         }
 
@@ -121,6 +128,22 @@ namespace DNI.ModuleLoader.Core
             serviceProvider = services.BuildServiceProvider();
         }
 
+        private object CreateInstance(Type type)
+        {
+            var ctor = type.GetConstructors()
+                        .FirstOrDefault();
+
+            var instanceParameters = new List<object>();
+
+            if (ctor != null)
+            {
+                var parameters = ctor.GetParameters();
+                instanceParameters.AddRange(parameters.Select(a => GetService(a.ParameterType)));
+            }
+
+            return Activator.CreateInstance(type, instanceParameters.ToArray());
+        }
+
         private IEnumerable<IAppModule> LoadModules(IEnumerable<Type> moduleTypes, IAppModulesLoaderOptions options)
         {
             var appModuleBaseType = typeof(AppModuleBase<>);
@@ -129,18 +152,7 @@ namespace DNI.ModuleLoader.Core
             {
                 try
                 {
-                    var ctor = moduleType.GetConstructors()
-                        .FirstOrDefault();
-
-                    var instanceParameters = new List<object>();
-
-                    if (ctor != null)
-                    {
-                        var parameters = ctor.GetParameters();
-                        instanceParameters.AddRange(parameters.Select(a => GetService(a.ParameterType)));
-                    }
-
-                    var appModule = Activator.CreateInstance(moduleType, instanceParameters.ToArray()) as IAppModule;
+                    var appModule = CreateInstance(moduleType) as IAppModule;
 
                     var moduleServiceProviderField = moduleType.BaseType.GetField("moduleServiceProvider", BindingFlags.NonPublic | BindingFlags.Instance);
 

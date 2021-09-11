@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace DNI.Shared.Abstractions
 {
-    public interface IAppModuleConfig<TAppModule> : IEnumerable<Type>
+    public interface IAppModuleConfig : IEnumerable<Type>
+    {
+
+    }
+
+    public interface IAppModuleConfig<TAppModule> : IAppModuleConfig
         where TAppModule: class, IAppModule
     {
         IAppModuleConfig<TAppModule> AddConfiguration(Type configType);
