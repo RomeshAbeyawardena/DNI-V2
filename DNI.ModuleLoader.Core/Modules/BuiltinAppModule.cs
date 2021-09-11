@@ -11,11 +11,13 @@ using System.Threading.Tasks;
 
 namespace DNI.ModuleLoader.Core.Modules
 {
-    public class BuiltinAppModule : AppModuleBase
+    public class BuiltinAppModule : AppModuleBase<BuiltinAppModule>
     {
-        public BuiltinAppModule(IAppModuleCache appModuleCache) : base(appModuleCache)
+        public BuiltinAppModule(IAppModuleCache<BuiltinAppModule> appModuleCache) : base(appModuleCache)
         {
         }
+
+        public static bool UseGlobalAppModuleCache() => true;
 
         public static void RegisterServices(IAppModuleCache appModuleCache, IServiceCollection services)
         {
@@ -36,6 +38,7 @@ namespace DNI.ModuleLoader.Core.Modules
 
         public override Task RunAsync(CancellationToken cancellationToken)
         {
+            var a = AppModuleCache;
             return Task.CompletedTask;
         }
 

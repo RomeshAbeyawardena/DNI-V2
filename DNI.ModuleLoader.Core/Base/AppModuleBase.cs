@@ -8,9 +8,10 @@ using System.Threading.Tasks;
 
 namespace DNI.ModuleLoader.Core.Base
 {
-    public abstract class AppModuleBase : IAppModule
+    public abstract class AppModuleBase<TAppModule> : IAppModule
+        where TAppModule : class, IAppModule
     {
-        public AppModuleBase(IAppModuleCache appModuleCache)
+        public AppModuleBase(IAppModuleCache<TAppModule> appModuleCache)
         {
             AppModuleCache = appModuleCache;
         }

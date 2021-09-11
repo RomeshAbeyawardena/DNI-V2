@@ -82,13 +82,28 @@ namespace DNI.ModuleLoader.Core
 
         }
 
-        private void InvokeRegisterServices(Type moduleType)
+        private bool InvokeUseGlobalAppModuleCache(Type moduleType)
         {
+            var useGlobalAppModuleCacheMethod = moduleType.GetMethod("UseGlobalAppModuleCache", BindingFlags.Public | BindingFlags.Static);
+
+            var useGlobalAppModuleCache = useGlobalAppModuleCacheMethod?.Invoke(null, null) as bool?;
+
+            return useGlobalAppModuleCache.GetValueOrDefault(false);
+        }
+
+        private void InvokeRegisterServices(Type moduleType, bool isGlobal)
+        {
+            var appModuleCacheType = typeof(IAppModuleCache<>);
+
+            var appModuleCacheInstance = !isGlobal
+                ? parentServiceProvider.GetService(appModuleCacheType.MakeGenericType(moduleType)) 
+                : appModuleCache;
+
             var registerServicesMethod = moduleType.GetMethod("RegisterServices", BindingFlags.Public | BindingFlags.Static);
 
             if (registerServicesMethod != null)
             {
-                registerServicesMethod.Invoke(null, new object[] { appModuleCache, services });
+                registerServicesMethod.Invoke(null, new object[] { appModuleCacheInstance, services });
             }
         }
 
@@ -98,18 +113,20 @@ namespace DNI.ModuleLoader.Core
             var moduleTypeList = new List<Type>();
             moduleTypes = moduleTypeList;
 
+            foreach (var appModuleType in appModuleCache)
+            {
+                var isGlobal = InvokeUseGlobalAppModuleCache(appModuleType);
+                InvokeRegisterServices(appModuleType, isGlobal);
+                moduleTypeList.Add(appModuleType);
+            }
+
             foreach (var module in modules)
             {
                 var moduleType = Type.GetType(module.FullyQualifiedType);
                 moduleTypeList.Add(moduleType);
-                InvokeRegisterServices(moduleType);
+                var isGlobal = InvokeUseGlobalAppModuleCache(moduleType);
+                InvokeRegisterServices(moduleType, isGlobal);
             }
-
-            foreach (var appModule in appModuleCache)
-            {
-                InvokeRegisterServices(appModule);
-            }
-
 
             serviceProvider = services.BuildServiceProvider();
         }

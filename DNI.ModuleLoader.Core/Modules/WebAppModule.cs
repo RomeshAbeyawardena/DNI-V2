@@ -13,10 +13,10 @@ using System.Threading.Tasks;
 
 namespace DNI.ModuleLoader.Core.Modules
 {
-    public abstract class WebAppModule<TAppModule> : AppModuleBase
+    public abstract class WebAppModule<TAppModule> : AppModuleBase<WebAppModule<TAppModule>>
         where TAppModule : class, IAppModule
     {
-        public WebAppModule(IAppModuleCache appModuleCache)
+        public WebAppModule(IAppModuleCache<WebAppModule<TAppModule>> appModuleCache)
             : base(appModuleCache) { }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

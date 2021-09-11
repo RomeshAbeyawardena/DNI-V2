@@ -1,4 +1,5 @@
-﻿using DNI.Shared.Abstractions;
+﻿using DNI.ModuleLoader.Core.Base;
+using DNI.Shared.Abstractions;
 using DNI.Shared.Attributes;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -12,11 +13,14 @@ namespace DNI.Sandbox
 {
     public class SandboxService { }
 
-    public class SandboxModule : IAppModule
+    public class SandboxModule : AppModuleBase<SandboxModule>
     {
-        public SandboxModule(IFileProvider fileProvider)
-        {
+        private readonly IFileProvider fileProvider;
 
+        public SandboxModule(IFileProvider fileProvider, IAppModuleCache<SandboxModule> appModuleCache)
+            : base(appModuleCache)
+        {
+            this.fileProvider = fileProvider;
         }
 
         public static void RegisterServices(IAppModuleCache appModuleCache, IServiceCollection services)
@@ -24,18 +28,19 @@ namespace DNI.Sandbox
             services.AddSingleton<SandboxService>();
         }
 
-        public Task RunAsync(CancellationToken cancellationToken)
+        public override Task RunAsync(CancellationToken cancellationToken)
         {
+            var a = AppModuleCache;
             Console.WriteLine("SandboxModule running");
             return Task.CompletedTask;
         }
 
-        public Task StopAsync(CancellationToken cancellationToken)
+        public override Task StopAsync(CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public bool ValidateServices(IServiceProvider serviceProvider)
+        public override bool ValidateServices(IServiceProvider serviceProvider)
         {
             throw new NotImplementedException();
         }
