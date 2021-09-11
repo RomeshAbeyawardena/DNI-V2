@@ -30,11 +30,124 @@ namespace DNI.ModuleLoader.Core
         private readonly IServiceCollection services;
         private readonly CancellationTokenSource cancellationTokenSource;
 
-        protected TService GetService<TService>()
+
+        private IEnumerable<Assembly> LoadAssemblies(IAppModulesLoaderOptions options)
+        {
+            var files = options.ModuleHintPaths.SelectMany(hintPath => fileProvider.GetFiles(hintPath, "*.dll"));
+            return files.ForEach(file => Assembly.LoadFrom(file.FullPath));
+
+        }
+
+        private bool InvokeUseGlobalAppModuleCache(Type moduleType)
+        {
+            var useGlobalAppModuleCacheMethod = moduleType.GetMethod("UseGlobalAppModuleCache", BindingFlags.Public | BindingFlags.Static);
+
+            var useGlobalAppModuleCache = useGlobalAppModuleCacheMethod?.Invoke(null, null) as bool?;
+
+            return useGlobalAppModuleCache.GetValueOrDefault(false);
+        }
+
+        private void InvokeRegisterServices(Type moduleType, bool isGlobal)
+        {
+            var appModuleCacheType = typeof(IAppModuleCache<>);
+
+            var appModuleCacheInstance = !isGlobal
+                ? parentServiceProvider.GetService(appModuleCacheType.MakeGenericType(moduleType))
+                : appModuleCache;
+
+            var registerServicesMethod = moduleType.GetMethod("RegisterServices", BindingFlags.Public | BindingFlags.Static);
+
+            if (registerServicesMethod != null)
+            {
+                registerServicesMethod.Invoke(null, new object[] { appModuleCacheInstance, services });
+            }
+        }
+
+        private IEnumerable<Type> RegisterAppModuleServices(IEnumerable<Type> moduleTypes)
+        {
+            var moduleTypeList = new List<Type>();
+            
+            foreach (var appModuleType in moduleTypes)
+            {
+                var isGlobal = InvokeUseGlobalAppModuleCache(appModuleType);
+                InvokeRegisterServices(appModuleType, isGlobal);
+                moduleTypeList.Add(appModuleType);
+
+                var appModuleCacheType = typeof(IAppModuleCache<>);
+                var genericAppModuleCacheType = appModuleCacheType.MakeGenericType(appModuleType);
+                var appModuleCache = GetService(genericAppModuleCacheType) as IAppModuleCache;
+
+                moduleTypeList.AddRange(RegisterAppModuleServices(appModuleCache));
+            }
+
+            return moduleTypeList;
+        }
+
+        private void RegisterServices(IEnumerable<ModuleInfo> modules, out IEnumerable<Type> moduleTypes)
+        {
+            logger.LogInformation("Registering {0} native services...", typeof(TAppModule));
+            RegisterServices(appModuleCache, services);
+            var moduleTypeList = new List<Type>();
+            moduleTypes = moduleTypeList;
+            logger.LogInformation("{0} global modules ready to configured", modules.Count());
+            logger.LogInformation("Module cache contains {0} modules", appModuleCache.Count());
+            
+            moduleTypeList.AddRange(
+                RegisterAppModuleServices(appModuleCache));
+            
+            moduleTypeList.AddRange(
+                RegisterAppModuleServices(modules.Select(module => Type.GetType(module.FullyQualifiedType))));
+
+            serviceProvider = services.BuildServiceProvider();
+        }
+
+        private IEnumerable<IAppModule> LoadModules(IEnumerable<Type> moduleTypes, IAppModulesLoaderOptions options)
+        {
+            var moduleTaskList = new List<IAppModule>();
+            foreach (var moduleType in moduleTypes)
+            {
+                try
+                {
+                    var ctor = moduleType.GetConstructors()
+                        .FirstOrDefault();
+
+                    var instanceParameters = new List<object>();
+
+                    if (ctor != null)
+                    {
+                        var parameters = ctor.GetParameters();
+                        instanceParameters.AddRange(parameters.Select(a => serviceProvider.GetService(a.ParameterType)));
+                    }
+
+                    var appModule = Activator.CreateInstance(moduleType, instanceParameters.ToArray()) as IAppModule;
+                    moduleTaskList.Add(appModule);
+                }
+                catch (Exception exception)
+                {
+                    logger.LogError(exception, "Unable to load module {0}", moduleType.FullName);
+
+                    if (!options.ContinueOnError)
+                    {
+                        throw;
+                    }
+                }
+            }
+            return moduleTaskList;
+        }
+
+        private TService GetService<TService>()
         {
             return parentServiceProvider.GetService<TService>() 
                 ?? (serviceProvider != null 
                     ? serviceProvider.GetService<TService>() 
+                    : default);
+        }
+
+        private object GetService(Type type)
+        {
+            return parentServiceProvider.GetService(type)
+                ?? (serviceProvider != null
+                    ? serviceProvider.GetService(type)
                     : default);
         }
 
@@ -67,102 +180,15 @@ namespace DNI.ModuleLoader.Core
         {
             var moduleConfig = serializerFactory
                 .Deserialize<AppModuleConfig>(SerializerType.Json, json);
+
+            logger.LogInformation("Loading modules fron json, detected {0} modules", moduleConfig.Modules.Count());
             LoadedAssemblies = LoadAssemblies(options);
 
+            logger.LogInformation("Registering services...");
             RegisterServices(moduleConfig.Modules, out var moduleTypes);
 
             Modules = LoadModules(moduleTypes, options);
             return Modules;
-        }
-
-        private IEnumerable<Assembly> LoadAssemblies(IAppModulesLoaderOptions options)
-        {
-            var files = options.ModuleHintPaths.SelectMany(hintPath => fileProvider.GetFiles(hintPath, "*.dll"));
-            return files.ForEach(file => Assembly.LoadFrom(file.FullPath));
-
-        }
-
-        private bool InvokeUseGlobalAppModuleCache(Type moduleType)
-        {
-            var useGlobalAppModuleCacheMethod = moduleType.GetMethod("UseGlobalAppModuleCache", BindingFlags.Public | BindingFlags.Static);
-
-            var useGlobalAppModuleCache = useGlobalAppModuleCacheMethod?.Invoke(null, null) as bool?;
-
-            return useGlobalAppModuleCache.GetValueOrDefault(false);
-        }
-
-        private void InvokeRegisterServices(Type moduleType, bool isGlobal)
-        {
-            var appModuleCacheType = typeof(IAppModuleCache<>);
-
-            var appModuleCacheInstance = !isGlobal
-                ? parentServiceProvider.GetService(appModuleCacheType.MakeGenericType(moduleType)) 
-                : appModuleCache;
-
-            var registerServicesMethod = moduleType.GetMethod("RegisterServices", BindingFlags.Public | BindingFlags.Static);
-
-            if (registerServicesMethod != null)
-            {
-                registerServicesMethod.Invoke(null, new object[] { appModuleCacheInstance, services });
-            }
-        }
-
-        private void RegisterServices(IEnumerable<ModuleInfo> modules, out IEnumerable<Type> moduleTypes)
-        {
-            RegisterServices(appModuleCache, services);
-            var moduleTypeList = new List<Type>();
-            moduleTypes = moduleTypeList;
-
-            foreach (var appModuleType in appModuleCache)
-            {
-                var isGlobal = InvokeUseGlobalAppModuleCache(appModuleType);
-                InvokeRegisterServices(appModuleType, isGlobal);
-                moduleTypeList.Add(appModuleType);
-            }
-
-            foreach (var module in modules)
-            {
-                var moduleType = Type.GetType(module.FullyQualifiedType);
-                moduleTypeList.Add(moduleType);
-                var isGlobal = InvokeUseGlobalAppModuleCache(moduleType);
-                InvokeRegisterServices(moduleType, isGlobal);
-            }
-
-            serviceProvider = services.BuildServiceProvider();
-        }
-
-        private IEnumerable<IAppModule> LoadModules(IEnumerable<Type> moduleTypes, IAppModulesLoaderOptions options)
-        {
-            var moduleTaskList = new List<IAppModule>();
-            foreach (var moduleType in moduleTypes)
-            {
-                try
-                {
-                    var ctor = moduleType.GetConstructors()
-                        .FirstOrDefault();
-
-                    var instanceParameters = new List<object>();
-
-                    if (ctor != null)
-                    {
-                        var parameters = ctor.GetParameters();
-                        instanceParameters.AddRange(parameters.Select(a => serviceProvider.GetService(a.ParameterType)));
-                    }
-
-                    var appModule = Activator.CreateInstance(moduleType, instanceParameters.ToArray()) as IAppModule;
-                    moduleTaskList.Add(appModule);
-                }
-                catch (Exception exception)
-                {
-                    logger.LogError(exception, "Unable to load module {0}", moduleType.FullName);
-                    
-                    if (!options.ContinueOnError)
-                    {
-                        throw;
-                    }
-                }
-            }
-            return moduleTaskList;
         }
 
         public IEnumerable<Task> RunAsync()

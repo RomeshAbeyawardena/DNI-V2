@@ -1,4 +1,5 @@
-﻿using DNI.ModuleLoader.Core.Base;
+﻿using DNI.Extensions;
+using DNI.ModuleLoader.Core.Base;
 using DNI.Shared.Abstractions;
 using DNI.Shared.Attributes;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +14,28 @@ namespace DNI.Sandbox
 {
     public class SandboxService { }
 
+    public class MyNonGlobalModule : AppModuleBase<MyNonGlobalModule>
+    {
+        public MyNonGlobalModule(IAppModuleCache<MyNonGlobalModule> appModuleCache) : base(appModuleCache)
+        {
+        }
+
+        public override Task RunAsync(CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Task StopAsync(CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool ValidateServices(IServiceProvider serviceProvider)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class SandboxModule : AppModuleBase<SandboxModule>
     {
         private readonly IFileProvider fileProvider;
@@ -25,12 +48,12 @@ namespace DNI.Sandbox
 
         public static void RegisterServices(IAppModuleCache appModuleCache, IServiceCollection services)
         {
+            appModuleCache.RegisterModule<MyNonGlobalModule>();
             services.AddSingleton<SandboxService>();
         }
 
         public override Task RunAsync(CancellationToken cancellationToken)
         {
-            var a = AppModuleCache;
             Console.WriteLine("SandboxModule running");
             return Task.CompletedTask;
         }

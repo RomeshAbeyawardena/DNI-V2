@@ -38,7 +38,7 @@ namespace DNI.ModuleLoader.Core.Modules
 
         public override Task RunAsync(CancellationToken cancellationToken)
         {
-            var a = AppModuleCache;
+            Console.WriteLine("BuiltinAppModule running");
             return Task.CompletedTask;
         }
 

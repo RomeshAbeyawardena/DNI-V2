@@ -11,5 +11,12 @@ namespace DNI.Extensions
         {
             appModuleCache.RegisterModule(typeof(TAppModule));
         }
+
+        public static IAppModuleCache RegisterModule<TAppModule>(this IAppModuleCache appModuleCache)
+            where TAppModule : class, IAppModule
+        {
+            appModuleCache.RegisterModule(typeof(TAppModule));
+            return appModuleCache;
+        }
     }
 }
