@@ -26,7 +26,8 @@ namespace DNI.Sandbox
 
         public Task RunAsync(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("SandboxModule running");
+            return Task.CompletedTask;
         }
 
         public Task StopAsync(CancellationToken cancellationToken)

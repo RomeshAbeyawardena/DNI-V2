@@ -26,22 +26,30 @@ namespace DNI.ModuleLoader.Core
         private readonly IFileProvider fileProvider;
         private readonly IGlobalAppModuleCache<TAppModule> appModuleCache;
         private IServiceProvider serviceProvider;
+        private IServiceProvider parentServiceProvider;
         private readonly IServiceCollection services;
         private readonly CancellationTokenSource cancellationTokenSource;
+
+        protected TService GetService<TService>()
+        {
+            return parentServiceProvider.GetService<TService>() 
+                ?? (serviceProvider != null 
+                    ? serviceProvider.GetService<TService>() 
+                    : default);
+        }
 
         public IEnumerable<IAppModule> Modules { get; private set; }
         public IEnumerable<Assembly> LoadedAssemblies { get; private set; }
 
         public AppModuleLoaderBase(
             ILogger logger,
-            ISerializerFactory serializer,
-            IFileProvider fileProvider,
-            IGlobalAppModuleCache<TAppModule> appModuleCache)
+            IServiceProvider serviceProvider)
         {
             this.logger = logger;
-            this.serializerFactory = serializer;
-            this.fileProvider = fileProvider;
-            this.appModuleCache = appModuleCache;
+            this.parentServiceProvider = serviceProvider;
+            this.serializerFactory = GetService<ISerializerFactory>();
+            this.fileProvider = GetService<IFileProvider>();
+            this.appModuleCache = GetService<IGlobalAppModuleCache<TAppModule>>();
             cancellationTokenSource = new CancellationTokenSource();
             this.services = new ServiceCollection();
         }

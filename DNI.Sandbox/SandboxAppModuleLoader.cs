@@ -16,11 +16,8 @@ namespace DNI.Sandbox
     public class SandboxAppModuleLoader : AppModuleLoaderBase<SandboxAppModuleLoader>
     {
         public SandboxAppModuleLoader(
-            ILogger<SandboxAppModuleLoader> logger, 
-            ISerializerFactory serializer, 
-            IFileProvider fileProvider, 
-            IGlobalAppModuleCache<SandboxAppModuleLoader> appModules) 
-            : base(logger, serializer, fileProvider, appModules)
+            ILogger<SandboxAppModuleLoader> logger, IServiceProvider serviceProvider) 
+            : base(logger, serviceProvider)
         {
         }
 
