@@ -136,6 +136,11 @@ namespace DNI.ModuleLoader.Core
                     }
 
                     var appModule = Activator.CreateInstance(moduleType, instanceParameters.ToArray()) as IAppModule;
+
+                    var moduleServiceProviderField = moduleType.BaseType.GetField("moduleServiceProvider", BindingFlags.NonPublic | BindingFlags.Instance);
+
+                    moduleServiceProviderField.SetValue(appModule, new ModuleServiceProvider(parentServiceProvider, serviceProvider));
+
                     moduleTaskList.Add(appModule);
                 }
                 catch (Exception exception)

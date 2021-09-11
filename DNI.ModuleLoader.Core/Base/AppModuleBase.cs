@@ -11,12 +11,15 @@ namespace DNI.ModuleLoader.Core.Base
     public abstract class AppModuleBase<TAppModule> : IAppModule
         where TAppModule : class, IAppModule
     {
+        private IModuleServiceProvider moduleServiceProvider;
         public AppModuleBase(IAppModuleCache<TAppModule> appModuleCache)
         {
             AppModuleCache = appModuleCache;
         }
 
         public IAppModuleCache AppModuleCache { get; }
+
+        public IServiceProvider ServiceProvider => moduleServiceProvider;
 
         public abstract Task RunAsync(CancellationToken cancellationToken);
         public abstract Task StopAsync(CancellationToken cancellationToken);

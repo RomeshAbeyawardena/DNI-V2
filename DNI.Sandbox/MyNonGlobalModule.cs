@@ -1,5 +1,7 @@
 ﻿using DNI.ModuleLoader.Core.Base;
 using DNI.Shared.Abstractions;
+using Microsoft.Extensions.DependencyInjection;
+using DNI.Shared.Abstractions.Services;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,6 +16,7 @@ namespace DNI.Sandbox
 
         public override Task RunAsync(CancellationToken cancellationToken)
         {
+            var placeholderService = ServiceProvider.GetService<IPlaceholderService>();
             Console.WriteLine("MyNonGlobalModule running");
             return Task.CompletedTask;
         }

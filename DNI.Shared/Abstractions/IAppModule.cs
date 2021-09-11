@@ -14,6 +14,7 @@ namespace DNI.Shared.Abstractions
     public interface IAppModule
     {
         bool ValidateServices(IServiceProvider serviceProvider);
+        IServiceProvider ServiceProvider { get; }
         Task RunAsync(CancellationToken cancellationToken);
         Task StopAsync(CancellationToken cancellationToken);
     }
