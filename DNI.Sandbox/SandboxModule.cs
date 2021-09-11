@@ -1,5 +1,6 @@
 ﻿using DNI.Extensions;
 using DNI.ModuleLoader.Core.Base;
+using DNI.ModuleLoader.Core.Modules;
 using DNI.Shared.Abstractions;
 using DNI.Shared.Attributes;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,7 +27,10 @@ namespace DNI.Sandbox
 
         public static void RegisterServices(IAppModuleCache appModuleCache, IServiceCollection services)
         {
-            appModuleCache.RegisterModule<MyNonGlobalModule>();
+            appModuleCache
+                .RegisterModule<MyNonGlobalModule>()
+                .RegisterModule<DatabaseAppModule>();
+
             services.AddSingleton<SandboxService>();
         }
 

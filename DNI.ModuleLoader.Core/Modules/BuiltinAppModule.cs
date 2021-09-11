@@ -13,6 +13,7 @@ namespace DNI.ModuleLoader.Core.Modules
 {
     public class BuiltinAppModule : AppModuleBase<BuiltinAppModule>
     {
+        private static string[] Types => new[] { "Service", "Provider", "Factory", "Serializer" };
         public BuiltinAppModule(IAppModuleCache<BuiltinAppModule> appModuleCache) : base(appModuleCache)
         {
         }
@@ -27,7 +28,7 @@ namespace DNI.ModuleLoader.Core.Modules
                 .AddSingleton(typeof(IAppModuleCache<>), typeof(AppModuleCache<>))
                 .Scan(scanner => scanner
                     .FromAssemblies(This.Assembly, Shared.This.Assembly)
-                    .AddClasses(c => c.Where(t => OfTypes(t, "Service", "Provider", "Factory", "Serializer")))
+                    .AddClasses(c => c.Where(t => OfTypes(t, Types)))
                     .AsImplementedInterfaces());
         }
 

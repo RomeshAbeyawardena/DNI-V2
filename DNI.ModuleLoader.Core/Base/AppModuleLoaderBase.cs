@@ -1,4 +1,5 @@
 ﻿using DNI.Extensions;
+using DNI.ModuleLoader.Core.Base;
 using DNI.Shared;
 using DNI.Shared.Abstractions;
 using DNI.Shared.Abstractions.Factories;
@@ -119,6 +120,7 @@ namespace DNI.ModuleLoader.Core
 
         private IEnumerable<IAppModule> LoadModules(IEnumerable<Type> moduleTypes, IAppModulesLoaderOptions options)
         {
+            var appModuleBaseType = typeof(AppModuleBase<>);
             var moduleTaskList = new List<IAppModule>();
             foreach (var moduleType in moduleTypes)
             {
@@ -132,14 +134,22 @@ namespace DNI.ModuleLoader.Core
                     if (ctor != null)
                     {
                         var parameters = ctor.GetParameters();
-                        instanceParameters.AddRange(parameters.Select(a => serviceProvider.GetService(a.ParameterType)));
+                        instanceParameters.AddRange(parameters.Select(a => GetService(a.ParameterType)));
                     }
 
                     var appModule = Activator.CreateInstance(moduleType, instanceParameters.ToArray()) as IAppModule;
 
                     var moduleServiceProviderField = moduleType.BaseType.GetField("moduleServiceProvider", BindingFlags.NonPublic | BindingFlags.Instance);
 
-                    moduleServiceProviderField.SetValue(appModule, new ModuleServiceProvider(parentServiceProvider, serviceProvider));
+                    if (moduleServiceProviderField != null)
+                    {
+                        moduleServiceProviderField.SetValue(appModule, new ModuleServiceProvider(parentServiceProvider, serviceProvider));
+                    }
+                    else
+                    {
+                        logger.LogWarning("{0} does not inherit from {1}, reliable dependency resolution will not be guaranteed and require its own implementation.", 
+                            moduleType, appModuleBaseType.MakeGenericType(moduleType));
+                    }
 
                     moduleTaskList.Add(appModule);
                 }

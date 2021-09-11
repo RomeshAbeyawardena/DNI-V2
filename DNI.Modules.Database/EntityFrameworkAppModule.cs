@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace DNI.Modules.Database
 {
-    public class EntityFrameworkAppModule<TDbContext> : AppModuleBase
+    public class EntityFrameworkAppModule<TDbContext> : AppModuleBase<EntityFrameworkAppModule<TDbContext>>
         where TDbContext: DbContext, new()
     {
-        public EntityFrameworkAppModule(IAppModuleCache appModuleCache) : base(appModuleCache)
+        public EntityFrameworkAppModule(IAppModuleCache<EntityFrameworkAppModule<TDbContext>> appModuleCache) : base(appModuleCache)
         {
         }
 
