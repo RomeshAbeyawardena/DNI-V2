@@ -26,6 +26,8 @@ namespace DNI.Shared.Base
             serializerFactory.GetSerializer(serializerType)
                 .Deserialize<IDictionary<string, object>>(file.ReadAllLines())
                 .ForEach(a => Add(a.Key, a.Value));
+
+            Bind(this);
         }
 
         public void Bind(object target)
@@ -41,7 +43,7 @@ namespace DNI.Shared.Base
                     continue;
                 }
 
-                property.SetValue(target, value);
+                property.SetValue(target, value.ToString());
             }
         }
     }

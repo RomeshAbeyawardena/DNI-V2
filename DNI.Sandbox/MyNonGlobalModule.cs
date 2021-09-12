@@ -6,18 +6,23 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using DNI.Extensions;
+using DNI.Modules.Database;
+using Microsoft.EntityFrameworkCore;
 
 namespace DNI.Sandbox
 {
     public class MyNonGlobalModule : AppModuleBase<MyNonGlobalModule>
     {
-        public MyNonGlobalModule(IAppModuleCache<MyNonGlobalModule> appModuleCache) : base(appModuleCache)
+        private readonly SandboxDbContext dbContext;
+
+        public MyNonGlobalModule(IAppModuleCache<MyNonGlobalModule> appModuleCache, SandboxDbContext dbContext) : base(appModuleCache)
         {
+            this.dbContext = dbContext;
         }
 
-        public static void RegisterServices(IAppModuleCache appModuleCache, IAppModuleConfig<SandboxModule> appModuleConfig, IServiceCollection services)
+        public static void RegisterServices(IAppModuleCache appModuleCache,  IServiceCollection services)
         {
-            appModuleCache.RegisterModule<EntityFramework>
+            appModuleCache.RegisterModule<EntityFrameworkAppModule<SandboxDbContext>>();
         }
 
 
@@ -36,6 +41,15 @@ namespace DNI.Sandbox
         public override bool ValidateServices(IServiceProvider serviceProvider)
         {
             return true;
+        }
+    }
+
+    public class SandboxDbContext : DbContext
+    {
+        public SandboxDbContext(DbContextOptions options)
+            : base(options)
+        {
+
         }
     }
 }

@@ -16,9 +16,4 @@ namespace DNI.Sandbox
         {
         }
     }
-
-    public class SandboxDbContext : DbContext
-    {
-
-    }
 }

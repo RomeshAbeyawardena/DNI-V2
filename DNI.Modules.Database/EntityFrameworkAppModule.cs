@@ -11,9 +11,16 @@ using System.Threading.Tasks;
 namespace DNI.Modules.Database
 {
     public class EntityFrameworkAppModule<TDbContext> : AppModuleBase<EntityFrameworkAppModule<TDbContext>>
-        where TDbContext: DbContext, new()
+        where TDbContext: DbContext
     {
         private readonly IEntityFrameworkAppConfig config;
+
+        private static void ConfigureDbContext(IServiceProvider services, DbContextOptionsBuilder builder)
+        {
+            var entityFrameworkConfig = services.GetRequiredService<IEntityFrameworkAppConfig>();
+
+            builder.UseSqlServer(entityFrameworkConfig.ConnectionString);
+        }
 
         public EntityFrameworkAppModule(IAppModuleCache<EntityFrameworkAppModule<TDbContext>> appModuleCache,
             IEntityFrameworkAppConfig config) : base(appModuleCache)
@@ -21,17 +28,17 @@ namespace DNI.Modules.Database
             this.config = config;
         }
 
-        public static void RegisterServices(IAppModuleCache appModuleCache, IAppModuleConfig<EntityFrameworkAppModule<TDbContext>> appModuleConfig, IServiceCollection services)
+        public static void RegisterConfig(IAppModuleConfig<EntityFrameworkAppModule<TDbContext>> appModuleConfig)
         {
             appModuleConfig.AddConfiguration<EntityFrameworkAppConfig>();
-            services.AddSingleton<IEntityFrameworkAppConfig>(GetEntityFrameworkConfig);
-            services.AddDbContext<TDbContext>();
         }
 
-        private static IEntityFrameworkAppConfig GetEntityFrameworkConfig(IServiceProvider arg)
+        public static void RegisterServices(IAppModuleCache appModuleCache, IServiceCollection services)
         {
-            arg.GetRequiredService<IConf>()
+            services.AddDbContext<TDbContext>(ConfigureDbContext);
         }
+
+        
 
         public override Task RunAsync(CancellationToken cancellationToken)
         {

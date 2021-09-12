@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -48,6 +49,28 @@ namespace DNI.ModuleLoader.Core
             return useGlobalAppModuleCache.GetValueOrDefault(false);
         }
 
+        private static MethodInfo GetStaticMethod(Type type, string methodName)
+        {
+            return type.GetMethod(methodName, BindingFlags.Public | BindingFlags.Static);
+        }
+
+        private void InvokeRegisterConfig(Type moduleType)
+        {
+            var appModuleConfigType = typeof(IAppModuleConfig<>);
+            var appModuleConfig = GetService(appModuleConfigType.MakeGenericType(moduleType)) as IAppModuleConfig;
+
+            var registerConfigMethod = GetStaticMethod(moduleType, "RegisterConfig");
+            registerConfigMethod?.Invoke(null, new object[] { appModuleConfig });
+            
+            foreach (var configType in appModuleConfig)
+            {
+                var instance = CreateInstance(configType) as IConfig;
+                instance.Load(fileProvider.GetFile($"modules\\{instance.ConfigFileName}.config.json", FileAccess.Read), SerializerType.Json);
+                
+                services.AddSingleton(configType.GetInterfaces().LastOrDefault(), instance);
+            }
+        }
+
         private void InvokeRegisterServices(Type moduleType, bool isGlobal)
         {
             var appModuleCacheType = typeof(IAppModuleCache<>);
@@ -56,20 +79,11 @@ namespace DNI.ModuleLoader.Core
                 ? parentServiceProvider.GetService(appModuleCacheType.MakeGenericType(moduleType))
                 : appModuleCache;
 
-            var registerServicesMethod = moduleType.GetMethod("RegisterServices", BindingFlags.Public | BindingFlags.Static);
+            var registerServicesMethod = GetStaticMethod(moduleType, "RegisterServices");
 
             if (registerServicesMethod != null)
             {
-                var appModuleConfigType = typeof(IAppModuleConfig<>);
-
-                var appModuleConfig = GetService(appModuleConfigType.MakeGenericType(moduleType)) as IAppModuleConfig;
-
-                registerServicesMethod.Invoke(null, new object[] { appModuleCacheInstance, appModuleConfig, services });
-
-                foreach(var configType in appModuleConfig)
-                {
-                    CreateInstance(configType);
-                }
+                registerServicesMethod.Invoke(null, new object[] { appModuleCacheInstance, services });
             }
         }
 
@@ -94,6 +108,7 @@ namespace DNI.ModuleLoader.Core
                 ListModules(moduleTypes);
                 foreach (var appModuleType in moduleTypes)
                 {
+                    InvokeRegisterConfig(appModuleType);
                     var isGlobal = InvokeUseGlobalAppModuleCache(appModuleType);
                     InvokeRegisterServices(appModuleType, isGlobal);
                     moduleTypeList.Add(appModuleType);

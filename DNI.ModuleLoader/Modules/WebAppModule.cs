@@ -35,7 +35,7 @@ namespace DNI.ModuleLoader.Modules
             {
                 webBuilder
                 .UseStartup<TAppModule>()
-                .ConfigureServices(services => RegisterServices(AppModuleCache, appModuleConfig, services));
+                .ConfigureServices(services => RegisterServices(AppModuleCache, services));
             }).RunConsoleAsync();
         }
 
@@ -44,7 +44,7 @@ namespace DNI.ModuleLoader.Modules
             return Task.CompletedTask;
         }
 
-        public static void RegisterServices(IAppModuleCache appModuleCache, IAppModuleConfig<WebAppModule<TAppModule>> appModuleConfig, IServiceCollection services)
+        public static void RegisterServices(IAppModuleCache appModuleCache, IServiceCollection services)
         {
             services
                 .AddControllers();
