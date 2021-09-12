@@ -39,7 +39,7 @@ namespace DNI.Modules.Database
         {
             services
                 .AddDbContext<TDbContext>(ConfigureDbContext)
-                .RegisterRepositories<TDbContext>(new Assembly[] { });
+                .RegisterRepositories<TDbContext>(appModuleCache.RegisteredAssemblies);
         }
 
         public override Task RunAsync(CancellationToken cancellationToken)
