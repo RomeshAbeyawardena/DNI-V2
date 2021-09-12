@@ -12,10 +12,10 @@ namespace DNI.Extensions
             appModuleCache.RegisterModule(typeof(TAppModule));
         }
 
-        public static IAppModuleCache RegisterModule<TAppModule>(this IAppModuleCache appModuleCache)
+        public static IAppModuleCache RegisterModule<TAppModule>(this IAppModuleCache appModuleCache, Action<IAppModuleCache<TAppModule>> appModuleCacheBuilder = null)
             where TAppModule : class, IAppModule
         {
-            appModuleCache.RegisterModule(typeof(TAppModule));
+            appModuleCache.RegisterModule(typeof(TAppModule), appModuleCache: s => appModuleCacheBuilder?.Invoke(s as IAppModuleCache<TAppModule>));
             return appModuleCache;
         }
     }

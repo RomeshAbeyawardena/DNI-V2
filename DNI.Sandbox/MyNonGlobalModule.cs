@@ -22,7 +22,7 @@ namespace DNI.Sandbox
 
         public static void RegisterServices(IAppModuleCache appModuleCache,  IServiceCollection services)
         {
-            appModuleCache.RegisterModule<EntityFrameworkAppModule<SandboxDbContext>>();
+            appModuleCache.RegisterModule<EntityFrameworkAppModule<SandboxDbContext>>(c => c.RegisterAssembly<MyNonGlobalModule>());
         }
 
 

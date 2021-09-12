@@ -9,6 +9,12 @@ namespace DNI.ModuleLoader.Core
     public class GlobalModuleCache<TAppModuleLoader> : AppModuleCacheBase, IGlobalAppModuleCache<TAppModuleLoader>
         where TAppModuleLoader : class, IAppModuleLoader
     {
+        public GlobalModuleCache(IServiceProvider serviceProvider)
+            : base(serviceProvider)
+        {
+
+        }
+
         public IGlobalAppModuleCache<TAppModuleLoader> RegisterModule<TAppModule>(IConfig config)
             where TAppModule : IAppModule
         {

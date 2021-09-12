@@ -1,10 +1,12 @@
 ﻿using DNI.ModuleLoader.Core.Base;
 using DNI.Modules.Database.Abstractions;
+using DNI.Modules.Database.Extensions;
 using DNI.Shared.Abstractions;
 using DNI.Shared.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -35,7 +37,9 @@ namespace DNI.Modules.Database
 
         public static void RegisterServices(IAppModuleCache appModuleCache, IServiceCollection services)
         {
-            services.AddDbContext<TDbContext>(ConfigureDbContext);
+            services
+                .AddDbContext<TDbContext>(ConfigureDbContext)
+                .RegisterRepositories<TDbContext>(new Assembly[] { });
         }
 
         public override Task RunAsync(CancellationToken cancellationToken)

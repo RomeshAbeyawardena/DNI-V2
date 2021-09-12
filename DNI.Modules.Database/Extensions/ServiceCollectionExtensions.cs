@@ -35,9 +35,7 @@ namespace DNI.Modules.Database.Extensions
         }
 
         public static IServiceCollection RegisterRepositories<TDbContext>(this IServiceCollection services,
-           Action<IServiceProvider, DbContextOptionsBuilder> builder,
-           IEnumerable<Assembly> assemblies,
-           int poolSize = 128)
+           IEnumerable<Assembly> assemblies)
            where TDbContext : DbContext
         {
             var genericServiceType = typeof(IRepository<>);
