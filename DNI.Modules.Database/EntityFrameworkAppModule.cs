@@ -38,8 +38,6 @@ namespace DNI.Modules.Database
             services.AddDbContext<TDbContext>(ConfigureDbContext);
         }
 
-        
-
         public override Task RunAsync(CancellationToken cancellationToken)
         {
             return Task.CompletedTask;
