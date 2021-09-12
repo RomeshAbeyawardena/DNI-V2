@@ -40,6 +40,10 @@ namespace DNI.Modules.Database.Extensions
         {
             var genericServiceType = typeof(IRepository<>);
             var genericServiceImplementation = typeof(EntityFrameworkRepository<,>);
+
+            var genericAsyncServiceType = typeof(IAsyncRepository<>);
+            var genericAsyncServiceImplementation = typeof(EntityFrameworkRepository<,>);
+
             var dbContextType = typeof(TDbContext);
             var dbSetProperties = typeof(TDbContext).GetProperties().Where(property => property.PropertyType.IsDbSet());
 
@@ -51,6 +55,12 @@ namespace DNI.Modules.Database.Extensions
                 services
                     .AddScoped(genericServiceType.MakeGenericType(propertyType),
                         genericServiceImplementation
+                            .MakeGenericType(dbContextType, propertyType));
+
+
+                services
+                    .AddScoped(genericAsyncServiceType.MakeGenericType(propertyType),
+                        genericAsyncServiceImplementation
                             .MakeGenericType(dbContextType, propertyType));
             }
 

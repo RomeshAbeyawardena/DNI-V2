@@ -7,17 +7,17 @@ using System.Threading;
 using System.Threading.Tasks;
 using DNI.Extensions;
 using DNI.Modules.Database;
-using Microsoft.EntityFrameworkCore;
+using DNI.Sandbox.Entities;
 
 namespace DNI.Sandbox
 {
     public class MyNonGlobalModule : AppModuleBase<MyNonGlobalModule>
     {
-        private readonly SandboxDbContext dbContext;
+        private IAsyncRepository<User> userRepository;
 
-        public MyNonGlobalModule(IAppModuleCache<MyNonGlobalModule> appModuleCache, SandboxDbContext dbContext) : base(appModuleCache)
+        public MyNonGlobalModule(IAppModuleCache<MyNonGlobalModule> appModuleCache) : base(appModuleCache)
         {
-            this.dbContext = dbContext;
+
         }
 
         public static void RegisterServices(IAppModuleCache appModuleCache,  IServiceCollection services)
@@ -26,11 +26,11 @@ namespace DNI.Sandbox
         }
 
 
-        public override Task RunAsync(CancellationToken cancellationToken)
+        public override async Task RunAsync(CancellationToken cancellationToken)
         {
             var placeholderService = ServiceProvider.GetService<IPlaceholderService>();
+            var result = await BeginScope<IAsyncRepository<User>, ValueTask<User>>(a => a.GetAsync(new User { Id = Guid.NewGuid() }, cancellationToken));
             Console.WriteLine("MyNonGlobalModule running");
-            return Task.CompletedTask;
         }
 
         public override Task StopAsync(CancellationToken cancellationToken)
@@ -41,15 +41,6 @@ namespace DNI.Sandbox
         public override bool ValidateServices(IServiceProvider serviceProvider)
         {
             return true;
-        }
-    }
-
-    public class SandboxDbContext : DbContext
-    {
-        public SandboxDbContext(DbContextOptions options)
-            : base(options)
-        {
-
         }
     }
 }
