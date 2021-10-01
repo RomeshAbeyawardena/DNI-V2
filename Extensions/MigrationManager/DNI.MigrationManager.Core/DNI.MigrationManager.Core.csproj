@@ -4,4 +4,9 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\DNI.Extensions\DNI.Extensions.csproj" />
+    <ProjectReference Include="..\DNI.MigrationManager.Shared\DNI.MigrationManager.Shared.csproj" />
+  </ItemGroup>
+
 </Project>
