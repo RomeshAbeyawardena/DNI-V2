@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DNI.Modules.Shared.Attributes
+namespace DNI.Shared.Attributes
 {
     [System.AttributeUsage(AttributeTargets.All, Inherited = false, AllowMultiple = true)]
     public sealed class RegisterServiceAttribute : Attribute

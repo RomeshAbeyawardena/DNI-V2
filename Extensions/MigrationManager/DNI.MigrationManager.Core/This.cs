@@ -2,7 +2,7 @@
 
 namespace DNI.MigrationManager.Core
 {
-    public class Class1
+    public static class This
     {
     }
 }

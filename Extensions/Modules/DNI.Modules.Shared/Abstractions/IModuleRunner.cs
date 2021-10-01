@@ -23,7 +23,5 @@ namespace DNI.Modules.Shared.Abstractions
         /// </summary>
         /// <param name="configureServices"></param>
         void Configure(Action<IServiceCollection> configureServices);
-
-        IObservable<IModuleResult> ResultState { get; }
     }
 }

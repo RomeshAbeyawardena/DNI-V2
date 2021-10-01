@@ -1,4 +1,4 @@
-﻿using DNI.Shared.Contracts;
+﻿using DNI.Shared.Abstractions;
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
