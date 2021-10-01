@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DNI.MigrationManager.Core.Defaults
+namespace DNI.MigrationManager.Shared.Defaults
 {
     public class DefaultTableConfiguration : ITableConfiguration
     {

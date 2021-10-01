@@ -1,4 +1,6 @@
-﻿using DNI.MigrationManager.Shared.Abstractions;
+﻿using DNI.MigrationManager.Core.Defaults.Builders;
+using DNI.MigrationManager.Shared.Abstractions;
+using DNI.MigrationManager.Shared.Abstractions.Builders;
 using DNI.Shared.Attributes;
 using System;
 using System.Collections.Generic;

@@ -1,9 +1,12 @@
 ﻿using DNI.MigrationManager.Shared.Abstractions;
 using DNI.MigrationManager.Shared.Abstractions.Builders;
 using DNI.MigrationManager.Shared.Attributes;
+using DNI.MigrationManager.Shared.Defaults;
+using DNI.MigrationManager.Shared.Extensions;
 using DNI.Shared.Extensions;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Linq;
 using System.Reflection;
