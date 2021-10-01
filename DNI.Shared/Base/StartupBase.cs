@@ -41,7 +41,7 @@ namespace DNI.Shared.Base
 
         public virtual void Stop()
         {
-            StartAsync(default)
+            StopAsync(default)
                 .Wait();
         }
 

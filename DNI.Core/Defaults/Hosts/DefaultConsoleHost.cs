@@ -28,6 +28,7 @@ namespace DNI.Core.Defaults.Hosts
             return consoleHost;
         }
 
+        private bool hasStopBeenCalled = false;
         private readonly CancellationTokenSource cancellationTokenSource;
         private readonly IServiceCollection services;
         private IServiceProvider ServiceProvider => services.BuildServiceProvider();
@@ -84,12 +85,18 @@ namespace DNI.Core.Defaults.Hosts
         {
             if (disposing)
             {
+                if (!hasStopBeenCalled)
+                {
+                    Stop();
+                }
                 disposableService?.Dispose();
             }
         }
 
         public ValueTask DisposeAsync()
         {
+            StopAsync(UseCancellationTokenSourceIfNull(default));
+            hasStopBeenCalled = true;
             Dispose(true);
             return ValueTask.CompletedTask;
         }

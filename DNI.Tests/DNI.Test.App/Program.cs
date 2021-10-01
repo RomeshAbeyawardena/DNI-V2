@@ -13,8 +13,12 @@ namespace DNI.Test.App
         {
             Console.WriteLine("Hello World!");
 
-            await ConsoleHost.Build(h => h
-                .ConfigureServices<Startup>(s => s.AddMigration("Default", Configure))).StartAsync();
+            using var s = ConsoleHost.Build(h => h
+                .ConfigureServices<Startup>(s => s
+                .AddMigrationServices()
+                .AddMigration("Default", Configure)));
+            
+            await s.StartAsync();
         }
 
         private static IMigrationOptions Configure(IServiceProvider arg1, IMigrationConfigurator arg2)
