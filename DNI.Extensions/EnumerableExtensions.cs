@@ -8,6 +8,14 @@ namespace DNI.Extensions
 {
     public static class EnumerableExtensions
     {
+        public static IEnumerable<T> AppendAll<T>(this IEnumerable<T> items, IEnumerable<T> itemsToAppend)
+        {
+            var itemList = new List<T>(items);
+            itemList.AddRange(itemsToAppend);
+
+            return itemList;
+        }
+
         public static void ForEach<T>(this IEnumerable<T> items, Action<T> action)
         {
             if (items == null)

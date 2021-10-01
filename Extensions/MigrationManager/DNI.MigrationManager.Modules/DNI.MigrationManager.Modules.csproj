@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Modules\DNI.Modules.Shared\DNI.Modules.Shared.csproj" />
+    <ProjectReference Include="..\DNI.MigrationManager.Core\DNI.MigrationManager.Core.csproj" />
+    <ProjectReference Include="..\DNI.MigrationManager.Extensions\DNI.MigrationManager.Extensions.csproj" />
+  </ItemGroup>
+
+</Project>

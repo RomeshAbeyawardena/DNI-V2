@@ -1,4 +1,5 @@
-﻿using DNI.Modules.Shared.Abstractions;
+﻿using DNI.Extensions;
+using DNI.Modules.Shared.Abstractions;
 using DNI.Modules.Shared.Attributes;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,9 @@ namespace DNI.Modules.Shared.Extensions
         public static void ResolveDependencies(this object value, IModuleServiceProvider moduleServiceProvider)
         {
             var valueType = value.GetType();
-            var properties = valueType.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic);
+            var properties = valueType.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic)
+                .AppendAll(valueType.GetProperties(BindingFlags.Static | BindingFlags.NonPublic));
+
             foreach (var propertyOrField in properties)
             {
                 if (propertyOrField.GetCustomAttribute<ResolveAttribute>() == null)
