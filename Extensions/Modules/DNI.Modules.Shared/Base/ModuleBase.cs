@@ -1,6 +1,7 @@
 ﻿using DNI.Extensions;
 using DNI.Modules.Shared.Abstractions;
 using DNI.Modules.Shared.Defaults;
+using DNI.Shared.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace DNI.Modules.Shared.Base
 {
-    public abstract class ModuleBase : IModule
+    public abstract class ModuleBase : DisposableBase, IModule
     {
         private readonly List<object> parameters;
         private readonly ISubject<IModuleResult> resultState;
@@ -61,7 +62,7 @@ namespace DNI.Modules.Shared.Base
         }
 
         /// <inheritdoc cref="IDisposable"/>
-        public virtual void Dispose(bool dispose)
+        public override void Dispose(bool dispose)
         {
             if (dispose)
             {
@@ -71,12 +72,6 @@ namespace DNI.Modules.Shared.Base
                     .Select(a => a as IDisposable)
                     .ForEach(a => a.Dispose());
             }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         public Task Run(CancellationToken cancellationToken)
