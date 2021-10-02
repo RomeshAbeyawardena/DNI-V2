@@ -17,24 +17,37 @@ namespace DNI.MigrationManager.Core.Modules
         [Resolve]
         private static IMigrationManagerModuleConfiguration Configuration { get; set; }
 
+        private readonly IMigrationManagerModuleConfiguration configuration;
+
         public static void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddMigrationServices();
-                
-            foreach(var (k,v) in Configuration)
+                .AddMigrationServices()
+            .AddSingleton(s =>
             {
-                services.AddMigration(k, v);
-            }
+                foreach (var (k, v) in Configuration)
+                {
+                    services.AddMigration(k, v);
+                }
+                return Configuration;
+            });
+            
+        }
+
+        public MigrationManagerModule(IMigrationManagerModuleConfiguration configuration)
+        {
+            this.configuration = configuration;
         }
 
         public override Task OnRun(CancellationToken cancellationToken)
         {
+            Console.WriteLine("Migration manager running");
             throw new NotImplementedException();
         }
 
         public override Task OnStop(CancellationToken cancellationToken)
         {
+            Console.WriteLine("Migration manager stopping");
             throw new NotImplementedException();
         }
     }

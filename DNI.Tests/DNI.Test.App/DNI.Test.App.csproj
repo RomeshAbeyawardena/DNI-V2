@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\DNI.Extensions\DNI.Extensions.csproj" />
     <ProjectReference Include="..\..\Extensions\MigrationManager\DNI.MigrationManager.Modules\DNI.MigrationManager.Modules.csproj" />
     <ProjectReference Include="..\..\Extensions\Modules\DNI.Modules.Extensions\DNI.Modules.Extensions.csproj" />
   </ItemGroup>

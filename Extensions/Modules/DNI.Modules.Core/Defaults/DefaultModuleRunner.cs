@@ -84,7 +84,7 @@ namespace DNI.Modules.Core.Defaults
             }
             subscribers.Add(module.ResultState.Subscribe(OnNext, OnCompleted));
             subscribers.Add(module.State.Subscribe(moduleState));
-            module.ResolveDependencies(moduleServiceProvider);
+            module.ResolveDependencies(ModuleServiceProvider);
 
             return module;
         }

@@ -1,8 +1,11 @@
 ﻿using DNI.Core.Defaults.Hosts;
+using DNI.Extensions;
 using DNI.MigrationManager.Extensions;
 using DNI.MigrationManager.Shared.Abstractions;
 using DNI.Modules.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,14 +19,16 @@ namespace DNI.Test.App
 
             using var s = ConsoleHost.Build(h => h
                 .ConfigureServices<Startup>(s => s
-                .AddMigrationServices()
-                .AddMigration("Default", Configure)
-                .RegisterModules(build => build.ConfigureAssemblies(c => c.AddAssembly(MigrationManager.Modules.This.Assembly, a => { a.OnStartup = true; a.Discoverable = true; })))));
+                .ConfigureMigrationManagerModuleConfiguration(c => c.AddMigration("Default", DefaultMigration))
+                .RegisterModules(build => build
+                    .ConfigureAssemblies(c => c
+                    .AddAssembly(MigrationManager.Modules.This.Assembly, a => { a.OnStartup = true; a.Discoverable = true; })))
+                .OutputServices()));
 
             await s.StartAsync();
         }
 
-        private static IMigrationOptions Configure(IServiceProvider arg1, IMigrationConfigurator arg2)
+        private static IMigrationOptions DefaultMigration(IServiceProvider arg1, IMigrationConfigurator arg2)
         {
             throw new NotImplementedException();
         }
