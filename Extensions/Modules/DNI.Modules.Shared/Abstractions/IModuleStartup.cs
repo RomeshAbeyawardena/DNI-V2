@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DNI.Modules.Shared.Abstractions
 {
-    public interface IModuleStartup
+    public interface IModuleStartup : IModule
     {
         
     }

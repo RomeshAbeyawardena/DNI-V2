@@ -22,5 +22,10 @@ namespace DNI.Modules.Extensions
 
             return defaultModuleConfigurationBuilder;
         }
+
+        public static IServiceCollection RegisterModules(this IServiceCollection services, Action<IModuleConfigurationBuilder> build)
+        {
+            return services.AddSingleton(AddModules(services, build).Build());
+        }
     }
 }

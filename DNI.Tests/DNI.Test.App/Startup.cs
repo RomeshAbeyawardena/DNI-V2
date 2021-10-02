@@ -1,5 +1,8 @@
-﻿using DNI.MigrationManager.Shared.Abstractions;
+﻿using DNI.MigrationManager.Modules;
+using DNI.MigrationManager.Shared.Abstractions;
 using DNI.MigrationManager.Shared.Abstractions.Builders;
+using DNI.Modules.Extensions;
+using DNI.Modules.Shared.Abstractions;
 using DNI.Shared.Abstractions;
 using DNI.Shared.Base;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,11 +17,16 @@ namespace DNI.Test.App
 {
     public class Startup : DisposableStartupBase
     {
-        private readonly IMigrationConfigurator migrationConfiguratorOptionsBuilder;
+        private readonly IModuleStartup moduleStartup;
 
-        public Startup(IMigrationConfigurator migrationConfiguratorOptionsBuilder)
+        public Startup(IModuleStartup moduleStartup)
         {
-            this.migrationConfiguratorOptionsBuilder = migrationConfiguratorOptionsBuilder;
+            this.moduleStartup = moduleStartup;
+        }
+
+        public static void ConfigureServices(IServiceCollection services)
+        {
+            
         }
 
         public override void Dispose(bool disposing)
@@ -29,13 +37,13 @@ namespace DNI.Test.App
         public override Task StartAsync(CancellationToken cancellationToken)
         {
             Console.WriteLine("StartAsync called");
-            return Task.CompletedTask;
+            return moduleStartup.Run(cancellationToken);
         }
 
         public override Task StopAsync(CancellationToken cancellationToken)
         {
             Console.WriteLine("StopAsync called");
-            return Task.CompletedTask;
+            return moduleStartup.Stop(cancellationToken);
         }
     }
 }

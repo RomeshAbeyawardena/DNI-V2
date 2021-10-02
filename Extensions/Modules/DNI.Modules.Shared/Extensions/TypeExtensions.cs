@@ -1,6 +1,7 @@
 ﻿using DNI.Extensions;
 using DNI.Modules.Shared.Abstractions;
 using DNI.Modules.Shared.Attributes;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +11,10 @@ using System.Threading.Tasks;
 
 namespace DNI.Modules.Shared.Extensions
 {
-    public static class ObjectExtensions
+    public static class TypeExtensions
     {
-        public static void ResolveDependencies(this object value, IServiceProvider moduleServiceProvider)
+        public static void ResolveStaticDependencies(this Type valueType, IServiceProvider moduleServiceProvider)
         {
-            var valueType = value.GetType();
             var properties = valueType.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic)
                 .AppendAll(valueType.GetProperties(BindingFlags.Static | BindingFlags.NonPublic));
 
@@ -25,8 +25,8 @@ namespace DNI.Modules.Shared.Extensions
                     continue;
                 }
 
-                var service = moduleServiceProvider.GetService(propertyOrField.PropertyType);
-                propertyOrField.SetValue(value, service);
+                var service = moduleServiceProvider.GetRequiredService(propertyOrField.PropertyType);
+                propertyOrField.SetValue(null, service);
             }
         }
     }

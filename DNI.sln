@@ -3,35 +3,37 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNI.Shared", "DNI.Shared\DNI.Shared.csproj", "{62A6D185-49C1-47E1-A4DA-993052B668E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNI.Shared", "DNI.Shared\DNI.Shared.csproj", "{62A6D185-49C1-47E1-A4DA-993052B668E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNI.Core", "DNI.Core\DNI.Core.csproj", "{A496328B-15E5-443C-9A80-24899D9AC65D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNI.Core", "DNI.Core\DNI.Core.csproj", "{A496328B-15E5-443C-9A80-24899D9AC65D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNI.Extensions", "DNI.Extensions\DNI.Extensions.csproj", "{F25B9458-D25A-4A6C-9801-C0E8CD346D55}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNI.Extensions", "DNI.Extensions\DNI.Extensions.csproj", "{F25B9458-D25A-4A6C-9801-C0E8CD346D55}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{52BA5A1C-D934-418B-9FDE-6FC1BC20E93D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MigrationManager", "MigrationManager", "{1BEAE47E-B907-488E-BC9B-E5AC7E4196D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNI.MigrationManager.Core", "Extensions\MigrationManager\DNI.MigrationManager.Core\DNI.MigrationManager.Core.csproj", "{5AF1DEF0-D750-4468-B87C-28DB62AD9D60}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNI.MigrationManager.Core", "Extensions\MigrationManager\DNI.MigrationManager.Core\DNI.MigrationManager.Core.csproj", "{5AF1DEF0-D750-4468-B87C-28DB62AD9D60}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNI.MigrationManager.Shared", "Extensions\MigrationManager\DNI.MigrationManager.Shared\DNI.MigrationManager.Shared.csproj", "{D612D05C-B3E4-4BE2-A711-2684883C2E4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNI.MigrationManager.Shared", "Extensions\MigrationManager\DNI.MigrationManager.Shared\DNI.MigrationManager.Shared.csproj", "{D612D05C-B3E4-4BE2-A711-2684883C2E4B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNI.MigrationManager.Extensions", "Extensions\MigrationManager\DNI.MigrationManager.Extensions\DNI.MigrationManager.Extensions.csproj", "{191443C0-E4E9-4208-8AFD-D5A8AC144180}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNI.MigrationManager.Extensions", "Extensions\MigrationManager\DNI.MigrationManager.Extensions\DNI.MigrationManager.Extensions.csproj", "{191443C0-E4E9-4208-8AFD-D5A8AC144180}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{62DE38A8-F4BA-4003-A78C-D1B36B7973EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNI.Modules.Shared", "Extensions\Modules\DNI.Modules.Shared\DNI.Modules.Shared.csproj", "{45B18E95-EB7F-48DA-AF46-CC5AD12D7E75}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNI.Modules.Shared", "Extensions\Modules\DNI.Modules.Shared\DNI.Modules.Shared.csproj", "{45B18E95-EB7F-48DA-AF46-CC5AD12D7E75}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNI.Modules.Core", "Extensions\Modules\DNI.Modules.Core\DNI.Modules.Core.csproj", "{DFF05083-09B4-4894-A7D2-DD23AD1ECDC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNI.Modules.Core", "Extensions\Modules\DNI.Modules.Core\DNI.Modules.Core.csproj", "{DFF05083-09B4-4894-A7D2-DD23AD1ECDC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNI.Modules.Extensions", "Extensions\Modules\DNI.Modules.Extensions\DNI.Modules.Extensions.csproj", "{5DC621BC-D1E7-4034-9297-EA2DA23EA208}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNI.Modules.Extensions", "Extensions\Modules\DNI.Modules.Extensions\DNI.Modules.Extensions.csproj", "{5DC621BC-D1E7-4034-9297-EA2DA23EA208}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNI.MigrationManager.Modules", "Extensions\MigrationManager\DNI.MigrationManager.Modules\DNI.MigrationManager.Modules.csproj", "{09E79197-DFFC-4788-8756-79831DD30A1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNI.MigrationManager.Modules", "Extensions\MigrationManager\DNI.MigrationManager.Modules\DNI.MigrationManager.Modules.csproj", "{09E79197-DFFC-4788-8756-79831DD30A1C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DNI.Tests", "DNI.Tests", "{2BE15209-A9D0-463B-A1EF-0FA4E78056A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNI.Test.App", "DNI.Tests\DNI.Test.App\DNI.Test.App.csproj", "{B0FDF469-2829-4E62-9CC0-7C973000077D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNI.Test.App", "DNI.Tests\DNI.Test.App\DNI.Test.App.csproj", "{B0FDF469-2829-4E62-9CC0-7C973000077D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{E36DF945-FCDE-4D35-B071-F2DDEDBFADB0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,9 +43,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{62A6D185-49C1-47E1-A4DA-993052B668E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -179,7 +178,13 @@ Global
 		{B0FDF469-2829-4E62-9CC0-7C973000077D}.Release|x86.ActiveCfg = Release|Any CPU
 		{B0FDF469-2829-4E62-9CC0-7C973000077D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{62A6D185-49C1-47E1-A4DA-993052B668E4} = {E36DF945-FCDE-4D35-B071-F2DDEDBFADB0}
+		{A496328B-15E5-443C-9A80-24899D9AC65D} = {E36DF945-FCDE-4D35-B071-F2DDEDBFADB0}
+		{F25B9458-D25A-4A6C-9801-C0E8CD346D55} = {E36DF945-FCDE-4D35-B071-F2DDEDBFADB0}
 		{1BEAE47E-B907-488E-BC9B-E5AC7E4196D6} = {52BA5A1C-D934-418B-9FDE-6FC1BC20E93D}
 		{5AF1DEF0-D750-4468-B87C-28DB62AD9D60} = {1BEAE47E-B907-488E-BC9B-E5AC7E4196D6}
 		{D612D05C-B3E4-4BE2-A711-2684883C2E4B} = {1BEAE47E-B907-488E-BC9B-E5AC7E4196D6}
@@ -190,5 +195,8 @@ Global
 		{5DC621BC-D1E7-4034-9297-EA2DA23EA208} = {62DE38A8-F4BA-4003-A78C-D1B36B7973EF}
 		{09E79197-DFFC-4788-8756-79831DD30A1C} = {1BEAE47E-B907-488E-BC9B-E5AC7E4196D6}
 		{B0FDF469-2829-4E62-9CC0-7C973000077D} = {2BE15209-A9D0-463B-A1EF-0FA4E78056A0}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BA6EA9F4-0123-4D41-9EA6-C8A9DA2BCA00}
 	EndGlobalSection
 EndGlobal

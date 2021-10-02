@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -35,9 +36,9 @@ namespace DNI.Core.Defaults.Hosts
         private Type StartupType { get; set; }
         private IDisposable disposableService;
 
-        private object InvokeServiceMethod(Type type, string methodName, params object[] parameters)
+        private object InvokeServiceMethod(Type type, string methodName, BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public, params object[] parameters)
         {
-            var startMethod = type.GetMethod(methodName);
+            var startMethod = type.GetMethod(methodName, bindingFlags);
             var startupService = ServiceProvider.GetRequiredService(type);
 
             if(startupService is IDisposable disposable)
@@ -78,6 +79,7 @@ namespace DNI.Core.Defaults.Hosts
             this.StartupType = startupType;
             services.AddSingleton(startupType);
             configureServices(services);
+            ConfigureServices(services => { });
             return this;
         }
 
@@ -113,17 +115,17 @@ namespace DNI.Core.Defaults.Hosts
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            return (Task)InvokeServiceMethod(StartupType, "StartAsync", UseCancellationTokenSourceIfNull(cancellationToken));
+            return (Task)InvokeServiceMethod(StartupType, "StartAsync", parameters: UseCancellationTokenSourceIfNull(cancellationToken));
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            return (Task)InvokeServiceMethod(StartupType, "StopAsync", UseCancellationTokenSourceIfNull(cancellationToken));
+            return (Task)InvokeServiceMethod(StartupType, "StopAsync", parameters: UseCancellationTokenSourceIfNull(cancellationToken));
         }
 
         public void ConfigureServices(Action<IServiceCollection> configureServices)
         {
-            throw new NotImplementedException();
+            InvokeServiceMethod(StartupType, "ConfigureServices", BindingFlags.Public | BindingFlags.Static, services);
         }
     }
 }

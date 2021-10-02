@@ -106,6 +106,7 @@ namespace DNI.Modules.Core.Defaults
 
         private void RegisterServices(Type type)
         {
+            type.ResolveStaticDependencies(serviceProvider);
             var configureServicesMethod = type.GetMethod("ConfigureServices", BindingFlags.Public | BindingFlags.Static);
 
             configureServicesMethod?.Invoke(null, new[] { services });
@@ -136,9 +137,8 @@ namespace DNI.Modules.Core.Defaults
 
             var moduleTypes = GetModuleTypes(moduleOptions.ModuleAssembliesOptions.GetAssemblies(a => a.OnStartup && a.Discoverable));
 
-            moduleTypes.ForEach(RegisterServices);
-
             modules = moduleTypes.Select(Activate);
+            moduleTypes.ForEach(RegisterServices);
             var taskList = new List<Task>();
             modules.ForEach(m => moduleTaskQueue.TryAdd((c) => m.Run(c)));
 
