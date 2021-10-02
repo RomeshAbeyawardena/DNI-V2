@@ -3,9 +3,12 @@ using DNI.Extensions;
 using DNI.MigrationManager.Extensions;
 using DNI.MigrationManager.Shared.Abstractions;
 using DNI.Modules.Extensions;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Data;
 using System.Diagnostics;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,9 +31,19 @@ namespace DNI.Test.App
             await s.StartAsync();
         }
 
-        private static IMigrationOptions DefaultMigration(IServiceProvider arg1, IMigrationConfigurator arg2)
+        private static IDbConnection ConfigureDbConnection(IServiceProvider serviceProvider)
         {
-            throw new NotImplementedException();
+            var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+            return serviceProvider.GetRequiredService<IDbConnectionFactory>()
+                .GetDbConnection(configuration.GetConnectionString("default"));
+        }
+
+        private static IMigrationOptions DefaultMigration(IServiceProvider arg1, IMigrationConfigurator migrationConfigurator)
+        {
+            return migrationConfigurator
+                .Configure(b => b.AddAssembly(Assembly.GetExecutingAssembly())
+                .ConfigureDbConnectionFactory(ConfigureDbConnection))
+                .Build();
         }
     }
 }

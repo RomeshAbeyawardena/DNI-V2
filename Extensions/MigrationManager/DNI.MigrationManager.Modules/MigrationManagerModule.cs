@@ -42,6 +42,8 @@ namespace DNI.MigrationManager.Core.Modules
         {
             Console.WriteLine("Migration manager running on {0}", Thread.CurrentThread.ManagedThreadId);
             var sql = migrationQueryBuilder.BuildMigrations("sql");
+
+            Console.Write(sql);
             throw new NotImplementedException();
         }
 
