@@ -19,23 +19,17 @@ namespace DNI.MigrationManager.Core.Defaults
         {
             migrationOptionsDictionary = new Dictionary<string, IMigrationOptions>();
             migrationOptionsDictionary.AddRange(migrationOptionPairs);
+
+            migrationOptionPairs
+                .Select(a => a.Value)
+                .ForEach(Enqueue);
         }
 
         private readonly Dictionary<string, IMigrationOptions> migrationOptionsDictionary;
-        private ConcurrentQueue<IMigrationOptions> migrations;
         private bool isReadOnly;
-        public ConcurrentQueue<IMigrationOptions> Migrations
-        {
-            get
-            {
-                if (migrations == null)
-                {
-                    migrations = new ConcurrentQueue<IMigrationOptions>(migrationOptionsDictionary.ToArray().Select(a => a.Value));
-                    isReadOnly = true;
-                }
-                return migrations;
-            }
-        }
+        
+        public ConcurrentQueue<IMigrationOptions> Migrations => this;
+
 
         public void Add(string name, IMigrationOptions migrationOptions)
         {

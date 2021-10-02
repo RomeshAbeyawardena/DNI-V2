@@ -21,16 +21,13 @@ namespace DNI.MigrationManager.Core.Modules
         public static void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddMigrationServices()
-            .AddSingleton(s =>
+                .AddMigrationServices();
+
+            foreach (var (k, v) in Configuration)
             {
-                foreach (var (k, v) in Configuration)
-                {
-                    services.AddMigration(k, v);
-                }
-                return Configuration;
-            });
-            
+                services.AddMigration(k, v);
+            }
+
         }
 
         public MigrationManagerModule(IMigrationQueryBuilder migrationQueryBuilder)
