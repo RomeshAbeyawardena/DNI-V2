@@ -14,10 +14,9 @@ namespace DNI.MigrationManager.Core.Modules
 {
     public class MigrationManagerModule : ModuleBase
     {
-        [Resolve]
-        private static IMigrationManagerModuleConfiguration Configuration { get; set; }
+        private readonly IMigrationQueryBuilder migrationQueryBuilder;
 
-        private readonly IMigrationManagerModuleConfiguration configuration;
+        [Resolve] private static IMigrationManagerModuleConfiguration Configuration { get; set; }
 
         public static void ConfigureServices(IServiceCollection services)
         {
@@ -34,14 +33,15 @@ namespace DNI.MigrationManager.Core.Modules
             
         }
 
-        public MigrationManagerModule(IMigrationManagerModuleConfiguration configuration)
+        public MigrationManagerModule(IMigrationQueryBuilder migrationQueryBuilder)
         {
-            this.configuration = configuration;
+            this.migrationQueryBuilder = migrationQueryBuilder;
         }
 
         public override Task OnRun(CancellationToken cancellationToken)
         {
-            Console.WriteLine("Migration manager running");
+            Console.WriteLine("Migration manager running on {0}", Thread.CurrentThread.ManagedThreadId);
+            var sql = migrationQueryBuilder.BuildMigrations("sql");
             throw new NotImplementedException();
         }
 
