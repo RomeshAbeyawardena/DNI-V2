@@ -22,6 +22,8 @@ namespace DNI.Core.Defaults.Hosts
 
     public class DefaultConsoleHost : DisposableBase, IConsoleHost
     {
+        public IServiceCollection Services => services;
+
         internal static IConsoleHost Build(Action<IConsoleHost> buildAction)
         {
             var consoleHost = new DefaultConsoleHost();

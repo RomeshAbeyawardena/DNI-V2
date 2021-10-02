@@ -10,11 +10,13 @@ namespace DNI.Shared.Abstractions.Hosts
 {
     public interface IConsoleHost : IDisposableStartup
     {
+        IServiceCollection Services { get; }
         IConsoleHost ConfigureServices<TStartup>(
             Action<IServiceCollection> configureServices)
             where TStartup : IStartup;
         IConsoleHost ConfigureServices(
             Type startupType,
             Action<IServiceCollection> configureServices);
+
     }
 }

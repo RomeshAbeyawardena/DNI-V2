@@ -4,6 +4,7 @@ using DNI.MigrationManager.Extensions;
 using DNI.MigrationManager.Shared.Abstractions;
 using DNI.Modules.Extensions;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.UserSecrets;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Data;
@@ -21,6 +22,7 @@ namespace DNI.Test.App
             Console.WriteLine("Hello World!");
 
             using var s = ConsoleHost.Build(h => h
+                .Configure(c => c.AddUserSecrets<Program>())
                 .ConfigureServices<Startup>(s => s
                 .ConfigureMigrationManagerModuleConfiguration(c => c.AddMigration("Default", DefaultMigration))
                 .RegisterModules(build => build
