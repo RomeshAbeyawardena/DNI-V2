@@ -22,7 +22,9 @@ namespace DNI.Test.App
             Console.WriteLine("Hello World!");
 
             using var s = ConsoleHost.Build(h => h
-                .Configure(c => c.AddUserSecrets<Program>())
+                .Configure(c => c
+                    .AddInMemoryCollection()
+                    .AddUserSecrets(typeof(Program).Assembly, false))
                 .ConfigureServices<Startup>(s => s
                 .ConfigureMigrationManagerModuleConfiguration(c => c.AddMigration("Default", DefaultMigration))
                 .RegisterModules(build => build

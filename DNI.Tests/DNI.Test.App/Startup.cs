@@ -32,6 +32,10 @@ namespace DNI.Test.App
         public override void Dispose(bool disposing)
         {
             Console.WriteLine("Dispose called");
+            if (disposing)
+            {
+                moduleStartup.Dispose();
+            }
         }
 
         public override Task StartAsync(CancellationToken cancellationToken)
