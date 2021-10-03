@@ -22,7 +22,7 @@ namespace DNI.Core.Defaults.Hosts
 
     public class DefaultConsoleHost : DisposableBase, IConsoleHost
     {
-        public IServiceCollection Services => services;
+        public IServiceCollection Services { get;  }
 
         internal static IConsoleHost Build(Action<IConsoleHost> buildAction)
         {
@@ -33,8 +33,7 @@ namespace DNI.Core.Defaults.Hosts
 
         private bool hasStopBeenCalled = false;
         private readonly CancellationTokenSource cancellationTokenSource;
-        private readonly IServiceCollection services;
-        private IServiceProvider ServiceProvider => services.BuildServiceProvider();
+        private IServiceProvider ServiceProvider => Services.BuildServiceProvider();
         private Type StartupType { get; set; }
         private IDisposable disposableService;
 
@@ -63,7 +62,7 @@ namespace DNI.Core.Defaults.Hosts
 
         internal DefaultConsoleHost()
         {
-            services = new ServiceCollection();
+            Services = new ServiceCollection();
             cancellationTokenSource = new CancellationTokenSource();
         }
 
@@ -79,8 +78,8 @@ namespace DNI.Core.Defaults.Hosts
             Action<IServiceCollection> configureServices)
         {
             this.StartupType = startupType;
-            services.AddSingleton(startupType);
-            configureServices(services);
+            Services.AddSingleton(startupType);
+            configureServices(Services);
             ConfigureServices(services => { });
             return this;
         }
@@ -127,7 +126,7 @@ namespace DNI.Core.Defaults.Hosts
 
         public void ConfigureServices(Action<IServiceCollection> configureServices)
         {
-            InvokeServiceMethod(StartupType, "ConfigureServices", BindingFlags.Public | BindingFlags.Static, services);
+            InvokeServiceMethod(StartupType, "ConfigureServices", BindingFlags.Public | BindingFlags.Static, Services);
         }
     }
 }

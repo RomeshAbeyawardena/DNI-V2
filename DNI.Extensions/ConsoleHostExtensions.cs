@@ -13,7 +13,9 @@ namespace DNI.Extensions
     {
         public static IConsoleHost Configure(this IConsoleHost consoleHost, Action<IConfigurationBuilder> configure)
         {
-            consoleHost.Services.AddSingleton<IConfiguration>(new ConfigurationBuilder()
+            var configurationBuilder = new ConfigurationBuilder();
+            configure(configurationBuilder);
+            consoleHost.Services.AddSingleton<IConfiguration>(configurationBuilder
                 .Build());
             return consoleHost;
         }

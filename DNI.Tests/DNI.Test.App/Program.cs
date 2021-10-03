@@ -24,6 +24,7 @@ namespace DNI.Test.App
             using var s = ConsoleHost.Build(h => h
                 .Configure(c => c
                     .AddInMemoryCollection()
+                    .AddJsonFile("appsettings.json")
                     .AddUserSecrets(typeof(Program).Assembly, false))
                 .ConfigureServices<Startup>(s => s
                 .ConfigureMigrationManagerModuleConfiguration(c => c.AddMigration("Default", DefaultMigration))
