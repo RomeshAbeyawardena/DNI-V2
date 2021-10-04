@@ -47,7 +47,8 @@ namespace DNI.Test.App
         public override Task StopAsync(CancellationToken cancellationToken)
         {
             Console.WriteLine("StopAsync called");
-            return moduleStartup.Stop(cancellationToken);
+            return Task.CompletedTask;
+            //return moduleStartup.Stop(cancellationToken);
         }
     }
 }

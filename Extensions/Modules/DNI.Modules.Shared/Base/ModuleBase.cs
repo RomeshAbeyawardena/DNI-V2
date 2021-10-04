@@ -14,9 +14,22 @@ namespace DNI.Modules.Shared.Base
 {
     public abstract class ModuleBase : DisposableBase, IModule
     {
+        private readonly object syncRoot;
         private readonly List<object> parameters;
         private readonly ISubject<IModuleResult> resultState;
+        private bool isStopped;
         protected readonly ISubject<ModuleEventArgs> moduleState;
+
+        public bool IsStopped {
+            get { lock (syncRoot) return isStopped; }
+            set
+            {
+                lock (syncRoot)
+                {
+                    isStopped = value;
+                }
+            }
+        }
 
         public IObservable<ModuleEventArgs> State => moduleState;
 
@@ -28,6 +41,7 @@ namespace DNI.Modules.Shared.Base
 
         protected ModuleBase()
         {
+            syncRoot = new object();
             resultState = new Subject<IModuleResult>();
             parameters = new List<object>();
             moduleState = new Subject<ModuleEventArgs>();
@@ -51,9 +65,13 @@ namespace DNI.Modules.Shared.Base
 
         protected void OnStopped(ModuleEventArgs e, CancellationToken cancellationToken)
         {
-            OnStop(cancellationToken);
-            moduleState.OnNext(e);
-            moduleState.OnCompleted();
+            if (!IsStopped)
+            {
+                OnStop(cancellationToken);
+                moduleState.OnNext(e);
+                moduleState.OnCompleted();
+                IsStopped = true;
+            }
         }
 
         public void OnError(Exception exception)

@@ -12,6 +12,7 @@ namespace DNI.Modules.Shared.Abstractions
     /// </summary>
     public interface IModule : IDisposable
     {
+        bool IsStopped { get; }
         IObservable<ModuleEventArgs> State { get; }
         /// <summary>
         /// Adds constructor parameters

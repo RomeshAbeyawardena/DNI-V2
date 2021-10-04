@@ -41,13 +41,13 @@ namespace DNI.MigrationManager.Core.Modules
             var sql = migrationQueryBuilder.BuildMigrations("sql");
 
             Console.Write(sql);
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
         public override Task OnStop(CancellationToken cancellationToken)
         {
             Console.WriteLine("Migration manager stopping");
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
     }
 }
