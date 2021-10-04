@@ -19,9 +19,9 @@ namespace DNI.Data.Core.Defaults
         private readonly TDbContext dbContext;
         private readonly DbSet<T> dbSet;
         private readonly ISubject<EntityEntry<T>> stateSubject;
-        public DefaultEntityFrameworkRepository(TDbContext dbContext)
+        public DefaultEntityFrameworkRepository(TDbContext dbContext, ISubject<EntityEntry<T>> subject)
         {
-            stateSubject = new Subject<EntityEntry<T>>();
+            stateSubject = subject;
             this.dbContext = dbContext;
             dbSet = dbContext.Set<T>();
         }
