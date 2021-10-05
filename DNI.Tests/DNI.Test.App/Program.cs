@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Data;
 using System.Diagnostics;
@@ -37,13 +38,17 @@ namespace DNI.Test.App
             Console.WriteLine("Hello World!");
 
             using var s = ConsoleHost.Build(h => h
-                .Configure(c => c
+                .AddLogging(c => c.AddConsole())
+                .AddConfiguration(c => c
                     .AddInMemoryCollection()
                     .AddJsonFile("appsettings.json")
                     .AddUserSecrets(typeof(Program).Assembly, false))
                 .ConfigureServices<Startup>(s => s
                 .ConfigureMigrationManagerModuleConfiguration(c => c.AddMigration("Default", DefaultMigration))
-                .ConfigureDbContextModule(c => c.AddDbContext<MyDbContext>((s, b) => b.UseSqlServer(s.GetRequiredService<IConfiguration>().GetConnectionString("default")).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution), ServiceLifetime.Scoped))
+                .ConfigureDbContextModule(c => c.AddDbContext<MyDbContext>((s, b) => b
+                    .UseSqlServer(s.GetRequiredService<IConfiguration>()
+                        .GetConnectionString("default"))
+                    .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution), ServiceLifetime.Scoped))
                 .RegisterModules(build => build
                     .ConfigureAssemblies(c => c
                     .AddAssembly(MigrationManager.Modules.This.Assembly, a => { a.OnStartup = true; a.Discoverable = true; })

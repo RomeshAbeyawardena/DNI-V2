@@ -5,6 +5,7 @@ using DNI.Modules.Shared.Base;
 using DNI.Modules.Shared.Extensions;
 using DNI.Shared.Attributes;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,8 @@ namespace DNI.Modules.Core.Defaults
         private readonly Dictionary<Type, IModule> modulesCache;
         private readonly ITaskQueue moduleTaskQueue;
         private readonly List<IDisposable> subscribers;
+        private readonly ILogger<DefaultModuleRunner> logger;
+
         private IModuleServiceProvider ModuleServiceProvider
         {
             get
@@ -106,7 +109,7 @@ namespace DNI.Modules.Core.Defaults
 
         private void RegisterServices(Type type)
         {
-            Console.WriteLine("Configuring services for {0}", type);
+            logger.LogInformation("Configuring services for {0}", type);
 
             type.ResolveStaticDependencies(serviceProvider);
             var configureServicesMethod = type.GetMethod("ConfigureServices", BindingFlags.Public | BindingFlags.Static);
@@ -123,6 +126,7 @@ namespace DNI.Modules.Core.Defaults
             subscribers = new List<IDisposable>();
             this.serviceProvider = serviceProvider;
             this.moduleOptions = moduleOptions;
+            this.logger = serviceProvider.GetService<ILogger<DefaultModuleRunner>>();
         }
 
         public void Configure(Action<IServiceCollection> configureServices)

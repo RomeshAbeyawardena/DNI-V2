@@ -5,6 +5,7 @@ using DNI.Modules.Shared.Base;
 using DNI.Shared.Abstractions;
 using DNI.Shared.Test;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,8 @@ namespace DNI.MigrationManager.Core.Modules
         private readonly IMigrationQueryBuilder migrationQueryBuilder;
 
         [Resolve] private IRepository<User> UserRepository { get; set; }
+
+        [Resolve] private ILogger<MigrationManagerModule> Logger { get; set; }
 
         [Resolve] private static IMigrationManagerModuleConfiguration Configuration { get; set; }
 
@@ -41,16 +44,16 @@ namespace DNI.MigrationManager.Core.Modules
 
         public override Task OnRun(CancellationToken cancellationToken)
         {
-            Console.WriteLine("Migration manager running on {0}", Thread.CurrentThread.ManagedThreadId);
+            Logger.LogInformation("Migration manager running on {0}", Thread.CurrentThread.ManagedThreadId);
             var sql = migrationQueryBuilder.BuildMigrations("sql");
 
-            Console.Write(sql);
+            Logger.LogInformation(sql);
             return Task.CompletedTask;
         }
 
         public override Task OnStop(CancellationToken cancellationToken)
         {
-            Console.WriteLine("Migration manager stopping");
+            Logger.LogInformation("Migration manager stopping");
             return Task.CompletedTask;
         }
     }
