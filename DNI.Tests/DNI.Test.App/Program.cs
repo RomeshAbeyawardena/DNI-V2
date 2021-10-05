@@ -5,6 +5,7 @@ using DNI.Extensions;
 using DNI.MigrationManager.Extensions;
 using DNI.MigrationManager.Shared.Abstractions;
 using DNI.Modules.Extensions;
+using DNI.Test.App.Domains;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.UserSecrets;
@@ -24,7 +25,10 @@ namespace DNI.Test.App
             : base(dbContextOptions)
         {
         }
+
+        public DbSet<User> Users { get; set; }
     }
+
 
     class Program
     {
@@ -39,7 +43,7 @@ namespace DNI.Test.App
                     .AddUserSecrets(typeof(Program).Assembly, false))
                 .ConfigureServices<Startup>(s => s
                 .ConfigureMigrationManagerModuleConfiguration(c => c.AddMigration("Default", DefaultMigration))
-                .ConfigureDbContextModule(c => c.AddDbContext<MyDbContext>(b => b.UseQueryTrackingBehavior(Microsoft.EntityFrameworkCore.QueryTrackingBehavior.NoTrackingWithIdentityResolution), ServiceLifetime.Scoped))
+                .ConfigureDbContextModule(c => c.AddDbContext<MyDbContext>(b => b.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution), ServiceLifetime.Scoped))
                 .RegisterModules(build => build
                     .ConfigureAssemblies(c => c
                     .AddAssembly(MigrationManager.Modules.This.Assembly, a => { a.OnStartup = true; a.Discoverable = true; })

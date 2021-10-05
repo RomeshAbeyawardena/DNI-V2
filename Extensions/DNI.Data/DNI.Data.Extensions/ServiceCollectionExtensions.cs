@@ -56,7 +56,7 @@ namespace DNI.Data.Extensions
                 subjectImplementationType.MakeGenericType(entityEntryType));
         }
 
-        private static bool IsDbSet(Type type, IList<Type> genericTypesList)
+        private static bool IsDbSet(this Type type, IList<Type> genericTypesList)
         {
             var dbSetType = typeof(DbSet<>);
             if (!type.IsGenericType)
@@ -88,7 +88,7 @@ namespace DNI.Data.Extensions
                 var genericRepositoryImplementation = repositoryImplementation.MakeGenericType(new[] { dbContextType, repositoryType });
 
                 services.Add(genericRepositoryService, genericRepositoryImplementation, serviceLifetime);
-                services.Add(genericRepositoryService, genericEntityFrameworkRepositoryService, serviceLifetime);
+                services.Add(genericEntityFrameworkRepositoryService, genericRepositoryImplementation, serviceLifetime);
                 services.Add(genericAsyncRepositoryService, genericRepositoryImplementation, serviceLifetime);
             }
 
@@ -98,7 +98,17 @@ namespace DNI.Data.Extensions
         public static IServiceCollection AddRepositories(this IServiceCollection services, Type dbContextType, ServiceLifetime serviceLifetime)
         {
             var genericTypeList = new List<Type>();
-            var dbSetProperties = dbContextType.GetProperties().Select(p => p.PropertyType).Where(t => IsDbSet(t, genericTypeList));
+
+            var dbSetPropertyList = new List<Type>();
+            var propertyTypes = dbContextType.GetProperties().Select(p => p.PropertyType);
+            
+            foreach(var propertyType in propertyTypes)
+            {
+                if (propertyType.IsDbSet(genericTypeList))
+                {
+                    dbSetPropertyList.Add(propertyType);
+                }
+            }
 
             return AddRepositories(services, dbContextType, genericTypeList, serviceLifetime);
         }
