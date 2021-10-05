@@ -10,7 +10,8 @@ namespace DNI.Data.Shared.Abstractions
 {
     public interface IDbContextTypeOptions
     {
-        Action<IServiceProvider, DbContextOptionsBuilder> DbContextOptionsBuilder { get; }
+        Action<DbContextOptionsBuilder> DbContextOptionsBuilder { get; }
+        Action<IServiceProvider, DbContextOptionsBuilder> DbContextOptionsFactoryBuilder { get; }
         ServiceLifetime ServiceLifetime { get; }
         Type Type { get; }
     }

@@ -14,20 +14,22 @@ namespace DNI.Data.Core.Defaults
     {
         private readonly List<IDbContextTypeOptions> options;
 
-        public DefaultDbContextModuleOptionsBuilder(IServiceCollection services)
+        public DefaultDbContextModuleOptionsBuilder()
         {
             options = new List<IDbContextTypeOptions>();
         }
 
-        public IDbContextModuleOptionsBuilder AddDbContext<DbContext>(Action<DbContextOptionsBuilder> buildAction, ServiceLifetime serviceLifetime)
+        public IDbContextModuleOptionsBuilder AddDbContext<TDbContext>(Action<DbContextOptionsBuilder> buildAction, ServiceLifetime serviceLifetime)
+            where TDbContext : DbContext
         {
-            options.Add(new DefaultDbContextTypeOptions());
+            options.Add(new DefaultDbContextTypeOptions(typeof(TDbContext), buildAction: buildAction, serviceLifetime: serviceLifetime));
             return this;
         }
 
-        public IDbContextModuleOptionsBuilder AddDbContext<DbContext>(Action<IServiceProvider, DbContextOptionsBuilder> buildAction, ServiceLifetime serviceLifetime)
+        public IDbContextModuleOptionsBuilder AddDbContext<TDbContext>(Action<IServiceProvider, DbContextOptionsBuilder> buildAction, ServiceLifetime serviceLifetime)
+            where TDbContext : DbContext
         {
-            options.Add(new DefaultDbContextTypeOptions());
+            options.Add(new DefaultDbContextTypeOptions(typeof(TDbContext), factorybuildAction: buildAction, serviceLifetime: serviceLifetime));
             return this;
         }
 

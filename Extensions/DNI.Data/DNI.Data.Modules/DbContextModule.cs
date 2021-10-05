@@ -11,13 +11,16 @@ namespace DNI.Data.Modules
 {
     public class DbContextModule : ModuleBase
     {
-        [Resolve]
-        public static IDbContextModuleOptions ModuleOptions { get; }
+        [Resolve] private static IDbContextModuleOptions ModuleOptions { get; set; }
 
         public static void ConfigureServices(IServiceCollection services)
         {
-            foreach(var moduleOptionDbContext in ModuleOptions.DbContextTypeOptions)
-            services.AddRepositoriesForDbContext(moduleOptionDbContext.Type, moduleOptionDbContext.DbContextOptionsBuilder, moduleOptionDbContext.ServiceLifetime);
+            foreach (var moduleOptionDbContext in ModuleOptions.DbContextTypeOptions)
+            {
+                services.AddRepositoriesForDbContext(moduleOptionDbContext.Type, 
+                    moduleOptionDbContext.DbContextOptionsBuilder, 
+                    moduleOptionDbContext.ServiceLifetime);
+            }
         }
 
         public override Task OnRun(CancellationToken cancellationToken)

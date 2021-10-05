@@ -11,16 +11,23 @@ namespace DNI.Data.Core.Defaults
 {
     public class DefaultDbContextTypeOptions : IDbContextTypeOptions
     {
-        public DefaultDbContextTypeOptions(Action<IServiceProvider, DbContextOptionsBuilder> buildAction, ServiceLifetime serviceLifetime)
+        public DefaultDbContextTypeOptions(
+            Type dbContextType,
+            Action<IServiceProvider, DbContextOptionsBuilder> factorybuildAction = null,
+            Action<DbContextOptionsBuilder> buildAction = null,
+            ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
         {
+            Type = dbContextType;
+            DbContextOptionsFactoryBuilder = factorybuildAction;
             DbContextOptionsBuilder = buildAction;
             ServiceLifetime = serviceLifetime;
         }
 
-        public Action<IServiceProvider, DbContextOptionsBuilder> DbContextOptionsBuilder { get; }
+        public Action<IServiceProvider, DbContextOptionsBuilder> DbContextOptionsFactoryBuilder { get; }
+        public Action<DbContextOptionsBuilder> DbContextOptionsBuilder { get; }
 
         public ServiceLifetime ServiceLifetime { get; }
 
-        public Type Type => throw new NotImplementedException();
+        public Type Type { get; }
     }
 }

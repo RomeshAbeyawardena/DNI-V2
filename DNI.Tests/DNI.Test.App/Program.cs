@@ -1,9 +1,11 @@
 ﻿using DNI.Core.Defaults.Hosts;
 using DNI.Data.Extensions;
+using DNI.Data.Shared.Base;
 using DNI.Extensions;
 using DNI.MigrationManager.Extensions;
 using DNI.MigrationManager.Shared.Abstractions;
 using DNI.Modules.Extensions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,9 +18,12 @@ using System.Threading.Tasks;
 
 namespace DNI.Test.App
 {
-    class MyDbContext
+    class MyDbContext : DbContextBase
     {
-
+        public MyDbContext(DbContextOptions dbContextOptions) 
+            : base(dbContextOptions)
+        {
+        }
     }
 
     class Program
@@ -34,11 +39,11 @@ namespace DNI.Test.App
                     .AddUserSecrets(typeof(Program).Assembly, false))
                 .ConfigureServices<Startup>(s => s
                 .ConfigureMigrationManagerModuleConfiguration(c => c.AddMigration("Default", DefaultMigration))
+                .ConfigureDbContextModule(c => c.AddDbContext<MyDbContext>(b => b.UseQueryTrackingBehavior(Microsoft.EntityFrameworkCore.QueryTrackingBehavior.NoTrackingWithIdentityResolution), ServiceLifetime.Scoped))
                 .RegisterModules(build => build
                     .ConfigureAssemblies(c => c
                     .AddAssembly(MigrationManager.Modules.This.Assembly, a => { a.OnStartup = true; a.Discoverable = true; })
                     .AddAssembly(Data.Modules.This.Assembly, a => { a.OnStartup = true; a.Discoverable = true; })))
-                .ConfigureDbContextModule(c => c.AddDbContext<MyDbContext>(b => b.UseQueryTrackingBehavior(Microsoft.EntityFrameworkCore.QueryTrackingBehavior.NoTrackingWithIdentityResolution), ServiceLifetime.Scoped))
                 .OutputServices()));
 
             await s.StartAsync();

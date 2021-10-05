@@ -26,9 +26,11 @@ namespace DNI.Data.Extensions
             this IServiceCollection services,
             Action<IDbContextModuleOptionsBuilder> buildAction)
         {
-            var defaultDbContextModuleOptionsBuilder = new DefaultDbContextModuleOptionsBuilder(services);
+            var defaultDbContextModuleOptionsBuilder = new DefaultDbContextModuleOptionsBuilder();
             buildAction(defaultDbContextModuleOptionsBuilder);
-            return services.AddSingleton(defaultDbContextModuleOptionsBuilder.Build());
+
+            var builtOptions = defaultDbContextModuleOptionsBuilder.Build();
+            return services.AddSingleton(builtOptions);
         }
 
         public  static IServiceCollection Add(this IServiceCollection services, Type serviceType, 

@@ -26,6 +26,8 @@ namespace DNI.Modules.Shared.Extensions
                 }
 
                 var service = moduleServiceProvider.GetService(propertyOrField.PropertyType);
+
+                
                 propertyOrField.SetValue(value, service);
             }
         }
