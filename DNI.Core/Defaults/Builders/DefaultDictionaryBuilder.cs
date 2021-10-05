@@ -9,8 +9,21 @@ using System.Threading.Tasks;
 
 namespace DNI.Core.Defaults.Builders
 {
+    /// <inheritdoc cref="IDictionaryBuilder{TKey, TValue} "/>
     public class DefaultDictionaryBuilder<TKey, TValue> : DictionaryBase<TKey, TValue>, IDictionaryBuilder<TKey, TValue>
     {
+        public DefaultDictionaryBuilder()
+            : this(new Dictionary<TKey, TValue>())
+        {
+
+        }
+
+        public DefaultDictionaryBuilder(IDictionary<TKey, TValue> dictionary)
+            : base(dictionary)
+        {
+            
+        }
+
         public IDictionary<TKey, TValue> Dictionary => base.dictionary;
 
         public IDictionaryBuilder<TKey, TValue> Add(IKeyValuePair<TKey, TValue> keyValuePair)

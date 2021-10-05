@@ -15,6 +15,11 @@ namespace DNI.Shared.Base
 
         public event EventHandler<DictionaryEventArgs<TValue>> EventOccurred;
 
+        protected DictionaryBase(IDictionary<TKey, TValue> dictionary)
+        {
+            this.dictionary = new ConcurrentDictionary<TKey, TValue>(dictionary.ToArray());
+        }
+
         protected DictionaryBase(bool isReadonly = false)
         {
             dictionary = new ConcurrentDictionary<TKey, TValue>();

@@ -20,6 +20,7 @@ namespace DNI.Core.Defaults.Hosts
         }
     }
 
+    /// <inheritdoc cref="IConsoleHost"/>
     public class DefaultConsoleHost : DisposableBase, IConsoleHost
     {
         public IServiceCollection Services { get;  }
@@ -36,6 +37,11 @@ namespace DNI.Core.Defaults.Hosts
         private IServiceProvider ServiceProvider => Services.BuildServiceProvider();
         private Type StartupType { get; set; }
         private IDisposable disposableService;
+
+        private void ConfigureServices()
+        {
+            InvokeServiceMethod(StartupType, "ConfigureServices", BindingFlags.Public | BindingFlags.Static, Services);
+        }
 
         private object InvokeServiceMethod(Type type, string methodName, BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public, params object[] parameters)
         {
@@ -80,7 +86,7 @@ namespace DNI.Core.Defaults.Hosts
             this.StartupType = startupType;
             Services.AddSingleton(startupType);
             configureServices(Services);
-            ConfigureServices(services => { });
+            ConfigureServices();
             return this;
         }
 
@@ -122,11 +128,6 @@ namespace DNI.Core.Defaults.Hosts
         public Task StopAsync(CancellationToken cancellationToken)
         {
             return (Task)InvokeServiceMethod(StartupType, "StopAsync", parameters: UseCancellationTokenSourceIfNull(cancellationToken));
-        }
-
-        public void ConfigureServices(Action<IServiceCollection> configureServices)
-        {
-            InvokeServiceMethod(StartupType, "ConfigureServices", BindingFlags.Public | BindingFlags.Static, Services);
         }
     }
 }
