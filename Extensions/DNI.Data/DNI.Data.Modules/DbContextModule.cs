@@ -1,5 +1,6 @@
 ﻿using DNI.Data.Extensions;
 using DNI.Data.Shared.Abstractions;
+using DNI.Extensions;
 using DNI.Modules.Shared.Attributes;
 using DNI.Modules.Shared.Base;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,7 +20,8 @@ namespace DNI.Data.Modules
             {
                 services.AddRepositoriesForDbContext(moduleOptionDbContext.Type, 
                     moduleOptionDbContext.DbContextOptionsBuilder, 
-                    moduleOptionDbContext.ServiceLifetime);
+                    moduleOptionDbContext.ServiceLifetime)
+                    .OutputServices();
             }
         }
 

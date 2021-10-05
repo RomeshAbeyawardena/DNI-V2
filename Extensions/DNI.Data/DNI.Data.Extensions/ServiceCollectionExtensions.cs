@@ -17,9 +17,15 @@ namespace DNI.Data.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        private static MethodInfo GetAddDbContextMethod(Type dbContextType)
+        private static MethodInfo GetAddDbContextMethod(Type dbContextType, params Type[] parameterTypes)
         {
-            return typeof(EntityFrameworkServiceCollectionExtensions).GetMethod("AddDbContext").MakeGenericMethod(dbContextType);
+            var methods = typeof(EntityFrameworkServiceCollectionExtensions)
+                .GetMethods();
+
+            
+            return methods.FirstOrDefault(a => a.Name == "AddDbContext" && a.IsStatic && a.GetParameters()
+                .All(a => parameterTypes.Any(t => t == a.ParameterType) ))
+                .MakeGenericMethod(dbContextType);
         }
 
         public static IServiceCollection ConfigureDbContextModule(
@@ -101,8 +107,10 @@ namespace DNI.Data.Extensions
             Type dbContextType, Action<DbContextOptionsBuilder> optionsAction, ServiceLifetime serviceLifetime  = ServiceLifetime.Scoped)
             
         {
-            var genericMethod = GetAddDbContextMethod(dbContextType);
-            genericMethod.Invoke(services, new object [] { optionsAction, serviceLifetime });
+            var genericMethod = GetAddDbContextMethod(dbContextType, 
+                typeof(IServiceCollection), typeof(Action<DbContextOptionsBuilder>),
+                typeof(ServiceLifetime), typeof(ServiceLifetime));
+            genericMethod.Invoke(services, new object [] { services, optionsAction, serviceLifetime, serviceLifetime });
 
             return services
                 .AddRepositories(dbContextType, serviceLifetime);
@@ -112,7 +120,9 @@ namespace DNI.Data.Extensions
             Type dbContextType, Action<IServiceProvider, DbContextOptionsBuilder> optionsAction, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
             
         {
-            var genericMethod = GetAddDbContextMethod(dbContextType);
+            var genericMethod = GetAddDbContextMethod(dbContextType,
+                typeof(IServiceCollection), typeof(Action<IServiceProvider, DbContextOptionsBuilder>),
+                typeof(ServiceLifetime), typeof(ServiceLifetime));
             genericMethod.Invoke(services, new object[] { optionsAction, serviceLifetime });
 
             return services.AddRepositories(dbContextType, serviceLifetime);
