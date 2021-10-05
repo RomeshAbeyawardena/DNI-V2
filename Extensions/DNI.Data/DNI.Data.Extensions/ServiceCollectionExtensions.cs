@@ -23,9 +23,16 @@ namespace DNI.Data.Extensions
                 .GetMethods();
 
             
-            return methods.FirstOrDefault(a => a.Name == "AddDbContext" && a.IsStatic && a.GetParameters()
-                .All(a => parameterTypes.Any(t => t == a.ParameterType) ))
-                .MakeGenericMethod(dbContextType);
+
+            foreach(var method in methods.Where(a => a.Name == "AddDbContext" && a.IsStatic))
+            {
+                if (method.GetParameters().Select(a => a.ParameterType).SequenceEqual(parameterTypes))
+                {
+                    return method.MakeGenericMethod(dbContextType);
+                }
+            }
+
+            return null;
         }
 
         public static IServiceCollection ConfigureDbContextModule(
@@ -48,12 +55,10 @@ namespace DNI.Data.Extensions
 
         public static IServiceCollection AddRequiredServices(this IServiceCollection services)
         {
-            var entityEntryType = typeof(EntityEntry<>);
             var subjectType = typeof(ISubject<>);
 
             var subjectImplementationType = typeof(Subject<>);
-            return services.AddSingleton(subjectType.MakeGenericType(entityEntryType), 
-                subjectImplementationType.MakeGenericType(entityEntryType));
+            return services.AddSingleton(subjectType, subjectImplementationType);
         }
 
         private static bool IsDbSet(this Type type, IList<Type> genericTypesList)
@@ -133,7 +138,7 @@ namespace DNI.Data.Extensions
             var genericMethod = GetAddDbContextMethod(dbContextType,
                 typeof(IServiceCollection), typeof(Action<IServiceProvider, DbContextOptionsBuilder>),
                 typeof(ServiceLifetime), typeof(ServiceLifetime));
-            genericMethod.Invoke(services, new object[] { optionsAction, serviceLifetime });
+            genericMethod.Invoke(services, new object[] { services, optionsAction, serviceLifetime, serviceLifetime });
 
             return services.AddRepositories(dbContextType, serviceLifetime);
         }

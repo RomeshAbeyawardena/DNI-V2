@@ -43,7 +43,7 @@ namespace DNI.Test.App
                     .AddUserSecrets(typeof(Program).Assembly, false))
                 .ConfigureServices<Startup>(s => s
                 .ConfigureMigrationManagerModuleConfiguration(c => c.AddMigration("Default", DefaultMigration))
-                .ConfigureDbContextModule(c => c.AddDbContext<MyDbContext>(b => b.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution), ServiceLifetime.Scoped))
+                .ConfigureDbContextModule(c => c.AddDbContext<MyDbContext>((s, b) => b.UseSqlServer(s.GetRequiredService<IConfiguration>().GetConnectionString("default")).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution), ServiceLifetime.Scoped))
                 .RegisterModules(build => build
                     .ConfigureAssemblies(c => c
                     .AddAssembly(MigrationManager.Modules.This.Assembly, a => { a.OnStartup = true; a.Discoverable = true; })

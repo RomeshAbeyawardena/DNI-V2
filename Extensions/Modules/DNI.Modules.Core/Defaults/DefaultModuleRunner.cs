@@ -106,6 +106,8 @@ namespace DNI.Modules.Core.Defaults
 
         private void RegisterServices(Type type)
         {
+            Console.WriteLine("Configuring services for {0}", type);
+
             type.ResolveStaticDependencies(serviceProvider);
             var configureServicesMethod = type.GetMethod("ConfigureServices", BindingFlags.Public | BindingFlags.Static);
 
@@ -132,14 +134,15 @@ namespace DNI.Modules.Core.Defaults
         {
             services.AddSingleton(s => ModuleServiceProvider);
 
-            services.AddSingleton(s => GetModuleTypes(moduleOptions.ModuleAssembliesOptions.GetAssemblies(a => a.Injectable && a.Discoverable))
-                .Select(Activate));
+            var injectableModules = GetModuleTypes(moduleOptions.ModuleAssembliesOptions.GetAssemblies(a => a.Injectable && a.Discoverable));
 
-            var moduleTypes = GetModuleTypes(moduleOptions.ModuleAssembliesOptions.GetAssemblies(a => a.OnStartup && a.Discoverable));
+            var startupModules = GetModuleTypes(moduleOptions.ModuleAssembliesOptions.GetAssemblies(a => a.OnStartup && a.Discoverable));
 
-            moduleTypes.ForEach(RegisterServices);
-            
-            modules = moduleTypes.Select(Activate);
+            injectableModules.AppendAll(startupModules).ForEach(RegisterServices);
+
+            services.AddSingleton(injectableModules.Select(Activate));
+            modules = startupModules.Select(Activate);
+
             var taskList = new List<Task>();
             modules.ForEach(m => moduleTaskQueue.TryAdd((c) => m.Run(c)));
 
