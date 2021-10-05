@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DNI.Data.Shared
+namespace DNI.Data.Shared.Abstractions
 {
     public interface IEntityFrameworkRepository<TDbContext, T> : IRepository<T>
         where TDbContext : DbContext

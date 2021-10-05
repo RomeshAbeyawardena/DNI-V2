@@ -1,4 +1,5 @@
 ﻿using DNI.Core.Defaults.Hosts;
+using DNI.Data.Extensions;
 using DNI.Extensions;
 using DNI.MigrationManager.Extensions;
 using DNI.MigrationManager.Shared.Abstractions;
@@ -15,6 +16,11 @@ using System.Threading.Tasks;
 
 namespace DNI.Test.App
 {
+    class MyDbContext
+    {
+
+    }
+
     class Program
     {
         static async Task Main(string[] args)
@@ -30,7 +36,9 @@ namespace DNI.Test.App
                 .ConfigureMigrationManagerModuleConfiguration(c => c.AddMigration("Default", DefaultMigration))
                 .RegisterModules(build => build
                     .ConfigureAssemblies(c => c
-                    .AddAssembly(MigrationManager.Modules.This.Assembly, a => { a.OnStartup = true; a.Discoverable = true; })))
+                    .AddAssembly(MigrationManager.Modules.This.Assembly, a => { a.OnStartup = true; a.Discoverable = true; })
+                    .AddAssembly(Data.Modules.This.Assembly, a => { a.OnStartup = true; a.Discoverable = true; })))
+                .ConfigureDbContextModule(c => c.AddDbContext<MyDbContext>(b => b.UseQueryTrackingBehavior(Microsoft.EntityFrameworkCore.QueryTrackingBehavior.NoTrackingWithIdentityResolution), ServiceLifetime.Scoped))
                 .OutputServices()));
 
             await s.StartAsync();

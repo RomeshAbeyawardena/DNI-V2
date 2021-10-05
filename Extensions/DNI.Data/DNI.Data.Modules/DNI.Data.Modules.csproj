@@ -4,4 +4,11 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Modules\DNI.Modules.Shared\DNI.Modules.Shared.csproj" />
+    <ProjectReference Include="..\DNI.Data.Core\DNI.Data.Core.csproj" />
+    <ProjectReference Include="..\DNI.Data.Extensions\DNI.Data.Extensions.csproj" />
+    <ProjectReference Include="..\DNI.Data.Shared\DNI.Data.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

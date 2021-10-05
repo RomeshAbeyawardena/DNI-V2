@@ -1,5 +1,7 @@
 ﻿using DNI.Data.Core.Defaults;
 using DNI.Data.Shared;
+using DNI.Data.Shared.Abstractions;
+using DNI.Data.Shared.Abstractions.Builders;
 using DNI.Extensions;
 using DNI.Shared.Abstractions;
 using Microsoft.EntityFrameworkCore;
@@ -9,11 +11,26 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Subjects;
+using System.Reflection;
 
 namespace DNI.Data.Extensions
 {
     public static class ServiceCollectionExtensions
     {
+        private static MethodInfo GetAddDbContextMethod(Type dbContextType)
+        {
+            return typeof(EntityFrameworkServiceCollectionExtensions).GetMethod("AddDbContext").MakeGenericMethod(dbContextType);
+        }
+
+        public static IServiceCollection ConfigureDbContextModule(
+            this IServiceCollection services,
+            Action<IDbContextModuleOptionsBuilder> buildAction)
+        {
+            var defaultDbContextModuleOptionsBuilder = new DefaultDbContextModuleOptionsBuilder(services);
+            buildAction(defaultDbContextModuleOptionsBuilder);
+            return services.AddSingleton(defaultDbContextModuleOptionsBuilder.Build());
+        }
+
         public  static IServiceCollection Add(this IServiceCollection services, Type serviceType, 
             Type serviceImplementationType, ServiceLifetime serviceLifetime)
         {
@@ -78,12 +95,25 @@ namespace DNI.Data.Extensions
             return AddRepositories(services, dbContextType, genericTypeList, serviceLifetime);
         }
 
-        public static IServiceCollection RegisterRepositoriesForDbContext<TDbContext>(this IServiceCollection services,
-            Action<DbContextOptionsBuilder> optionsAction, ServiceLifetime serviceLifetime  = ServiceLifetime.Scoped)
-            where TDbContext : DbContext
+        public static IServiceCollection AddRepositoriesForDbContext(this IServiceCollection services,
+            Type dbContextType, Action<DbContextOptionsBuilder> optionsAction, ServiceLifetime serviceLifetime  = ServiceLifetime.Scoped)
+            
         {
-            return services.AddDbContext<TDbContext>(optionsAction, serviceLifetime)
-                .AddRepositories(typeof(TDbContext), serviceLifetime);
+            var genericMethod = GetAddDbContextMethod(dbContextType);
+            genericMethod.Invoke(services, new object [] { optionsAction, serviceLifetime });
+
+            return services
+                .AddRepositories(dbContextType, serviceLifetime);
+        }
+
+        public static IServiceCollection AddRepositoriesForDbContext(this IServiceCollection services,
+            Type dbContextType, Action<IServiceProvider, DbContextOptionsBuilder> optionsAction, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
+            
+        {
+            var genericMethod = GetAddDbContextMethod(dbContextType);
+            genericMethod.Invoke(services, new object[] { optionsAction, serviceLifetime });
+
+            return services.AddRepositories(dbContextType, serviceLifetime);
         }
 
         public static IServiceCollection AddRepositoriesForDbContext<TDbContext>(this IServiceCollection services,

@@ -1,4 +1,4 @@
-﻿using DNI.Data.Shared;
+﻿using DNI.Data.Shared.Abstractions;
 using DNI.Data.Shared.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
