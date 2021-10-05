@@ -13,8 +13,9 @@ namespace DNI.Modules.Shared.Extensions
 {
     public static class TypeExtensions
     {
-        public static void ResolveStaticDependencies(this Type valueType, IServiceProvider moduleServiceProvider)
+        public static IEnumerable<object> ResolveStaticDependencies(this Type valueType, IServiceProvider moduleServiceProvider)
         {
+            var resolvedServices = new List<object>();
             var properties = valueType.GetProperties(BindingFlags.Static | BindingFlags.NonPublic);
 
             foreach (var propertyOrField in properties)
@@ -25,8 +26,11 @@ namespace DNI.Modules.Shared.Extensions
                 }
 
                 var service = moduleServiceProvider.GetRequiredService(propertyOrField.PropertyType);
+                resolvedServices.Add(service);
                 propertyOrField.SetValue(null, service);
             }
+
+            return resolvedServices;
         }
     }
 }

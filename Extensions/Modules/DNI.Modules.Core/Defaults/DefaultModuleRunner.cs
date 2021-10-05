@@ -111,7 +111,7 @@ namespace DNI.Modules.Core.Defaults
         {
             logger.LogInformation("Configuring services for {0}", type);
 
-            type.ResolveStaticDependencies(serviceProvider);
+            AddParameters(type.ResolveStaticDependencies(serviceProvider));
             var configureServicesMethod = type.GetMethod("ConfigureServices", BindingFlags.Public | BindingFlags.Static);
 
             configureServicesMethod?.Invoke(null, new[] { services });
