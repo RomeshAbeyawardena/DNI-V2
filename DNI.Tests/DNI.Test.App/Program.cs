@@ -5,7 +5,7 @@ using DNI.Extensions;
 using DNI.MigrationManager.Extensions;
 using DNI.MigrationManager.Shared.Abstractions;
 using DNI.Modules.Extensions;
-using DNI.Test.App.Domains;
+using DNI.Shared.Test;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.UserSecrets;

@@ -15,8 +15,7 @@ namespace DNI.Modules.Shared.Extensions
         public static void ResolveDependencies(this object value, IServiceProvider moduleServiceProvider)
         {
             var valueType = value.GetType();
-            var properties = valueType.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic)
-                .AppendAll(valueType.GetProperties(BindingFlags.Static | BindingFlags.NonPublic));
+            var properties = valueType.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic);
 
             foreach (var propertyOrField in properties)
             {
