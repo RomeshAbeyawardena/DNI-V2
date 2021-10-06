@@ -3,4 +3,9 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DNI.Mediator.Core\DNI.Mediator.Core.csproj" />
+    <ProjectReference Include="..\DNI.Mediator.Shared\DNI.Mediator.Shared.csproj" />
+  </ItemGroup>
 </Project>

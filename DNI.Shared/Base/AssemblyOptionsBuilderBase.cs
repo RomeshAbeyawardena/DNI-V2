@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DNI.Shared.Base
 {
-    public abstract class BaseAssemblyOptionsBuilder : CollectionBase<Assembly>, IAssemblyOptionsBuilder
+    public abstract class AssemblyOptionsBuilderBase : CollectionBase<Assembly>, IAssemblyOptionsBuilder
     {
         public IAssemblyOptionsBuilder AddAssembly<T>()
         {
@@ -23,6 +23,11 @@ namespace DNI.Shared.Base
         public IAssemblyOptionsBuilder AddAssembly(Assembly assembly)
         {
             Add(assembly);
+            return this;
+        }
+
+        public IEnumerable<Assembly> Build()
+        {
             return this;
         }
     }

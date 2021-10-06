@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using MediatR;
 
 namespace DNI.Mediator.Modules
 {
@@ -14,14 +16,19 @@ namespace DNI.Mediator.Modules
     {
         [Resolve] public static IMediatorModuleOptions Options { get; }
 
+        public static void ConfigureServices(IServiceCollection services)
+        {
+            services.AddMediatR(Options.ToArray());
+        }
+
         public override Task OnRun(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
         public override Task OnStop(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
     }
 }
