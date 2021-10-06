@@ -1,4 +1,5 @@
-﻿using DNI.Modules.Shared.Attributes;
+﻿using DNI.Modules.Shared.Abstractions;
+using DNI.Modules.Shared.Attributes;
 using DNI.Modules.Shared.Base;
 using DNI.Web.Shared.Abstractions;
 using Microsoft.AspNetCore.Hosting;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,11 +20,22 @@ namespace DNI.Web.Modules
         private IHost host;
 
         [Resolve] private static IWebModuleOptions Options { get; set; }
-
+        [Resolve] private static IDictionary<Assembly, IAssemblyOptions> AssemblyOptions { get; set; }
+        
         public static void ConfigureServices(IServiceCollection services)
         {
-            services
+            var mvcBuilder = services
                 .AddControllers(Options.ConfigureMvcOptions);
+
+            var assemblies = Options.UseModuleAssemblies 
+                ? AssemblyOptions.Select(a => a.Key).ToArray()
+                : Options.ToArray();
+
+            foreach (var assembly in assemblies)
+            {
+                mvcBuilder.AddApplicationPart(assembly)
+                    .AddControllersAsServices();
+            }
         }
 
         public override Task OnRun(CancellationToken cancellationToken)
