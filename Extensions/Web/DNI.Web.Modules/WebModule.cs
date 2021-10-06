@@ -21,14 +21,15 @@ namespace DNI.Web.Modules
 
         public static void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers()
+            services
+                .AddControllers(Options.ConfigureMvcOptions);
         }
 
         public override Task OnRun(CancellationToken cancellationToken)
         {
             host = Host.CreateDefaultBuilder()
                 .ConfigureServices(ConfigureServices)
-                .ConfigureWebHost(Options.ConfigureWebHost)
+                .ConfigureWebHostDefaults(Options.ConfigureWebHost)
                 .Build();
 
             return host.StartAsync(cancellationToken);
@@ -37,6 +38,14 @@ namespace DNI.Web.Modules
         public override Task OnStop(CancellationToken cancellationToken)
         {
             return host.StopAsync(cancellationToken);
+        }
+
+        public override void Dispose(bool dispose)
+        {
+            if (dispose)
+            {
+                host.Dispose();
+            }
         }
     }
 }

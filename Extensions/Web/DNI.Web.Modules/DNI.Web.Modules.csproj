@@ -8,6 +8,9 @@
   <ItemGroup>
     <Reference Include="..\..\..\lib\Microsoft.AspNetCore.Hosting.dll" />
     <Reference Include="..\..\..\lib\Microsoft.AspNetCore.Hosting.Abstractions.dll" />
+    <Reference Include="..\..\..\lib\Microsoft.AspNetCore.dll" />
+    <Reference Include="..\..\..\lib\Microsoft.AspNetCore.Mvc.dll" />
+    <Reference Include="..\..\..\lib\Microsoft.AspNetCore.Mvc.Core.dll" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\DNI.Shared\DNI.Shared.csproj" />

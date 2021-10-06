@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,6 @@ namespace DNI.Web.Shared.Abstractions
     public interface IWebModuleOptions
     {
         Action<IWebHostBuilder> ConfigureWebHost { get; }
+        Action<MvcOptions> ConfigureMvcOptions { get; set; }
     }
 }

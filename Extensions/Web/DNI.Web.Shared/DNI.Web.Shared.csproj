@@ -5,5 +5,6 @@
 
   <ItemGroup>
     <Reference Include="..\..\..\lib\Microsoft.AspNetCore.Hosting.Abstractions.dll" />
+    <Reference Include="..\..\..\lib\Microsoft.AspNetCore.Mvc.Core.dll" />
   </ItemGroup>
 </Project>
