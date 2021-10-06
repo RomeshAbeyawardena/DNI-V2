@@ -11,6 +11,13 @@ namespace DNI.Mediator.Core.Defaults
 {
     public class DefaultMediatorModuleOptionsBuilder : AssemblyOptionsBuilderBase, IMediatorModuleOptionsBuilder
     {
+        private bool useModuleAssemblies;
+        public IMediatorModuleOptionsBuilder AddModuleAssemblies()
+        {
+            useModuleAssemblies = true;
+            return this;
+        }
+
         IMediatorModuleOptionsBuilder IMediatorModuleOptionsBuilder.AddAssembly(Assembly assembly)
         {
             base.AddAssembly(assembly);
@@ -31,7 +38,7 @@ namespace DNI.Mediator.Core.Defaults
 
         IMediatorModuleOptions IMediatorModuleOptionsBuilder.Build()
         {
-            return new DefaultMediatorModuleOptions(base.Build());
+            return new DefaultMediatorModuleOptions(base.Build(), useModuleAssemblies);
         }
     }
 }

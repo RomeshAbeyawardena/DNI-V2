@@ -9,16 +9,23 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using MediatR;
+using System.Reflection;
+using DNI.Modules.Shared.Abstractions;
 
 namespace DNI.Mediator.Modules
 {
     public class MediatorModule : ModuleBase
     {
-        [Resolve] public static IMediatorModuleOptions Options { get; }
+        [Resolve] private static IDictionary<Assembly, IAssemblyOptions> AssemblyOptions { get; set; }
+        [Resolve] private static IMediatorModuleOptions Options { get; set; }
 
         public static void ConfigureServices(IServiceCollection services)
         {
-            services.AddMediatR(Options.ToArray());
+            var assemblies = Options.UseModuleAssemblies
+                ? AssemblyOptions.Select(k => k.Key).ToArray()
+                : Options.ToArray();
+
+            services.AddMediatR(assemblies);
         }
 
         public override Task OnRun(CancellationToken cancellationToken)

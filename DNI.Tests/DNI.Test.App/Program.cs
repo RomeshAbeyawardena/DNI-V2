@@ -2,6 +2,7 @@
 using DNI.Data.Extensions;
 using DNI.Data.Shared.Base;
 using DNI.Extensions;
+using DNI.Mediator.Extensions;
 using DNI.MigrationManager.Extensions;
 using DNI.MigrationManager.Shared.Abstractions;
 using DNI.Modules.Extensions;
@@ -49,10 +50,12 @@ namespace DNI.Test.App
                     .UseSqlServer(s.GetRequiredService<IConfiguration>()
                         .GetConnectionString("default"))
                     .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution), ServiceLifetime.Scoped))
+                .ConfigureMediatorModule(a => a.AddModuleAssemblies())
                 .RegisterModules(build => build
                     .ConfigureAssemblies(c => c
                     .AddAssembly(MigrationManager.Modules.This.Assembly, a => { a.OnStartup = true; a.Discoverable = true; })
-                    .AddAssembly(Data.Modules.This.Assembly, a => { a.OnStartup = true; a.Discoverable = true; })))
+                    .AddAssembly(Data.Modules.This.Assembly, a => { a.OnStartup = true; a.Discoverable = true; })
+                    .AddAssembly(Mediator.Modules.This.Assembly, a => { a.OnStartup = true; a.Discoverable = true; })))
                 .OutputServices()));
 
             await s.StartAsync();

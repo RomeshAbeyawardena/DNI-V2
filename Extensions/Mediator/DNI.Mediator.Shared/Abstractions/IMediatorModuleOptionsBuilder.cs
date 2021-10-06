@@ -13,6 +13,7 @@ namespace DNI.Mediator.Shared.Abstractions
         new IMediatorModuleOptionsBuilder AddAssembly(Assembly assembly);
         new IMediatorModuleOptionsBuilder AddAssembly(Type type);
         new IMediatorModuleOptionsBuilder AddAssembly<T>();
+        IMediatorModuleOptionsBuilder AddModuleAssemblies();
         new IMediatorModuleOptions Build();
     }
 }

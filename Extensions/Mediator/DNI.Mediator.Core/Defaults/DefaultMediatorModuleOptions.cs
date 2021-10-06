@@ -11,10 +11,12 @@ namespace DNI.Mediator.Core.Defaults
 {
     public class DefaultMediatorModuleOptions : CollectionBase<Assembly>, IMediatorModuleOptions
     {
-        public DefaultMediatorModuleOptions(IEnumerable<Assembly> assemblies)
+        public DefaultMediatorModuleOptions(IEnumerable<Assembly> assemblies, bool useModuleAssemblies)
             : base(assemblies)
         {
-
+            UseModuleAssemblies = useModuleAssemblies;
         }
+
+        public bool UseModuleAssemblies { get; }
     }
 }

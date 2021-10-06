@@ -10,6 +10,6 @@ namespace DNI.Mediator.Shared.Abstractions
 {
     public interface IMediatorModuleOptions : IEnumerable<Assembly>
     {
-        
+        bool UseModuleAssemblies { get; }
     }
 }
