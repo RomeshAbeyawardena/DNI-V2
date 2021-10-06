@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DNI.Mediator.Shared
+namespace DNI.Mediator.Shared.Abstractions
 {
     public interface IMediatorModuleOptions : IAssemblyOptions
     {

@@ -1,6 +1,6 @@
 ﻿using DNI.Modules.Shared.Attributes;
 using DNI.Modules.Shared.Base;
-using DNI.Mediator.Shared;
+using DNI.Mediator.Shared.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;

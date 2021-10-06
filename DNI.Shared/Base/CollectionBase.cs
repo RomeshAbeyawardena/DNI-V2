@@ -19,7 +19,8 @@ namespace DNI.Shared.Base
 
         public CollectionBase(bool isReadonly)
         {
-
+            IsReadOnly = isReadonly;
+            collection = new List<T>();
         }
 
         public T this[int index] { get => collection[index]; set => collection[index] = value; }

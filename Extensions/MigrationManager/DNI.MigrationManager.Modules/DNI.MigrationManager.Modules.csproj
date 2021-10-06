@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\DNI.Data\DNI.Data.Core\DNI.Data.Core.csproj" />
-    <ProjectReference Include="..\..\DNI.Data\DNI.Data.Extensions\DNI.Data.Extensions.csproj" />
-    <ProjectReference Include="..\..\DNI.Data\DNI.Data.Shared\DNI.Data.Shared.csproj" />
+    <ProjectReference Include="..\..\Data\DNI.Data.Core\DNI.Data.Core.csproj" />
+    <ProjectReference Include="..\..\Data\DNI.Data.Extensions\DNI.Data.Extensions.csproj" />
+    <ProjectReference Include="..\..\Data\DNI.Data.Shared\DNI.Data.Shared.csproj" />
     <ProjectReference Include="..\..\Modules\DNI.Modules.Shared\DNI.Modules.Shared.csproj" />
     <ProjectReference Include="..\DNI.MigrationManager.Core\DNI.MigrationManager.Core.csproj" />
     <ProjectReference Include="..\DNI.MigrationManager.Extensions\DNI.MigrationManager.Extensions.csproj" />
