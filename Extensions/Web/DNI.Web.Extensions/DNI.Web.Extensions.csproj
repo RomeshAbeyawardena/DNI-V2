@@ -2,4 +2,11 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="..\..\..\lib\Microsoft.AspNetCore.Hosting.Abstractions.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DNI.Web.Core\DNI.Web.Core.csproj" />
+    <ProjectReference Include="..\DNI.Web.Shared\DNI.Web.Shared.csproj" />
+  </ItemGroup>
 </Project>

@@ -7,6 +7,7 @@ using DNI.MigrationManager.Extensions;
 using DNI.MigrationManager.Shared.Abstractions;
 using DNI.Modules.Extensions;
 using DNI.Shared.Test;
+using DNI.Web.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.UserSecrets;
@@ -51,11 +52,13 @@ namespace DNI.Test.App
                         .GetConnectionString("default"))
                     .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution), ServiceLifetime.Scoped))
                 .ConfigureMediatorModule(a => a.AddModuleAssemblies())
+                .ConfigureWebModule(a => a.UseModuleAssemblies())
                 .RegisterModules(build => build
                     .ConfigureAssemblies(c => c
                     .AddAssembly(MigrationManager.Modules.This.Assembly, a => { a.OnStartup = true; a.Discoverable = true; })
                     .AddAssembly(Data.Modules.This.Assembly, a => { a.OnStartup = true; a.Discoverable = true; })
-                    .AddAssembly(Mediator.Modules.This.Assembly, a => { a.OnStartup = true; a.Discoverable = true; })))
+                    .AddAssembly(Mediator.Modules.This.Assembly, a => { a.OnStartup = true; a.Discoverable = true; })
+                    .AddAssembly(Web.Modules.This.Assembly, a => { a.OnStartup = true; a.Discoverable = true; })))
                 .OutputServices()));
 
             await s.StartAsync();

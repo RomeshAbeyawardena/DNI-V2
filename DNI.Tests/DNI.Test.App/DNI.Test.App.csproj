@@ -25,6 +25,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="..\..\lib\Microsoft.AspNetCore.Hosting.Abstractions.dll" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <ProjectReference Include="..\..\DNI.Extensions\DNI.Extensions.csproj" />
     <ProjectReference Include="..\..\Extensions\Data\DNI.Data.Extensions\DNI.Data.Extensions.csproj" />
     <ProjectReference Include="..\..\Extensions\Data\DNI.Data.Modules\DNI.Data.Modules.csproj" />
@@ -32,6 +36,8 @@
     <ProjectReference Include="..\..\Extensions\Mediator\DNI.Mediator.Modules\DNI.Mediator.Modules.csproj" />
     <ProjectReference Include="..\..\Extensions\MigrationManager\DNI.MigrationManager.Modules\DNI.MigrationManager.Modules.csproj" />
     <ProjectReference Include="..\..\Extensions\Modules\DNI.Modules.Extensions\DNI.Modules.Extensions.csproj" />
+    <ProjectReference Include="..\..\Extensions\Web\DNI.Web.Extensions\DNI.Web.Extensions.csproj" />
+    <ProjectReference Include="..\..\Extensions\Web\DNI.Web.Modules\DNI.Web.Modules.csproj" />
   </ItemGroup>
 
 </Project>
