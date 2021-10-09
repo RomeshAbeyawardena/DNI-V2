@@ -1,4 +1,5 @@
-﻿using DNI.Modules.Shared.Abstractions;
+﻿using DNI.Extensions;
+using DNI.Modules.Shared.Abstractions;
 using DNI.Modules.Shared.Attributes;
 using DNI.Modules.Shared.Base;
 using DNI.Web.Shared.Abstractions;
@@ -24,6 +25,7 @@ namespace DNI.Web.Modules
         [Resolve] private static IWebModuleOptions Options { get; set; }
         [Resolve] private static IDictionary<Assembly, IAssemblyOptions> AssemblyOptions { get; set; }
         
+        [RuntimeBinding(false)]
         public static void ConfigureServices(IServiceCollection services)
         {
             var mvcBuilder = services
@@ -35,17 +37,16 @@ namespace DNI.Web.Modules
 
             foreach (var assembly in assemblies)
             {
+                assembly.GetTypes().ForEach(t => Console.WriteLine(t));
                 mvcBuilder
-                    .AddApplicationPart(assembly);
+                    .AddApplicationPart(assembly)
+                    .AddControllersAsServices();
             }
-
-            mvcBuilder.AddControllersAsServices();
         }
 
         public override Task OnRun(CancellationToken cancellationToken)
         {
-            var hostBuilder = Host.CreateDefaultBuilder()
-                .ConfigureServices(ConfigureServices);
+            var hostBuilder = Host.CreateDefaultBuilder();
 
             if (Options.ConfigureWebHost != null)
             {
@@ -53,19 +54,19 @@ namespace DNI.Web.Modules
             }
 
             CancellationTokenSource cancellationTokenSource = new();
-            return hostBuilder.RunConsoleAsync(cancellationToken);
-            //Console.WriteLine(host);
+            host = hostBuilder.Build();
+            return host.RunAsync(cancellationToken);           //Console.WriteLine(host);
         }
 
         private void ConfigureWebHost(IWebHostBuilder webHostBuilder)
         {
-            //Options.ConfigureWebHost?.Invoke(webHostBuilder); 
+            Options.ConfigureWebHost?.Invoke(webHostBuilder); 
             webHostBuilder.UseStartup<Startup>();
         }
 
         public override Task OnStop(CancellationToken cancellationToken)
         {
-            return host.StopAsync(cancellationToken);
+            return host?.StopAsync(cancellationToken);
         }
 
         public override void Dispose(bool dispose)
@@ -81,20 +82,7 @@ namespace DNI.Web.Modules
         {
             public void ConfigureServices(IServiceCollection services)
             {
-                var mvcBuilder = services
-                    .AddControllers(Options.ConfigureMvcOptions);
-
-                var assemblies = Options.UseModuleAssemblies
-                ? AssemblyOptions.Select(a => a.Key).ToArray()
-                : Options.ToArray();
-
-                foreach (var assembly in assemblies)
-                {
-                    mvcBuilder
-                        .AddApplicationPart(assembly);
-                }
-
-                mvcBuilder.AddControllersAsServices();
+                WebModule.ConfigureServices(services);
             }
 
             public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

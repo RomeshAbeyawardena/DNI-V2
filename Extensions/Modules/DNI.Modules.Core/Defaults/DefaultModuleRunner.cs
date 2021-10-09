@@ -114,6 +114,13 @@ namespace DNI.Modules.Core.Defaults
             AddParameters(type.ResolveStaticDependencies(serviceProvider));
             var configureServicesMethod = type.GetMethod("ConfigureServices", BindingFlags.Public | BindingFlags.Static);
 
+            var runTimeBindingAttribute = configureServicesMethod.GetCustomAttribute<RuntimeBindingAttribute>();
+
+            if (runTimeBindingAttribute != null && !runTimeBindingAttribute.InvokeAtRunTime)
+            {
+                return;
+            }
+
             configureServicesMethod?.Invoke(null, new[] { services });
         }
 
@@ -177,9 +184,5 @@ namespace DNI.Modules.Core.Defaults
             }
         }
 
-        public static void ConfigureServices(IServiceCollection services)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

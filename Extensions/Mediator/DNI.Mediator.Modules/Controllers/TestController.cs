@@ -5,11 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DNI.Web.Core.Controllers
+namespace DNI.Mediator.Modules.Controllers
 {
-    [Route("{controller}/{action}}")]
+    [Route("{controller}/{action}")]
     public class TestController : ControllerBase
     {
+        [HttpGet]
         public ActionResult Index()
         {
             return Ok("Test");

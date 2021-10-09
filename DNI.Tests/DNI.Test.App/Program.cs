@@ -75,8 +75,7 @@ namespace DNI.Test.App
                     .AddAssembly(MigrationManager.Modules.This.Assembly, a => { a.OnStartup = true; a.Discoverable = true; })
                     .AddAssembly(Data.Modules.This.Assembly, a => { a.OnStartup = true; a.Discoverable = true; })
                     .AddAssembly(Mediator.Modules.This.Assembly, a => { a.OnStartup = true; a.Discoverable = true; })
-                    .AddAssembly(Web.Modules.This.Assembly, a => { a.OnStartup = true; a.Discoverable = true; })))
-                .OutputServices();
+                    .AddAssembly(Web.Modules.This.Assembly, a => { a.OnStartup = true; a.Discoverable = true; })));
         }
 
         private static void ConfigureWebHost(IWebHostBuilder webHostBuilder)

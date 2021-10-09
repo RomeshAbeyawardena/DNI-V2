@@ -36,8 +36,6 @@ namespace DNI.Data.Modules
                         moduleOptionDbContext.ServiceLifetime);
                 }
             }
-
-            services.OutputServices();
         }
 
         public override Task OnRun(CancellationToken cancellationToken)
