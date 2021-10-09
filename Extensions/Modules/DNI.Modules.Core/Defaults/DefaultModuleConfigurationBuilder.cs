@@ -11,12 +11,21 @@ namespace DNI.Modules.Core.Defaults
 {
     public class DefaultModuleConfigurationBuilder : IModuleConfigurationBuilder
     {
+        private IModuleAssemblyResolverOptions moduleAssemblyResolverOptions;
         private readonly IServiceCollection services;
         private readonly DefaultModuleAssemblyOptions moduleAssemblyOptions;
         public DefaultModuleConfigurationBuilder(IServiceCollection services)
         {
+            moduleAssemblyResolverOptions = new DefaultModuleAssemblyResolverOptions();
             moduleAssemblyOptions = new DefaultModuleAssemblyOptions();
             this.services = services;
+        }
+
+        public IModuleConfigurationBuilder ConfigureResolverOptions(Action<IModuleAssemblyResolverOptions> configureResolver)
+        {
+            configureResolver?.Invoke(moduleAssemblyResolverOptions);
+            moduleAssemblyOptions.ConfigureResolver(moduleAssemblyResolverOptions);
+            return this;
         }
 
         public IModuleStartup Build()

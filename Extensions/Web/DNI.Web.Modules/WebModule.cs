@@ -37,11 +37,12 @@ namespace DNI.Web.Modules
 
             foreach (var assembly in assemblies)
             {
-                assembly.GetTypes().ForEach(t => Console.WriteLine(t));
                 mvcBuilder
-                    .AddApplicationPart(assembly)
-                    .AddControllersAsServices();
+                    .AddApplicationPart(assembly);
             }
+
+            mvcBuilder
+                .AddControllersAsServices(); 
         }
 
         public override Task OnRun(CancellationToken cancellationToken)

@@ -5,10 +5,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="module.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="module.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Modules\DNI.Modules.Shared\DNI.Modules.Shared.csproj" />
     <ProjectReference Include="..\DNI.Data.Core\DNI.Data.Core.csproj" />
     <ProjectReference Include="..\DNI.Data.Extensions\DNI.Data.Extensions.csproj" />
     <ProjectReference Include="..\DNI.Data.Shared\DNI.Data.Shared.csproj" />
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties module_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>

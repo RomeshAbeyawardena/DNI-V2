@@ -1,0 +1,10 @@
+{
+	"id": "data-module",
+	"options": {
+		"type": "DNI.Data.Shared.AbstractionsDbContextTypeOptions, DNI.Data.Shared",
+		"config": {
+			"serviceLifetime": 1,
+			"type": "System.Type"
+		}
+	}
+}

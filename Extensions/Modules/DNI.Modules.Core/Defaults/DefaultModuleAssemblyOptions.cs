@@ -17,6 +17,12 @@ namespace DNI.Modules.Core.Defaults
         IModuleAssemblyOptions,
         IModuleAssemblyLocatorOptions
     {
+        private IModuleAssemblyResolver moduleAssemblyResolver = DefaultModuleAssemblyResolver.Default;
+
+        public void ConfigureResolver(IModuleAssemblyResolverOptions moduleAssemblyResolverOptions)
+        {
+            moduleAssemblyResolver = new DefaultModuleAssemblyResolver(moduleAssemblyResolverOptions);
+        }
 
         private void AddAssemblyByConfiguration(IModuleConfiguration moduleConfiguration)
         {
@@ -39,6 +45,14 @@ namespace DNI.Modules.Core.Defaults
 
         public IModuleAssemblyLocatorOptions AddAssembly(string assemblyNameorFilePath, IAssemblyOptions assemblyOptions)
         {
+            var assembly = moduleAssemblyResolver.ResolveAssembly(assemblyNameorFilePath);
+
+            if(assembly != null)
+            {
+                AddAssembly(assembly, assemblyOptions);
+                return this;
+            }
+
             AddAssembly(File.Exists(assemblyNameorFilePath)
                 ? Assembly.LoadFrom(assemblyNameorFilePath)
                 : Assembly.Load(assemblyNameorFilePath), assemblyOptions);

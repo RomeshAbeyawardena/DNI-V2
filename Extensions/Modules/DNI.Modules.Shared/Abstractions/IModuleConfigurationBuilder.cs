@@ -34,5 +34,7 @@ namespace DNI.Modules.Shared.Abstractions
         /// <param name="configure"></param>
         /// <returns></returns>
         IModuleStartup Build(Action<IModuleConfigurationBuilder> configure);
+
+        IModuleConfigurationBuilder ConfigureResolverOptions(Action<IModuleAssemblyResolverOptions> configureResolver);
     }
 }
