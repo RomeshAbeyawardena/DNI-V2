@@ -6,7 +6,6 @@
     <ProjectReference Include="..\DNI.Web.Shared\DNI.Web.Shared.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="..\..\..\lib\Microsoft.AspNetCore.Hosting.Abstractions.dll" />
-    <Reference Include="..\..\..\lib\Microsoft.AspNetCore.Mvc.Core.dll" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 </Project>

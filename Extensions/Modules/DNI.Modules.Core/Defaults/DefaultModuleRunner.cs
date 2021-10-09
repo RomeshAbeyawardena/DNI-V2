@@ -146,16 +146,8 @@ namespace DNI.Modules.Core.Defaults
 
             services.AddSingleton(injectableModules.Select(Activate));
             modules = startupModules.Select(Activate);
+            await Task.WhenAll(modules.ForEach(m => m.Run(cancellationToken)));
 
-            var taskList = new List<Task>();
-            modules.ForEach(m => moduleTaskQueue.TryAdd((c) => m.Run(c)));
-
-            while (moduleTaskQueue.Dequeue(out var resultTask))
-            {
-                taskList.Add(resultTask?.Invoke(cancellationTokenSource.Token));
-            }
-
-            await Task.WhenAll(taskList);
         }
 
         public override async Task OnStop(CancellationToken cancellationToken)

@@ -6,11 +6,7 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="..\..\..\lib\Microsoft.AspNetCore.Hosting.dll" />
-    <Reference Include="..\..\..\lib\Microsoft.AspNetCore.Hosting.Abstractions.dll" />
-    <Reference Include="..\..\..\lib\Microsoft.AspNetCore.dll" />
-    <Reference Include="..\..\..\lib\Microsoft.AspNetCore.Mvc.dll" />
-    <Reference Include="..\..\..\lib\Microsoft.AspNetCore.Mvc.Core.dll" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\DNI.Shared\DNI.Shared.csproj" />

@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="..\..\lib\Microsoft.AspNetCore.Hosting.Abstractions.dll" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   
   <ItemGroup>

@@ -2,6 +2,7 @@
 using DNI.Modules.Shared.Attributes;
 using DNI.Modules.Shared.Base;
 using DNI.Web.Shared.Abstractions;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -33,19 +34,27 @@ namespace DNI.Web.Modules
 
             foreach (var assembly in assemblies)
             {
-                mvcBuilder.AddApplicationPart(assembly)
-                    .AddControllersAsServices();
+                mvcBuilder
+                    .AddApplicationPart(assembly);
             }
+
+            mvcBuilder.AddControllersAsServices();
         }
 
-        public override Task OnRun(CancellationToken cancellationToken)
+        public override async Task OnRun(CancellationToken cancellationToken)
         {
-            host = Host.CreateDefaultBuilder()
-                .ConfigureServices(ConfigureServices)
-                .ConfigureWebHostDefaults(Options.ConfigureWebHost)
-                .Build();
+            var hostBuilder = Host.CreateDefaultBuilder()
+                .ConfigureServices(ConfigureServices);
 
-            return host.StartAsync(cancellationToken);
+            if (Options.ConfigureWebHost != null)
+            {
+                hostBuilder.ConfigureWebHostDefaults(Options.ConfigureWebHost);
+            }  
+            
+            host = hostBuilder.Build();
+            CancellationTokenSource cancellationTokenSource = new();
+            
+            await host.RunAsync(cancellationTokenSource.Token);
         }
 
         public override Task OnStop(CancellationToken cancellationToken)
@@ -57,7 +66,7 @@ namespace DNI.Web.Modules
         {
             if (dispose)
             {
-                host.Dispose();
+                host?.Dispose();
             }
         }
     }

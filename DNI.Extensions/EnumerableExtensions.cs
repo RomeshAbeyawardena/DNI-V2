@@ -33,5 +33,24 @@ namespace DNI.Extensions
                 action?.Invoke(item);
             }
         }
+
+        public static IEnumerable<TResult> ForEach<T, TResult>(this IEnumerable<T> items, Func<T, TResult> action)
+        {
+            var itemList = new List<TResult>();
+            if (items == null)
+            {
+                return Array.Empty<TResult>();
+            }
+
+            foreach (var item in items)
+            {
+                if (action != null)
+                {
+                    itemList.Add(action.Invoke(item));
+                }
+            }
+
+            return itemList;
+        }
     }
 }
