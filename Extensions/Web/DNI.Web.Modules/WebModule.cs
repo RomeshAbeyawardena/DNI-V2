@@ -3,6 +3,7 @@ using DNI.Modules.Shared.Attributes;
 using DNI.Modules.Shared.Base;
 using DNI.Web.Shared.Abstractions;
 using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -41,20 +42,25 @@ namespace DNI.Web.Modules
             mvcBuilder.AddControllersAsServices();
         }
 
-        public override async Task OnRun(CancellationToken cancellationToken)
+        public override Task OnRun(CancellationToken cancellationToken)
         {
             var hostBuilder = Host.CreateDefaultBuilder()
                 .ConfigureServices(ConfigureServices);
 
             if (Options.ConfigureWebHost != null)
             {
-                hostBuilder.ConfigureWebHostDefaults(Options.ConfigureWebHost);
-            }  
-            
-            host = hostBuilder.Build();
+                hostBuilder.ConfigureWebHostDefaults(ConfigureWebHost);
+            }
+
             CancellationTokenSource cancellationTokenSource = new();
-            
-            await host.RunAsync(cancellationTokenSource.Token);
+            return hostBuilder.RunConsoleAsync(cancellationToken);
+            //Console.WriteLine(host);
+        }
+
+        private void ConfigureWebHost(IWebHostBuilder webHostBuilder)
+        {
+            //Options.ConfigureWebHost?.Invoke(webHostBuilder); 
+            webHostBuilder.UseStartup<Startup>();
         }
 
         public override Task OnStop(CancellationToken cancellationToken)
@@ -67,6 +73,45 @@ namespace DNI.Web.Modules
             if (dispose)
             {
                 host?.Dispose();
+            }
+        }
+
+
+        class Startup
+        {
+            public void ConfigureServices(IServiceCollection services)
+            {
+                var mvcBuilder = services
+                    .AddControllers(Options.ConfigureMvcOptions);
+
+                var assemblies = Options.UseModuleAssemblies
+                ? AssemblyOptions.Select(a => a.Key).ToArray()
+                : Options.ToArray();
+
+                foreach (var assembly in assemblies)
+                {
+                    mvcBuilder
+                        .AddApplicationPart(assembly);
+                }
+
+                mvcBuilder.AddControllersAsServices();
+            }
+
+            public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+            {
+                if (env.IsDevelopment())
+                {
+                    app.UseDeveloperExceptionPage();
+                }
+
+                app.UseRouting();
+
+                app.UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllers();
+                });
+
+
             }
         }
     }

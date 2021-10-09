@@ -57,17 +57,17 @@ namespace DNI.Modules.Shared.Base
             this.parameters.AddRange(parameters);
         }
 
-        protected void OnStarted(ModuleEventArgs e, CancellationToken cancellationToken)
+        protected async Task OnStarted(ModuleEventArgs e, CancellationToken cancellationToken)
         {
-            OnRun(cancellationToken);
+            await OnRun(cancellationToken);
             moduleState.OnNext(e);
         }
 
-        protected void OnStopped(ModuleEventArgs e, CancellationToken cancellationToken)
+        protected async Task OnStopped(ModuleEventArgs e, CancellationToken cancellationToken)
         {
             if (!IsStopped)
             {
-                OnStop(cancellationToken);
+                await OnStop(cancellationToken);
                 moduleState.OnNext(e);
                 moduleState.OnCompleted();
                 IsStopped = true;
@@ -99,14 +99,12 @@ namespace DNI.Modules.Shared.Base
                 return Task.CompletedTask;
             }
 
-            OnStarted(new ModuleEventArgs(this, true), cancellationToken);
-            return Task.CompletedTask;
+            return OnStarted(new ModuleEventArgs(this, true), cancellationToken);
         }
 
         public Task Stop(CancellationToken cancellationToken)
         {
-            OnStopped(new ModuleEventArgs(this, false), cancellationToken);
-            return Task.CompletedTask;
+            return OnStopped(new ModuleEventArgs(this, false), cancellationToken);
         }
 
         public abstract Task OnRun(CancellationToken cancellationToken);

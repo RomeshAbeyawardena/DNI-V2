@@ -7,8 +7,12 @@ using System.Threading.Tasks;
 
 namespace DNI.Web.Core.Controllers
 {
+    [Route("{controller}/{action}}")]
     public class TestController : ControllerBase
     {
-        
+        public ActionResult Index()
+        {
+            return Ok("Test");
+        }
     }
 }
