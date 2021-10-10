@@ -1,0 +1,8 @@
+{
+	"Modules": {
+		"DbContext": "DNI.Data.Modules.DbContextModule, DNI.Data.Modules",
+		"Mediator": "DNI.Mediator.Modules.MediatorModule, DNI.Mediator.Modules",
+		"MigrationManager": "DNI.MigrationManager.Modules.MigrationManagerModule, DNI.MigrationManager.Modules",
+		"Web": "DNI.Web.Modules.WebModule, DNI.Web.Modules"
+	}
+}

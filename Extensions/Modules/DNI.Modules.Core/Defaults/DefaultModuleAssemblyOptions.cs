@@ -45,7 +45,8 @@ namespace DNI.Modules.Core.Defaults
 
         public IModuleAssemblyLocatorOptions AddAssembly(string assemblyNameorFilePath, IAssemblyOptions assemblyOptions)
         {
-            var assembly = moduleAssemblyResolver.ResolveAssembly(assemblyNameorFilePath);
+            var assembly = moduleAssemblyResolver
+                .ResolveAssembly(assemblyNameorFilePath);
 
             if(assembly != null)
             {

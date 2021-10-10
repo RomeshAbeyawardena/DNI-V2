@@ -13,7 +13,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DNI.MigrationManager.Core.Modules
+namespace DNI.MigrationManager.Modules
 {
     public class MigrationManagerModule : ModuleBase
     {
