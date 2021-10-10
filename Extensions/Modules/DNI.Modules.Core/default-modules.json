@@ -1,8 +1,20 @@
 {
-	"Modules": {
-		"DbContext": "DNI.Data.Modules.DbContextModule, DNI.Data.Modules",
-		"Mediator": "DNI.Mediator.Modules.MediatorModule, DNI.Mediator.Modules",
-		"MigrationManager": "DNI.MigrationManager.Modules.MigrationManagerModule, DNI.MigrationManager.Modules",
-		"Web": "DNI.Web.Modules.WebModule, DNI.Web.Modules"
-	}
+  "Modules": {
+    "DbContext": {
+      "Id": "DNI.Data.Modules, Version 1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "FileName": "DNI.Data.Modules.dll"
+    },
+    "Mediator": {
+      "Id": "DNI.Mediator.Modules, Version 1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "FileName": "DNI.Mediator.Modules.dll"
+    },
+    "MigrationManager": {
+      "Id": "DNI.MigrationManager.Modules, Version 1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "FileName": "DNI.MigrationManager.Modules.dll"
+    },
+    "Web": {
+      "Id": "DNI.Web.Modules, Version 1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "FileName": "DNI.Web.Modules.dll"
+    }
+  }
 }

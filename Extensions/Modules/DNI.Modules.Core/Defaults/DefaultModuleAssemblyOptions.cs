@@ -87,5 +87,12 @@ namespace DNI.Modules.Core.Defaults
                 .Where((k) => filterOptions(k.Value))
                 .Select(a => a.Key);
         }
+
+        public IModuleAssemblyLocatorOptions AddAssembly(string assemblyNameOrFilePath, Action<IAssemblyOptions> configureAssemblyOptions)
+        {
+            var defaultAssemblyOptions = new DefaultAssemblyOptions();
+            configureAssemblyOptions?.Invoke(defaultAssemblyOptions);
+            return AddAssembly(assemblyNameOrFilePath, defaultAssemblyOptions);
+        }
     }
 }

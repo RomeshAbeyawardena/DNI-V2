@@ -18,6 +18,7 @@ namespace DNI.Modules.Shared.Abstractions
         /// <param name="assemblyOptions"></param>
         /// <returns></returns>
         IModuleAssemblyLocatorOptions AddAssembly(string assemblyNameOrFilePath, IAssemblyOptions assemblyOptions);
+        IModuleAssemblyLocatorOptions AddAssembly(string assemblyNameOrFilePath, Action<IAssemblyOptions> assemblyOptions);
         IModuleAssemblyLocatorOptions AddAssembly(string appSettingsSection, string fileName = default);
     }
 }

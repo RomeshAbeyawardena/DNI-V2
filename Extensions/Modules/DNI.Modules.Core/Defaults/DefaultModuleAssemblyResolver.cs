@@ -18,21 +18,28 @@ namespace DNI.Modules.Core.Defaults
 
         public DefaultModuleAssemblyResolver(IModuleAssemblyResolverOptions resolverOptions)
         {
-            resolverConfigurationOptions = JsonSerializer.Deserialize<DefaultModuleAssemblyResolverConfigurationOptions>(resolverOptions.JsonFileName);
+            if (!File.Exists(resolverOptions.JsonFileName))
+                throw new FileNotFoundException("", resolverOptions.JsonFileName);
+
+            var json = File.ReadAllText(resolverOptions.JsonFileName);
+
+            resolverConfigurationOptions = JsonSerializer
+                .Deserialize<DefaultModuleAssemblyResolverConfigurationOptions>(json);
         }
 
         public Assembly ResolveAssembly(string name)
         {
-            if(resolverConfigurationOptions.Modules.TryGetValue(name, out var assemblyName))
+            var ass = typeof(DefaultModuleAssemblyResolver).Assembly.FullName;
+            if(resolverConfigurationOptions.Modules.TryGetValue(name, out var assemblyOptions))
             {
-                if (File.Exists(assemblyName))
+                var path = Path.Combine(Environment.CurrentDirectory, assemblyOptions.FileName);
+                if (File.Exists(path))
                 {
-                    return Assembly.LoadFrom(assemblyName);
+                    return Assembly.LoadFrom(path);
                 }
                 
-                return Assembly.Load(assemblyName);
+                return Assembly.Load(assemblyOptions.Id);
             }
-
             return null;
         }
     }

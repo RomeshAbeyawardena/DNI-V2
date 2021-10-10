@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DNI.Modules.Core.Options;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace DNI.Modules.Core.Defaults
 {
     public class DefaultModuleAssemblyResolverConfigurationOptions
     {
-        public Dictionary<string, string> Modules { get; set; }
+        public Dictionary<string, AssemblyOptions> Modules { get; set; }
     }
 }

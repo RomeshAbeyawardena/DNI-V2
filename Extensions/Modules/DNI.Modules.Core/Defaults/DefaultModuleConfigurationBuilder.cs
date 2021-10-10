@@ -11,7 +11,7 @@ namespace DNI.Modules.Core.Defaults
 {
     public class DefaultModuleConfigurationBuilder : IModuleConfigurationBuilder
     {
-        private IModuleAssemblyResolverOptions moduleAssemblyResolverOptions;
+        private readonly IModuleAssemblyResolverOptions moduleAssemblyResolverOptions;
         private readonly IServiceCollection services;
         private readonly DefaultModuleAssemblyOptions moduleAssemblyOptions;
         public DefaultModuleConfigurationBuilder(IServiceCollection services)

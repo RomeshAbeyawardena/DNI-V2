@@ -72,10 +72,10 @@ namespace DNI.Test.App
                 .ConfigureWebHost(ConfigureWebHost))
                 .RegisterModules(build => build
                     .ConfigureAssemblies(c => c
-                    .AddAssembly(MigrationManager.Modules.This.Assembly, a => { a.OnStartup = true; a.Discoverable = true; })
-                    .AddAssembly(Data.Modules.This.Assembly, a => { a.OnStartup = true; a.Discoverable = true; })
-                    .AddAssembly(Mediator.Modules.This.Assembly, a => { a.OnStartup = true; a.Discoverable = true; })
-                    .AddAssembly(Web.Modules.This.Assembly, a => { a.OnStartup = true; a.Discoverable = true; })));
+                    .AddAssembly("DbContext", a => { a.OnStartup = true; a.Discoverable = true; })
+                    .AddAssembly("Mediator", a => { a.OnStartup = true; a.Discoverable = true; })
+                    .AddAssembly("Web", a => { a.OnStartup = true; a.Discoverable = true; })
+                    .AddAssembly("MigrationManager", a => { a.OnStartup = true; a.Discoverable = true; })));
         }
 
         private static void ConfigureWebHost(IWebHostBuilder webHostBuilder)
