@@ -26,7 +26,7 @@ namespace DNI.MigrationManager.Core.Defaults
         }
 
         private readonly Dictionary<string, IMigrationOptions> migrationOptionsDictionary;
-        private bool isReadOnly;
+        private bool isReadOnly; 
         
         public ConcurrentQueue<IMigrationOptions> Migrations => this;
 
