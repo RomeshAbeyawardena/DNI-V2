@@ -1,8 +1,13 @@
 $path = "$PSScriptRoot"
-$build = $false
+$build = $true
 $buildPropsFileName = "$path\\Directory.Build.props"
+$incrementBuildVersion = $true
+$tempFiles = [System.Collections.ArrayList]::new()
+$packageInfoPath = "$path\\PackageInfo.xml"
 
-$xmlDoc = Load-XmlFile -path "$path\\PackageInfo.xml"
+. "$path/Shared.ps1"
+
+$xmlDoc = Load-XmlFile -path $packageInfoPath
 
 cd $path
 
@@ -48,6 +53,8 @@ foreach($node in $xmlNodes)
     $directory = $projectFile.Directory.FullName
     $newPath = "$directory\\$nodeName.final.csproj"
     
+    $ct = $tempFiles.Add($newPath)
+    
     if($build -eq $true)
     {
         $destinationXml.Save($newPath)
@@ -57,56 +64,19 @@ foreach($node in $xmlNodes)
 
 if($build -eq $true)
 {
-    dotnet pack "final.sln" --output "$path\\packages"
-}
-
-function Get-VersionString(
-    [object] $version
-    ) {
-
-    $major = $version.Attributes.GetNamedItem("Major").Value
-    $minor = $version.Attributes.GetNamedItem("Minor").Value
-    $revision = $version.Attributes.GetNamedItem("Revision").Value
-    $patch = $version.Attributes.GetNamedItem("Patch").Value
-
-    return [System.String]::Format("{0}.{1}.{2}.{3}", $major, $minor, $revision, $patch)
-}
-
-function Load-XmlFile(
-    [string] $path
-    ) {
-
-    $xmlDoc = [System.Xml.XmlDocument]::new()
-    $xmlDoc.Load("$path")
-    $xmlDoc
-}
-
-function Find-File(
-        [Array] $files,
-        [string]$fileName) {
-   
-    foreach($file in $files)
+    dotnet pack "final.sln" --nologo -v d --output "$path\\packages\\$buildVersion"
+    $patch = 0
+    if([System.Int32]::TryParse($versionInfo.Patch, [ref] $patch))
     {
-        $fileInfo = [System.IO.FileInfo]::new($file)
-        
-        if($fileName -eq $fileInfo.Name)
-        {
-            return $file
-        }
+       $versionInfo.Patch = ($patch + 1).ToString()
     }
-}
 
-function Get-Node-By-Name (
-        [Array] $nodes,
-        [string] $nodeName
-    ) {
-    
-    foreach($node in $nodes)
+    $xmlDoc.Save($packageInfoPath)
+    foreach($file in $tempFiles) 
     {
-        if($node.name -eq $nodeName)
-        {
-            return $node
-        }
+        $fileInfo = Get-File-Info -filePath $file 
+        $fileInfo.Delete()
     }
-    
+
+    $solutionFile = Get-File-Info -filePath "$path//final.sln"
 }
