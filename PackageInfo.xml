@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Packages>
+  <Package name="DNI.Core">
+    <Description>Hello johnny</Description>
+    <Tags>Banana on toast</Tags>
+    <PackageReleaseNotes></PackageReleaseNotes>
+  </Package>
+  <Package name="DNI.Extensions">
+    <Description></Description>
+    <Tags></Tags>
+    <PackageReleaseNotes></PackageReleaseNotes>
+  </Package>
+  <Package name="DNI.Shared">
+    <Description></Description>
+    <Tags></Tags>
+    <PackageReleaseNotes></PackageReleaseNotes>
+  </Package>
+  <Package name="DNI.Data.Core">
+    <Description></Description>
+    <Tags></Tags>
+    <PackageReleaseNotes></PackageReleaseNotes>
+  </Package>
+  <Package name="DNI.Data.Extensions">
+    <Description></Description>
+    <Tags></Tags>
+    <PackageReleaseNotes></PackageReleaseNotes>
+  </Package>
+  <Package name="DNI.Data.Shared">
+    <Description></Description>
+    <Tags></Tags>
+    <PackageReleaseNotes></PackageReleaseNotes>
+  </Package>
+  <Package name="DNI.Data.Modules">
+    <Description></Description>
+    <Tags></Tags>
+    <PackageReleaseNotes></PackageReleaseNotes>
+  </Package>
+  <Package name="DNI.Mediator.Core">
+    <Description></Description>
+    <Tags></Tags>
+    <PackageReleaseNotes></PackageReleaseNotes>
+  </Package>
+  <Package name="DNI.Mediator.Extensions">
+    <Description></Description>
+    <Tags></Tags>
+    <PackageReleaseNotes></PackageReleaseNotes>
+  </Package>
+  <Package name="DNI.Mediator.Shared">
+    <Description></Description>
+    <Tags></Tags>
+    <PackageReleaseNotes></PackageReleaseNotes>
+  </Package>
+  <Package name="DNI.Mediator.Modules">
+    <Description></Description>
+    <Tags></Tags>
+    <PackageReleaseNotes></PackageReleaseNotes>
+  </Package>
+  <Package name="DNI.MigrationManager.Core">
+    <Description></Description>
+    <Tags></Tags>
+    <PackageReleaseNotes></PackageReleaseNotes>
+  </Package>
+  <Package name="DNI.MigrationManager.Extensions">
+    <Description></Description>
+    <Tags></Tags>
+    <PackageReleaseNotes></PackageReleaseNotes>
+  </Package>
+  <Package name="DNI.MigrationManager.Shared">
+    <Description></Description>
+    <Tags></Tags>
+    <PackageReleaseNotes></PackageReleaseNotes>
+  </Package>
+  <Package name="DNI.MigrationManager.Modules">
+    <Description></Description>
+    <Tags></Tags>
+    <PackageReleaseNotes></PackageReleaseNotes>
+  </Package>
+  <Package name="DNI.Web.Core">
+    <Description></Description>
+    <Tags></Tags>
+    <PackageReleaseNotes></PackageReleaseNotes>
+  </Package>
+  <Package name="DNI.Web.Extensions">
+    <Description></Description>
+    <Tags></Tags>
+    <PackageReleaseNotes></PackageReleaseNotes>
+  </Package>
+  <Package name="DNI.Web.Shared">
+    <Description></Description>
+    <Tags></Tags>
+    <PackageReleaseNotes></PackageReleaseNotes>
+  </Package>
+  <Package name="DNI.Web.Modules">
+    <Description></Description>
+    <Tags></Tags>
+    <PackageReleaseNotes></PackageReleaseNotes>
+  </Package>
+  <Package name="DNI.Modules.Core">
+    <Description></Description>
+    <Tags></Tags>
+    <PackageReleaseNotes></PackageReleaseNotes>
+  </Package>
+  <Package name="DNI.Modules.Extensions">
+    <Description></Description>
+    <Tags></Tags>
+    <PackageReleaseNotes></PackageReleaseNotes>
+  </Package>
+  <Package name="DNI.Modules.Shared">
+    <Description></Description>
+    <Tags></Tags>
+    <PackageReleaseNotes></PackageReleaseNotes>
+  </Package>
+</Packages>
