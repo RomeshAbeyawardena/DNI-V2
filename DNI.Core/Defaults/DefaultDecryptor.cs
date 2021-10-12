@@ -15,13 +15,18 @@ namespace DNI.Core.Defaults
         {
         }
 
-        public string Decrypt(string value)
+        public string Decrypt(string value, string key)
+        {
+            return Decrypt(value, EncryptionOptions.UseKey(key));
+        }
+
+        public string Decrypt(string value, IEncryptionOptions encryptionOptions)
         {
             using (var memoryStream = new MemoryStream(Convert.FromBase64String(value)))
-            using (var algorithm = GetSymmetricAlgorithm(EncryptionOptions.Algorithm))
+            using (var algorithm = GetSymmetricAlgorithm(encryptionOptions.Algorithm))
             using (var encryptor = algorithm.CreateEncryptor())
             using (var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Read))
-            using (var streamReader = new StreamReader(cryptoStream, EncryptionOptions.Encoding))
+            using (var streamReader = new StreamReader(cryptoStream, encryptionOptions.Encoding))
             {
                 return streamReader.ReadToEnd();
             }
