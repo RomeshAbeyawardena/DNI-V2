@@ -6,6 +6,7 @@ using DNI.Mediator.Extensions;
 using DNI.MigrationManager.Extensions;
 using DNI.MigrationManager.Shared.Abstractions;
 using DNI.Modules.Extensions;
+using DNI.Shared;
 using DNI.Shared.Abstractions.Hosts;
 using DNI.Shared.Test;
 using DNI.Web.Extensions;
@@ -72,10 +73,14 @@ namespace DNI.Test.App
                 .ConfigureWebHost(ConfigureWebHost))
                 .RegisterModules(build => build
                     .ConfigureAssemblies(c => c
-                    .AddAssembly("DbContext", a => { a.OnStartup = true; a.Discoverable = true; })
-                    .AddAssembly("Mediator", a => { a.OnStartup = true; a.Discoverable = true; })
-                    .AddAssembly("Web", a => { a.OnStartup = true; a.Discoverable = true; })
-                    .AddAssembly("MigrationManager", a => { a.OnStartup = true; a.Discoverable = true; })));
+                    .AddAssembly(Shared.Modules.DbContext, a => a
+                        .SetAssemblyOptions(AssemblyOptions.Startup))
+                    .AddAssembly(Shared.Modules.Mediator, a => a
+                        .SetAssemblyOptions(AssemblyOptions.Startup))
+                    .AddAssembly(Shared.Modules.Web, a => a
+                        .SetAssemblyOptions(AssemblyOptions.Startup))
+                    .AddAssembly(Shared.Modules.MigrationManager, a => a
+                        .SetAssemblyOptions(AssemblyOptions.Startup))));
         }
 
         private static void ConfigureWebHost(IWebHostBuilder webHostBuilder)

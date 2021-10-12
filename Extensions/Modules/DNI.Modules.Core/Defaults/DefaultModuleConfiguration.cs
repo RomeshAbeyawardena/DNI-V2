@@ -1,4 +1,6 @@
 ﻿using DNI.Modules.Shared.Abstractions;
+using DNI.Shared.Abstractions;
+using DNI.Shared.Defaults;
 using System;
 using System.Collections.Generic;
 using System.Linq;

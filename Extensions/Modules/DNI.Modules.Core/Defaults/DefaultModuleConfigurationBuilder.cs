@@ -1,4 +1,5 @@
 ﻿using DNI.Modules.Shared.Abstractions;
+using DNI.Shared.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;

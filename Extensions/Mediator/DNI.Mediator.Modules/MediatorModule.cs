@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MediatR;
 using System.Reflection;
 using DNI.Modules.Shared.Abstractions;
+using DNI.Shared.Abstractions;
 
 namespace DNI.Mediator.Modules
 {

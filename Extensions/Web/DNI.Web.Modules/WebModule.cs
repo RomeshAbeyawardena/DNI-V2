@@ -2,6 +2,7 @@
 using DNI.Modules.Shared.Abstractions;
 using DNI.Modules.Shared.Attributes;
 using DNI.Modules.Shared.Base;
+using DNI.Shared.Abstractions;
 using DNI.Web.Shared.Abstractions;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
