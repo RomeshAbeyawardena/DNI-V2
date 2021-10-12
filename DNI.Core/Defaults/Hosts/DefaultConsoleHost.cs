@@ -110,9 +110,9 @@ namespace DNI.Core.Defaults.Hosts
             return ValueTask.CompletedTask;
         }
 
-        public void Start()
+        public void Start(params object[] args)
         {
-            InvokeServiceMethod(StartupType, "Start");
+            InvokeServiceMethod(StartupType, "Start", parameters: args);
         }
 
         public void Stop()
@@ -120,9 +120,9 @@ namespace DNI.Core.Defaults.Hosts
             InvokeServiceMethod(StartupType, "Stop");
         }
 
-        public Task StartAsync(CancellationToken cancellationToken)
+        public Task StartAsync(CancellationToken cancellationToken = default, params object[] args)
         {
-            return (Task)InvokeServiceMethod(StartupType, "StartAsync", parameters: UseCancellationTokenSourceIfNull(cancellationToken));
+            return (Task)InvokeServiceMethod(StartupType, "StartAsync", parameters: new object[] { UseCancellationTokenSourceIfNull(cancellationToken), args });
         }
 
         public Task StopAsync(CancellationToken cancellationToken)

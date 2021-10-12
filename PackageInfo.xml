@@ -1,16 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <Packages>
   <Info>
-    <Version Major="1" Minor="0" Revision="0" Patch="5" />
+    <Version Major="1" Minor="0" Revision="0" Patch="1" />
   </Info>
   <Package name="DNI.Core">
-    <Description>Hello johnny</Description>
-    <Tags>Banana on toast</Tags>
+    <Description>Base core library that contains the default implementation for numerous abstractions within the DNI.Shared package</Description>
+    <Tags>Base,Core,Library,DNI.Shared</Tags>
     <PackageReleaseNotes>
     </PackageReleaseNotes>
   </Package>
   <Package name="DNI.Extensions">
     <Description>
+      Contains numerous useful extensions
     </Description>
     <Tags>
     </Tags>
@@ -19,6 +20,7 @@
   </Package>
   <Package name="DNI.Shared">
     <Description>
+      Base library that contains numerous abstractions to simplify concepts
     </Description>
     <Tags>
     </Tags>
@@ -27,6 +29,7 @@
   </Package>
   <Package name="DNI.Data.Core">
     <Description>
+      Database core library
     </Description>
     <Tags>
     </Tags>
@@ -35,6 +38,7 @@
   </Package>
   <Package name="DNI.Data.Extensions">
     <Description>
+      Database extension library
     </Description>
     <Tags>
     </Tags>
@@ -43,6 +47,7 @@
   </Package>
   <Package name="DNI.Data.Shared">
     <Description>
+      Database shared library
     </Description>
     <Tags>
     </Tags>
@@ -51,6 +56,7 @@
   </Package>
   <Package name="DNI.Data.Modules">
     <Description>
+      Database modules library, contains modules that can be used directly within your application
     </Description>
     <Tags>
     </Tags>
@@ -59,6 +65,7 @@
   </Package>
   <Package name="DNI.Mediator.Core">
     <Description>
+      Mediator core library, used for implementing the command query design pattern. Contains implementations for DNI.Mediator.Shared
     </Description>
     <Tags>
     </Tags>
@@ -67,6 +74,7 @@
   </Package>
   <Package name="DNI.Mediator.Extensions">
     <Description>
+      Mediator extension library
     </Description>
     <Tags>
     </Tags>
@@ -75,6 +83,7 @@
   </Package>
   <Package name="DNI.Mediator.Shared">
     <Description>
+      Mediator shared library
     </Description>
     <Tags>
     </Tags>
@@ -83,6 +92,7 @@
   </Package>
   <Package name="DNI.Mediator.Modules">
     <Description>
+      Mediator module library
     </Description>
     <Tags>
     </Tags>
@@ -91,6 +101,7 @@
   </Package>
   <Package name="DNI.MigrationManager.Core">
     <Description>
+      MigrationManager core library
     </Description>
     <Tags>
     </Tags>
@@ -99,6 +110,7 @@
   </Package>
   <Package name="DNI.MigrationManager.Extensions">
     <Description>
+      MigrationManager extensions library
     </Description>
     <Tags>
     </Tags>
@@ -107,6 +119,7 @@
   </Package>
   <Package name="DNI.MigrationManager.Shared">
     <Description>
+      MigrationManager shared library
     </Description>
     <Tags>
     </Tags>
@@ -115,6 +128,7 @@
   </Package>
   <Package name="DNI.MigrationManager.Modules">
     <Description>
+      MigrationManager modules library
     </Description>
     <Tags>
     </Tags>
@@ -123,6 +137,7 @@
   </Package>
   <Package name="DNI.Web.Core">
     <Description>
+      Web core library
     </Description>
     <Tags>
     </Tags>
@@ -131,6 +146,7 @@
   </Package>
   <Package name="DNI.Web.Extensions">
     <Description>
+      Web extensions library
     </Description>
     <Tags>
     </Tags>
@@ -139,6 +155,7 @@
   </Package>
   <Package name="DNI.Web.Shared">
     <Description>
+      Web shared library
     </Description>
     <Tags>
     </Tags>
@@ -147,6 +164,7 @@
   </Package>
   <Package name="DNI.Web.Modules">
     <Description>
+      Web modules library
     </Description>
     <Tags>
     </Tags>
@@ -155,6 +173,7 @@
   </Package>
   <Package name="DNI.Modules.Core">
     <Description>
+      Modules core library
     </Description>
     <Tags>
     </Tags>
@@ -163,6 +182,7 @@
   </Package>
   <Package name="DNI.Modules.Extensions">
     <Description>
+      Modules extensions library
     </Description>
     <Tags>
     </Tags>
@@ -171,6 +191,7 @@
   </Package>
   <Package name="DNI.Modules.Shared">
     <Description>
+      Modules shared library
     </Description>
     <Tags>
     </Tags>

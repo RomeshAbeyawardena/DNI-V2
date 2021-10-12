@@ -31,13 +31,13 @@ namespace DNI.Shared.Base
     }
     public abstract class StartupBase : IStartup
     {
-        public virtual void Start()
+        public virtual void Start(params object[] args)
         {
             StartAsync(default)
                 .Wait();
         }
 
-        public abstract Task StartAsync(CancellationToken cancellationToken);
+        public abstract Task StartAsync(CancellationToken cancellationToken = default, params object[] args);
 
         public virtual void Stop()
         {
@@ -45,6 +45,6 @@ namespace DNI.Shared.Base
                 .Wait();
         }
 
-        public abstract Task StopAsync(CancellationToken cancellationToken);
+        public abstract Task StopAsync(CancellationToken cancellationToken = default);
     }
 }

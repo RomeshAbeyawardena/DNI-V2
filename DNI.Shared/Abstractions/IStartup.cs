@@ -16,7 +16,7 @@ namespace DNI.Shared.Abstractions
         /// <summary>
         /// Starts the current <see cref="IStartup"/> instance
         /// </summary>
-        void Start();
+        void Start(params object[] args);
         /// <summary>
         /// Stops the current <see cref="IStartup"/> instance
         /// </summary>
@@ -27,7 +27,7 @@ namespace DNI.Shared.Abstractions
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns>A <see cref="Task"/> that relates to the current async instance</returns>
-        Task StartAsync(CancellationToken cancellationToken = default);
+        Task StartAsync(CancellationToken cancellationToken = default, params object[] args);
         /// <summary>
         /// Stops the current <see cref="IStartup"/> instance
         /// </summary>

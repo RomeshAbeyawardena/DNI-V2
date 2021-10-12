@@ -42,7 +42,7 @@ namespace DNI.Test.App
             }
         }
 
-        public override Task StartAsync(CancellationToken cancellationToken)
+        public override Task StartAsync(CancellationToken cancellationToken = default, params object[] args)
         {
             logger.LogInformation("StartAsync called on {0}", Thread.CurrentThread.ManagedThreadId);
             return moduleStartup.Run(cancellationToken);
