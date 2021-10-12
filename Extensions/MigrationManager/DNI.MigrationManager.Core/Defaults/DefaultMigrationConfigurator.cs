@@ -4,9 +4,6 @@ using DNI.MigrationManager.Shared.Abstractions.Builders;
 using DNI.Shared.Attributes;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DNI.MigrationManager.Core.Defaults
 {

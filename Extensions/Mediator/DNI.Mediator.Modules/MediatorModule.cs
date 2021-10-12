@@ -1,16 +1,13 @@
 ﻿using DNI.Modules.Shared.Attributes;
 using DNI.Modules.Shared.Base;
 using DNI.Mediator.Shared.Abstractions;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using MediatR;
 using System.Reflection;
-using DNI.Modules.Shared.Abstractions;
 using DNI.Shared.Abstractions;
 using DNI.Shared.Attributes;
 

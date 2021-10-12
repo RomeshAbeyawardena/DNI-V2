@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DNI.MigrationManager.Shared
+﻿namespace DNI.MigrationManager.Shared
 {
     public class Class1
     {

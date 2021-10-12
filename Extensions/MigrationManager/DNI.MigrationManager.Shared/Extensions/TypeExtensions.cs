@@ -1,10 +1,7 @@
 ﻿using DNI.MigrationManager.Shared.Abstractions;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DNI.MigrationManager.Shared.Extensions
 {
