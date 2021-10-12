@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace DNI.MigrationManager.Modules
 {
-    [Requires(typeof(Core.This))]
+    [RequiresDependencies(typeof(Core.This))]
     public class MigrationManagerModule : ModuleBase
     {
         private readonly IMigrationQueryBuilder migrationQueryBuilder;

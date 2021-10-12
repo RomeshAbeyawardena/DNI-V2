@@ -12,9 +12,11 @@ using MediatR;
 using System.Reflection;
 using DNI.Modules.Shared.Abstractions;
 using DNI.Shared.Abstractions;
+using DNI.Shared.Attributes;
 
 namespace DNI.Mediator.Modules
 {
+    [RequiresDependencies(typeof(Core.This))]
     public class MediatorModule : ModuleBase
     {
         [Resolve] private static IDictionary<Assembly, IAssemblyOptions> AssemblyOptions { get; set; }

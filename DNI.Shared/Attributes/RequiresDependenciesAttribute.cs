@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace DNI.Shared.Attributes
 {
-    [System.AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = true)]
-    public sealed class RequiresAttribute : Attribute
+    [System.AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
+    public sealed class RequiresDependenciesAttribute : Attribute
     {
-        public RequiresAttribute(params Type[] requiredTypes)
+        public RequiresDependenciesAttribute(params Type[] requiredTypes)
         {
             RequiredTypes = requiredTypes;
         }

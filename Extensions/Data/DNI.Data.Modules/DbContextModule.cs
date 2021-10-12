@@ -3,6 +3,7 @@ using DNI.Data.Shared.Abstractions;
 using DNI.Extensions;
 using DNI.Modules.Shared.Attributes;
 using DNI.Modules.Shared.Base;
+using DNI.Shared.Attributes;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace DNI.Data.Modules
 {
+    [RequiresDependencies(typeof(Core.This))]
     public class DbContextModule : ModuleBase
     {
         [Resolve] private static IDbContextModuleOptions ModuleOptions { get; set; }

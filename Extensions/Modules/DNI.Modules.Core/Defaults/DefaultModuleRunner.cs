@@ -152,7 +152,7 @@ namespace DNI.Modules.Core.Defaults
 
             injectableModules.AppendAll(startupModules).ForEach(RegisterServices);
 
-            var moduleDependencies = startupModules.SelectMany(a => a.GetCustomAttribute<RequiresAttribute>()?.RequiredTypes ?? Array.Empty<Type>());
+            var moduleDependencies = startupModules.SelectMany(a => a.GetCustomAttribute<RequiresDependenciesAttribute>()?.RequiredTypes ?? Array.Empty<Type>());
 
             var serviceModules = startupModules.Append(typeof(This))
                 .AppendAll(moduleDependencies)
