@@ -16,16 +16,6 @@ namespace DNI.MigrationManager.Extensions
         public static IServiceCollection AddMigrationServices(this IServiceCollection services)
         {
             return services
-                .Scan(s => s.FromAssembliesOf(typeof(This))
-                .AddClasses(a => a.WithAttribute<RegisterServiceAttribute>(rsa => rsa.ServiceLifetime == ServiceLifetime.Singleton))
-                .AsImplementedInterfaces()
-                .WithSingletonLifetime()
-                .AddClasses(a => a.WithAttribute<RegisterServiceAttribute>(rsa => rsa.ServiceLifetime == ServiceLifetime.Scoped))
-                .AsImplementedInterfaces()
-                .WithScopedLifetime()
-                .AddClasses(a => a.WithAttribute<RegisterServiceAttribute>(rsa => rsa.ServiceLifetime == ServiceLifetime.Transient))
-                .AsImplementedInterfaces()
-                .WithTransientLifetime())
                 .AddDbTypeDefinitions("Sql", dictionaryBuilder => dictionaryBuilder
                     .Add(typeof(Guid), "UNIQUEIDENTIFIER")
                     .Add(typeof(short), "SMALLINT")

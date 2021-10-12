@@ -1,4 +1,5 @@
-﻿using DNI.Extensions;
+﻿using DNI.Core;
+using DNI.Extensions;
 using DNI.Modules.Shared.Abstractions;
 using DNI.Modules.Shared.Attributes;
 using DNI.Modules.Shared.Base;
@@ -27,10 +28,9 @@ namespace DNI.Modules.Core.Defaults
         private IServiceProvider builtModuleServices;
         private IModuleServiceProvider moduleServiceProvider;
         private readonly Dictionary<Type, IModule> modulesCache;
-        private readonly ITaskQueue moduleTaskQueue;
         private readonly List<IDisposable> subscribers;
         private readonly ILogger<DefaultModuleRunner> logger;
-
+        private IServiceScope serviceScope;
         private IModuleServiceProvider ModuleServiceProvider
         {
             get
@@ -39,6 +39,8 @@ namespace DNI.Modules.Core.Defaults
                 {
                     moduleServiceProvider = new DefaultModuleServiceProvider(serviceProvider, BuiltModuleServices);
                 }
+
+                serviceScope = moduleServiceProvider.CreateScope();
 
                 return moduleServiceProvider;
             }
@@ -78,7 +80,7 @@ namespace DNI.Modules.Core.Defaults
             else
             {
                 var parameters = defaultConstructor.GetParameters()
-                    .Select(a => ModuleServiceProvider.GetRequiredService(a.ParameterType))
+                    .Select(a => ModuleServiceProvider.GetService(a.ParameterType) ?? serviceScope.ServiceProvider.GetRequiredService(a.ParameterType))
                     .ToArray();
 
                 module = Activator.CreateInstance(type, parameters) as IModule;
@@ -127,7 +129,6 @@ namespace DNI.Modules.Core.Defaults
         public DefaultModuleRunner(IServiceProvider serviceProvider, IModuleOptions moduleOptions)
         {
             cancellationTokenSource = new CancellationTokenSource();
-            moduleTaskQueue = new DefaultTaskQueue<IModuleResult>();
             services = new ServiceCollection();
             modulesCache = new Dictionary<Type, IModule>();
             subscribers = new List<IDisposable>();
@@ -151,7 +152,28 @@ namespace DNI.Modules.Core.Defaults
 
             injectableModules.AppendAll(startupModules).ForEach(RegisterServices);
 
-            services.AddSingleton(injectableModules.Select(Activate));
+            var moduleDependencies = startupModules.SelectMany(a => a.GetCustomAttribute<RequiresAttribute>()?.RequiredTypes ?? Array.Empty<Type>());
+
+            var serviceModules = startupModules.Append(typeof(This))
+                .AppendAll(moduleDependencies)
+                .ToArray();
+
+            services
+                .Scan(s => s.FromAssembliesOf(serviceModules)
+                .AddClasses(a => a.WithAttribute<RegisterServiceAttribute>(rsa => rsa.ServiceLifetime == ServiceLifetime.Singleton))
+                .AsImplementedInterfaces()
+                .WithSingletonLifetime()
+                .AddClasses(a => a.WithAttribute<RegisterServiceAttribute>(rsa => rsa.ServiceLifetime == ServiceLifetime.Scoped))
+                .AsImplementedInterfaces()
+                .WithScopedLifetime()
+                .AddClasses(a => a.WithAttribute<RegisterServiceAttribute>(rsa => rsa.ServiceLifetime == ServiceLifetime.Transient))
+                .AsImplementedInterfaces()
+                .WithTransientLifetime());
+
+                services.AddEncryptionServices()
+                .AddSingleton(injectableModules.Select(Activate))
+                .OutputServices();
+
             modules = startupModules.Select(Activate);
             await Task.WhenAll(modules.ForEach(m => m.Run(cancellationToken)));
 
@@ -166,6 +188,7 @@ namespace DNI.Modules.Core.Defaults
         {
             if (dispose)
             {
+                serviceScope.Dispose();
                 modules.ForEach(m => m.Dispose());
                 subscribers.ForEach(m => m.Dispose());
             }

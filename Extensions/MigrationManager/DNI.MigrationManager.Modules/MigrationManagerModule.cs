@@ -3,6 +3,7 @@ using DNI.MigrationManager.Shared.Abstractions;
 using DNI.Modules.Shared.Attributes;
 using DNI.Modules.Shared.Base;
 using DNI.Shared.Abstractions;
+using DNI.Shared.Attributes;
 using DNI.Shared.Test;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -15,6 +16,7 @@ using System.Threading.Tasks;
 
 namespace DNI.MigrationManager.Modules
 {
+    [Requires(typeof(Core.This))]
     public class MigrationManagerModule : ModuleBase
     {
         private readonly IMigrationQueryBuilder migrationQueryBuilder;

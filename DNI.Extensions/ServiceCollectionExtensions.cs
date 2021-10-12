@@ -1,6 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using DNI.Core.Defaults.Builders;
+using DNI.Shared.Abstractions.Builders;
+using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Security.Cryptography;
 
 namespace DNI.Extensions
 {
@@ -15,5 +19,18 @@ namespace DNI.Extensions
 
             return services;
         }
+
+        public static IServiceCollection AddEncryptionServices(this IServiceCollection services)
+        {
+            return services.AddSingleton(Configure());
+        }
+
+        private static IDictionary<Shared.Enumerations.SymmetricAlgorithm, Func<SymmetricAlgorithm>> Configure()
+        {
+            return DictionaryBuilder.Build<Shared.Enumerations.SymmetricAlgorithm, Func<SymmetricAlgorithm>>(db => db
+                .Add(Shared.Enumerations.SymmetricAlgorithm.Aes, () => SymmetricAlgorithm.Create("AES"))
+                .Add(Shared.Enumerations.SymmetricAlgorithm.RSA, () => SymmetricAlgorithm.Create("RSA")));
+        }
+
     }
 }

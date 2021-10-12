@@ -16,6 +16,10 @@ namespace DNI.Extensions
         public static IEnumerable<T> AppendAll<T>(this IEnumerable<T> items, IEnumerable<T> itemsToAppend)
         {
             var itemList = new List<T>(items);
+
+            if (itemsToAppend == null)
+                return itemList;
+
             itemList.AddRange(itemsToAppend);
 
             return itemList;

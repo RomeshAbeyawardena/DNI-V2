@@ -1,4 +1,5 @@
-﻿using DNI.Shared.Base;
+﻿using DNI.Shared.Attributes;
+using DNI.Shared.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace DNI.Core.Defaults.Factories
 {
+    [RegisterService]
     public class DefaultSymmetricAlgorithmFactory : ISymmetricAlgorithmFactory
     {
         private readonly IDictionary<Shared.Enumerations.SymmetricAlgorithm, Func<SymmetricAlgorithm>> symmetricAlgorithmDictionaryFactory;
