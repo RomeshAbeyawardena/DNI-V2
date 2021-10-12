@@ -64,7 +64,7 @@ foreach($node in $xmlNodes)
 
 if($build -eq $true)
 {
-    dotnet pack "final.sln" --nologo -v d --output "$path\\packages\\$buildVersion"
+    dotnet pack "final.sln" --nologo -v n --output "$path\\packages\\$buildVersion"
     $patch = 0
     if([System.Int32]::TryParse($versionInfo.Patch, [ref] $patch))
     {
