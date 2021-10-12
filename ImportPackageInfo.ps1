@@ -79,4 +79,5 @@ if($build -eq $true)
     }
 
     $solutionFile = Get-File-Info -filePath "$path//final.sln"
+    $solutionFile.Delete()
 }
