@@ -1,23 +1,24 @@
-﻿using DNI.Modules.Shared.Abstractions;
-using System;
+﻿using System;
 
 namespace DNI.Modules.Core.Defaults
 {
-    public class DefaultModuleServiceProvider : IModuleServiceProvider
+    internal class DefaultModuleServiceProvider : IServiceProvider
     {
-        private readonly IServiceProvider defaultServiceProvider;
-        private readonly IServiceProvider moduleServiceProvider;
+        private readonly IServiceProvider parentServiceProvider;
+        private readonly IServiceProvider serviceProvider;
 
-        public DefaultModuleServiceProvider(IServiceProvider defaultServiceProvider, IServiceProvider moduleServiceProvider)
+        public DefaultModuleServiceProvider(
+            IServiceProvider parentServiceProvider,
+            IServiceProvider serviceProvider)
         {
-            this.defaultServiceProvider = defaultServiceProvider;
-            this.moduleServiceProvider = moduleServiceProvider;
+            this.parentServiceProvider = parentServiceProvider;
+            this.serviceProvider = serviceProvider;
         }
 
         public object GetService(Type serviceType)
         {
-            return moduleServiceProvider.GetService(serviceType)
-                ?? defaultServiceProvider.GetService(serviceType);
+            return parentServiceProvider.GetService(serviceType) 
+                ?? serviceProvider.GetService(serviceType);
         }
     }
 }

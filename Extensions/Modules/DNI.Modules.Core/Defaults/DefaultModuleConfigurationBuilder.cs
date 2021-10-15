@@ -1,53 +1,34 @@
-﻿using DNI.Modules.Shared.Abstractions;
-using DNI.Shared.Abstractions;
-using Microsoft.Extensions.DependencyInjection;
+﻿using DNI.Extensions;
+using DNI.Modules.Shared.Abstractions;
+using DNI.Modules.Shared.Abstractions.Builders;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace DNI.Modules.Core.Defaults
 {
-    public class DefaultModuleConfigurationBuilder : IModuleConfigurationBuilder
+    internal class DefaultModuleConfigurationBuilder : IModuleConfigurationBuilder
     {
-        private readonly IModuleAssemblyResolverOptions moduleAssemblyResolverOptions;
-        private readonly IServiceCollection services;
-        private readonly DefaultModuleAssemblyOptions moduleAssemblyOptions;
-        public DefaultModuleConfigurationBuilder(IServiceCollection services)
+        public List<Type> moduleTypes;
+
+        public DefaultModuleConfigurationBuilder()
         {
-            moduleAssemblyResolverOptions = new DefaultModuleAssemblyResolverOptions();
-            moduleAssemblyOptions = new DefaultModuleAssemblyOptions();
-            this.services = services;
+            moduleTypes = new();
         }
 
-        public IModuleConfigurationBuilder ConfigureResolverOptions(Action<IModuleAssemblyResolverOptions> configureResolver)
+        public IModuleConfigurationBuilder AddModule(Type moduleType)
         {
-            configureResolver?.Invoke(moduleAssemblyResolverOptions);
-            moduleAssemblyOptions.ConfigureResolver(moduleAssemblyResolverOptions);
+            moduleTypes.Add(moduleType);
             return this;
         }
 
-        public IModuleStartup Build()
+        public IModuleConfiguration Build(IServiceProvider serviceProvider)
         {
-            services.AddSingleton<IDictionary<Assembly, IAssemblyOptions>>(moduleAssemblyOptions);
-            return new DefaultModuleStartup(services, new DefaultModuleRunner(services, new DefaultModuleOptions(moduleAssemblyOptions)));
-        }
+            var defaultModuleConfiguration = new DefaultModuleConfiguration { ModuleTypes = moduleTypes };
 
-        public IModuleStartup Build(Action<IModuleConfigurationBuilder> configure)
-        {
-            configure?.Invoke(this);
-            return Build();
-        }
-
-        public IModuleConfigurationBuilder ConfigureAssemblies(Action<IModuleAssemblyOptions> configure)
-        {
-            configure(moduleAssemblyOptions);
-            return this;
-        }
-
-        public IModuleConfigurationBuilder ConfigureAssemblies(Action<IModuleAssemblyLocatorOptions> configure)
-        {
-            configure(moduleAssemblyOptions);
-            return this;
+            return defaultModuleConfiguration;
         }
     }
 }

@@ -16,14 +16,16 @@ namespace DNI.Test.App
 
              services
                 .AddModules(configure => configure
-                .AddModule(typeof(WebModule))
+                .AddWebModule()
                 .AddModule(typeof(MyModule))
                 .AddModule(typeof(MyModule2)));
 
             var serviceProvider = services.BuildServiceProvider();
 
             using var moduleStartup = await serviceProvider
-                .StartModules(CancellationToken.None);   
+                .StartModules(CancellationToken.None);
+
+            await moduleStartup.StopAsync(CancellationToken.None);
         }
     }
 }

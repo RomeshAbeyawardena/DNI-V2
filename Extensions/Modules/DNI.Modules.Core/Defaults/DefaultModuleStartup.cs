@@ -2,42 +2,46 @@
 using DNI.Modules.Shared.Base;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace DNI.Modules.Core.Defaults
 {
-    public class DefaultModuleStartup : ModuleBase, IModuleStartup
+    internal class DefaultModuleStartup : ModuleBase, IModuleStartup
     {
-        private readonly IServiceCollection services;
         private readonly IModuleRunner moduleRunner;
-        private readonly IDisposable subscriber;
-        public DefaultModuleStartup(IServiceCollection services, IModuleRunner moduleRunner)
+
+        public DefaultModuleStartup(
+            IModuleConfiguration moduleConfiguration,
+            IModuleRunner moduleRunner)
         {
-            this.services = services;
+            Configuration = moduleConfiguration;
             this.moduleRunner = moduleRunner;
-            this.subscriber = moduleRunner.State.Subscribe(moduleState);
         }
 
-        public override Task OnRun(CancellationToken cancellationToken)
+        public IModuleConfiguration Configuration { get; }
+
+        public override void ConfigureServices(IServiceCollection serviceCollection, IModuleConfiguration moduleConfiguration)
         {
-            moduleRunner.Merge(services);
-            return moduleRunner.Run(cancellationToken);
+            moduleRunner.ConfigureServices(serviceCollection, moduleConfiguration);
+        }
+
+        public override void OnDispose(bool disposing)
+        {
+            moduleRunner.Dispose();
+        }
+
+        public override Task OnStart(CancellationToken cancellationToken)
+        {
+            return moduleRunner.StartAsync(cancellationToken);
         }
 
         public override Task OnStop(CancellationToken cancellationToken)
         {
-            return moduleRunner.Stop(cancellationToken);
-        }
-
-        public override void Dispose(bool dispose)
-        {
-            if (dispose)
-            {
-                moduleRunner.Dispose();
-                subscriber.Dispose();
-            }
-            base.Dispose(dispose);
+            return moduleRunner.StopAsync(cancellationToken);
         }
     }
 }

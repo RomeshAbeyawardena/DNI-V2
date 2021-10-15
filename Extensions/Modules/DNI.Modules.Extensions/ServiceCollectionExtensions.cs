@@ -1,31 +1,36 @@
 ﻿using DNI.Modules.Core.Defaults;
 using DNI.Modules.Shared.Abstractions;
+using DNI.Modules.Shared.Abstractions.Builders;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace DNI.Modules.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        /// <summary>
-        /// Adds modules to be loaded and prepared in memory.
-        /// </summary>
-        /// <param name="services"></param>
-        /// <param name="build"></param>
-        /// <returns></returns>
-        public static IModuleConfigurationBuilder AddModules(this IServiceCollection services,
-            Action<IModuleConfigurationBuilder> build)
+        public static IServiceCollection AddModules(this IServiceCollection services, Action<IModuleConfigurationBuilder> configureModules)
         {
-            var defaultModuleConfigurationBuilder = new DefaultModuleConfigurationBuilder(services);
+            IModuleConfiguration ConfigureModuleConfiguration()
+            {
+                DefaultModuleConfigurationBuilder builder = new();
+                configureModules(builder);
+                return  builder.Build(new DefaultFakeServiceProvider());
+            }
 
-            build(defaultModuleConfigurationBuilder);
+            IModuleRunner ConfigureModuleRunner(IServiceProvider serviceProvider)
+            {
+                var moduleConfiguration = serviceProvider.GetRequiredService<IModuleConfiguration>();
+                return moduleConfiguration.ConfigureRunner(serviceProvider);
+            }
 
-            return defaultModuleConfigurationBuilder;
-        }
-
-        public static IServiceCollection RegisterModules(this IServiceCollection services, Action<IModuleConfigurationBuilder> build)
-        {
-            return services.AddSingleton(s => AddModules(services, build).Build());
+            return services
+                .AddSingleton(ConfigureModuleConfiguration())
+                .AddSingleton(ConfigureModuleRunner)
+                .AddSingleton<IModuleStartup, DefaultModuleStartup>();
         }
     }
 }

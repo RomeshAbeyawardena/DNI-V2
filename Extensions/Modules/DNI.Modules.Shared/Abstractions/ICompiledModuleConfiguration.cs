@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace DNI.Modules.Shared.Abstractions
 {
-    public interface IModuleStartup : IModule
+    public interface ICompiledModuleConfiguration
     {
-        IModuleConfiguration Configuration { get; }
+        IEnumerable<IModule> Modules { get; }
     }
 }

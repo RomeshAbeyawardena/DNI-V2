@@ -1,17 +1,36 @@
-﻿using DNI.Modules.Shared.Abstractions;
-using DNI.Shared.Abstractions;
-using DNI.Shared.Defaults;
+﻿using DNI.Extensions;
+using DNI.Modules.Shared.Abstractions;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace DNI.Modules.Core.Defaults
 {
-    public class DefaultModuleConfiguration : IModuleConfiguration
+    internal class DefaultModuleConfiguration : IModuleConfiguration
     {
-        public bool Enabled { get; set; }
-        public string ModuleName { get; set; }
-        public string AssemblyName { get; set; }
-        public string FileName { get; set; }
-        public DefaultAssemblyOptions Options { get; set; }
-        IAssemblyOptions IModuleConfiguration.Options { get => Options; set => throw new NotImplementedException(); }
+
+#pragma warning disable IDE0052 // Remove unread private members
+        private IEnumerable<IDisposable> disposables;
+#pragma warning restore IDE0052 // Remove unread private members
+
+        public DefaultModuleConfiguration()
+        {
+
+        }
+
+        public IEnumerable<Type> ModuleTypes { get; set; }
+
+        public ICompiledModuleConfiguration Compile(IServiceProvider serviceProvider)
+        {
+            var activatedModuleList = new List<IModule>();
+            foreach (var moduleType in ModuleTypes)
+            {
+                activatedModuleList.Add(serviceProvider.Activate<IModule>(moduleType, out disposables));
+            }
+
+            return new DefaultCompiledModuleConfiguration { Modules = activatedModuleList };
+        }
     }
 }

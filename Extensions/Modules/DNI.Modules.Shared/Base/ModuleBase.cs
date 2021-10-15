@@ -1,114 +1,64 @@
 ﻿using DNI.Extensions;
+using DNI.Modules.Core.Defaults;
 using DNI.Modules.Shared.Abstractions;
-using DNI.Modules.Shared.Defaults;
-using DNI.Shared.Base;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Subjects;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace DNI.Modules.Shared.Base
 {
-    public abstract class ModuleBase : DisposableBase, IModule
+    public abstract class ModuleBase : SubscriptionManagerBase<IModuleStatus>, IModule
     {
-        private readonly object syncRoot;
-        private readonly List<object> parameters;
-        private readonly ISubject<IModuleResult> resultState;
-        private bool isStopped;
-        protected readonly ISubject<ModuleEventArgs> moduleState;
+        private readonly ISubject<IModuleStatus> moduleStatusSubject;
 
-        public bool IsStopped {
-            get { lock (syncRoot) return isStopped; }
-            set
-            {
-                lock (syncRoot)
-                {
-                    isStopped = value;
-                }
-            }
-        }
+        public IObservable<IModuleStatus> Status => moduleStatusSubject;
 
-        public IObservable<ModuleEventArgs> State => moduleState;
+        public Type ModuleType => GetType();
 
-        protected IModuleResult ReportError(Exception exception)
-        {
-            OnError(exception);
-            return DefaultModuleResult.Failed(exception);
-        }
+        public IEnumerable<Type> ModuleParameters => ModuleType.GetConstructorParameterTypes();
 
-        protected ModuleBase()
-        {
-            syncRoot = new object();
-            resultState = new Subject<IModuleResult>();
-            parameters = new List<object>();
-            moduleState = new Subject<ModuleEventArgs>();
-        }
+        public Guid UniqueId { get; set; }
 
-        protected void SetResult(IModuleResult result)
-        {
-            resultState.OnNext(result);
-        }
+        public IEnumerable<IDisposable> Disposables { get; set; }
 
-        public virtual void AddParameters(IEnumerable<object> parameters)
-        {
-            this.parameters.AddRange(parameters);
-        }
-
-        protected async Task OnStarted(ModuleEventArgs e, CancellationToken cancellationToken)
-        {
-            await OnRun(cancellationToken);
-            moduleState.OnNext(e);
-        }
-
-        protected async Task OnStopped(ModuleEventArgs e, CancellationToken cancellationToken)
-        {
-            if (!IsStopped)
-            {
-                await OnStop(cancellationToken);
-                moduleState.OnNext(e);
-                moduleState.OnCompleted();
-                IsStopped = true;
-            }
-        }
-
-        public void OnError(Exception exception)
-        {
-            moduleState.OnError(exception);
-        }
-
-        /// <inheritdoc cref="IDisposable"/>
-        public override void Dispose(bool dispose)
-        {
-            if (dispose)
-            {
-                Stop(CancellationToken.None).Wait();
-
-                parameters.Where(a => a is IDisposable)
-                    .Select(a => a as IDisposable)
-                    .ForEach(a => a.Dispose());
-            }
-        }
-
-        public Task Run(CancellationToken cancellationToken)
-        {
-            if (cancellationToken.IsCancellationRequested)
-            {
-                return Task.CompletedTask;
-            }
-
-            return OnStarted(new ModuleEventArgs(this, true), cancellationToken);
-        }
-
-        public Task Stop(CancellationToken cancellationToken)
-        {
-            return OnStopped(new ModuleEventArgs(this, false), cancellationToken);
-        }
-
-        public abstract Task OnRun(CancellationToken cancellationToken);
+        public abstract void OnDispose(bool disposing);
+        public abstract void ConfigureServices(IServiceCollection serviceCollection, IModuleConfiguration moduleConfiguration);
+        public abstract Task OnStart(CancellationToken cancellationToken);
         public abstract Task OnStop(CancellationToken cancellationToken);
 
-        public IObservable<IModuleResult> ResultState => resultState;
+        public ModuleBase()
+            : this(new Subject<IModuleStatus>())
+        {
+
+        }
+
+        public ModuleBase(ISubject<IModuleStatus> moduleStatusSubject)
+            : base(moduleStatusSubject)
+        {
+            this.moduleStatusSubject = new Subject<IModuleStatus>();
+        }
+
+        public Task StartAsync(CancellationToken cancellationToken)
+        {
+            moduleStatusSubject.OnNext(new DefaultModuleStatus { IsRunning = true });
+            return OnStart(cancellationToken);
+        }
+
+        public Task StopAsync(CancellationToken cancellationToken)
+        {
+            moduleStatusSubject.OnNext(new DefaultModuleStatus { IsRunning = false });
+            return OnStop(cancellationToken);
+        }
+
+        public override void Dispose(bool disposing)
+        {
+            Disposables.ForEach(d => d.Dispose());
+            OnDispose(disposing);
+        }
     }
 }

@@ -1,193 +1,81 @@
-﻿using DNI.Core;
-using DNI.Extensions;
+﻿using DNI.Extensions;
 using DNI.Modules.Shared.Abstractions;
-using DNI.Modules.Shared.Attributes;
 using DNI.Modules.Shared.Base;
-using DNI.Modules.Shared.Extensions;
-using DNI.Shared.Attributes;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace DNI.Modules.Core.Defaults
 {
-    [RegisterService(ServiceLifetime.Transient)]
-    public class DefaultModuleRunner : ModuleBase, IModuleRunner
+    internal class DefaultModuleRunner : ModuleBase, IModuleRunner
     {
-        private readonly CancellationTokenSource cancellationTokenSource;
-        private readonly IServiceCollection services;
-        private readonly IModuleOptions moduleOptions;
-        private IEnumerable<IModule> modules;
-        private IServiceProvider builtModuleServices;
-        private readonly Dictionary<Type, IModule> modulesCache;
-        private readonly List<IDisposable> subscribers;
-
-        private IServiceProvider BuiltModuleServices
+        private readonly IModulesServiceCollection services;
+        private readonly IServiceProvider serviceProvider;
+        private readonly IModuleConfiguration moduleConfiguration;
+        private ICompiledModuleConfiguration compiledModuleConfiguration;
+        private IServiceProvider moduleServiceProvider;
+        private readonly Dictionary<Guid, IEnumerable<IDisposable>> disposableTypesList;
+        private ICompiledModuleConfiguration ConfigureModuleConfiguration(IServiceProvider serviceProvider)
         {
-            get
-            {
-                if (builtModuleServices == null)
-                {
-                    builtModuleServices = services.BuildServiceProvider();
-                }
+            return moduleConfiguration.Compile(serviceProvider);
+        }
+        private Task OnStartModule(IModule module, CancellationToken cancellationToken)
+        {
+            if (disposableTypesList.TryGetValue(module.UniqueId, out var disposables))
+                module.Disposables = disposables;
 
-                return builtModuleServices;
-            }
+            return module.StartAsync(cancellationToken);
         }
 
-        private static IEnumerable<Type> GetModuleTypes(IEnumerable<Assembly> assemblies)
+        public DefaultModuleRunner(
+            IServiceProvider serviceProvider,
+            IModuleConfiguration moduleConfiguration)
         {
-            return assemblies.SelectMany(a => a.GetTypes().Where(type => type.GetInterfaces().Any(interfaceType => interfaceType == typeof(IModule))));
+            this.services = new DefaultModulesServiceCollection();
+            this.serviceProvider = serviceProvider;
+            this.moduleConfiguration = moduleConfiguration;
+            disposableTypesList = new Dictionary<Guid, IEnumerable<IDisposable>>();
         }
 
-        private IModule Activate(Type type)
+        public override void ConfigureServices(IServiceCollection services, IModuleConfiguration moduleConfiguration)
         {
-            if (modulesCache.TryGetValue(type, out var module))
+            var fakeServiceProvider = new DefaultFakeServiceProvider();
+            foreach(var moduleType in moduleConfiguration.ModuleTypes)
             {
-                return module;
-            }
-
-            var defaultConstructor = type.GetConstructors().FirstOrDefault(a => a.IsPublic && a.IsConstructor);
-
-            if (defaultConstructor == null)
-            {
-                module = Activator.CreateInstance(type) as IModule;
-            }
-            else
-            {
-                var parameters = defaultConstructor.GetParameters()
-                    .Select(a => BuiltModuleServices.GetRequiredService(a.ParameterType))
-                    .ToArray();
-
-                module = Activator.CreateInstance(type, parameters) as IModule;
-                
-                module.AddParameters(parameters);
-            }
-            subscribers.Add(module.ResultState.Subscribe(OnNext, OnCompleted));
-            subscribers.Add(module.State.Subscribe(moduleState));
-            module.AddParameters(module.ResolveDependencies(BuiltModuleServices));
-
-            return module;
-        }
-
-        private void OnCompleted(Exception obj)
-        {
-            throw obj;
-        }
-
-        private void OnNext(IModuleResult obj)
-        {
-            if (obj.IsException && obj.Haltable)
-            {
-                cancellationTokenSource.Cancel();
+                var module = fakeServiceProvider.Activate<IModule>(moduleType, out var disposables);
+                var moduleId = Guid.NewGuid();
+                module.UniqueId = moduleId;
+                disposableTypesList.Add(moduleId, disposables);
+                module.ConfigureServices(services, moduleConfiguration);
             }
 
-            SetResult(obj);
+            services.AddSingleton(ConfigureModuleConfiguration);
         }
 
-        private void RegisterServices(Type type)
+        
+
+        public override Task OnStart(CancellationToken cancellationToken)
         {
-            //logger.LogInformation("Configuring services for {0}", type);
-
-            AddParameters(type.ResolveStaticDependencies(BuiltModuleServices));
-            var configureServicesMethod = type.GetMethod("ConfigureServices", BindingFlags.Public | BindingFlags.Static);
-
-            var runTimeBindingAttribute = configureServicesMethod.GetCustomAttribute<RuntimeBindingAttribute>();
-
-            if (runTimeBindingAttribute != null && !runTimeBindingAttribute.InvokeAtRunTime)
-            {
-                return;
-            }
-
-            configureServicesMethod?.Invoke(null, new[] { services });
+            ConfigureServices(services, moduleConfiguration);
+            moduleServiceProvider = new DefaultModuleServiceProvider(serviceProvider, services.BuildServiceProvider());
+            compiledModuleConfiguration = moduleServiceProvider.GetRequiredService<ICompiledModuleConfiguration>();
+            return Task.WhenAll(compiledModuleConfiguration.Modules.ForEach(m => OnStartModule(m, cancellationToken)));
         }
 
-        public DefaultModuleRunner(IServiceCollection services, IModuleOptions moduleOptions)
+        
+
+        public override Task OnStop(CancellationToken cancellationToken)
         {
-            cancellationTokenSource = new CancellationTokenSource();
-            this.services = services;
-            modulesCache = new Dictionary<Type, IModule>();
-            subscribers = new List<IDisposable>();
-            this.moduleOptions = moduleOptions;
-            //this.logger = serviceProvider.GetService<ILogger<DefaultModuleRunner>>();
+            return Task.WhenAll(compiledModuleConfiguration.Modules.ForEach(m => m.StopAsync(cancellationToken)));
         }
 
-        public void Configure(Action<IServiceCollection> configureServices)
+        public override void OnDispose(bool disposing)
         {
-            configureServices(services);
+            compiledModuleConfiguration?.Modules.ForEach(m => m.Dispose());
         }
-
-        public override async Task OnRun(CancellationToken cancellationToken)
-        {
-            services
-                .AddSingleton(s => BuiltModuleServices)
-                .AddSingleton(services);
-
-            var injectableModules = GetModuleTypes(moduleOptions.ModuleAssembliesOptions.GetAssemblies(a => a.Injectable && a.Discoverable));
-
-            var startupModules = GetModuleTypes(moduleOptions.ModuleAssembliesOptions.GetAssemblies(a => a.OnStartup && a.Discoverable));
-
-            injectableModules.AppendAll(startupModules).ForEach(RegisterServices);
-
-            var moduleDependencies = startupModules.SelectMany(a => a.GetCustomAttribute<RequiresDependenciesAttribute>()?.RequiredTypes ?? Array.Empty<Type>());
-
-            var serviceModules = startupModules.Append(typeof(This))
-                .AppendAll(moduleDependencies)
-                .ToArray();
-
-            services
-                .Scan(s => s.FromAssembliesOf(serviceModules)
-                .AddClasses(a => a.WithAttribute<RegisterServiceAttribute>(rsa => rsa.ServiceLifetime == ServiceLifetime.Singleton))
-                .AsImplementedInterfaces()
-                .WithSingletonLifetime()
-                .AddClasses(a => a.WithAttribute<RegisterServiceAttribute>(rsa => rsa.ServiceLifetime == ServiceLifetime.Scoped))
-                .AsImplementedInterfaces()
-                .WithScopedLifetime()
-                .AddClasses(a => a.WithAttribute<RegisterServiceAttribute>(rsa => rsa.ServiceLifetime == ServiceLifetime.Transient))
-                .AsImplementedInterfaces()
-                .WithTransientLifetime());
-
-            services
-            .AddEncryptionServices()
-            .AddSingleton(injectableModules.Select(Activate));
-                ///.OutputServices();
-
-            modules = startupModules.Select(Activate);
-            await Task.WhenAll(modules.ForEach(m => m.Run(cancellationToken)));
-
-        }
-
-        public override async Task OnStop(CancellationToken cancellationToken)
-        {
-            await Task.WhenAll(modules.Select(a => a.Stop(cancellationToken)));
-        }
-
-        public override void Dispose(bool dispose)
-        {
-            if (dispose)
-            {
-                modules.ForEach(m => m.Dispose());
-                subscribers.ForEach(m => m.Dispose());
-            }
-
-            base.Dispose(dispose);
-        }
-
-        public void Merge(IServiceCollection services)
-        {
-            foreach (var service in services)
-            {
-                if (!this.services.Contains(service))
-                {
-                    this.services.Add(service);
-                }
-            }
-        }
-
     }
 }
