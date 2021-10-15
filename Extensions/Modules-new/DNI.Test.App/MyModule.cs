@@ -1,5 +1,6 @@
 ﻿using DNI.Modules.Shared.Base;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,6 +29,8 @@ namespace DNI.Test.App
 
         public override Task OnStart(CancellationToken cancellationToken)
         {
+            Console.WriteLine(greeting);
+            Console.WriteLine(mySharedClass.Value);
             return Task.CompletedTask;
         }
 

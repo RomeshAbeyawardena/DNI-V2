@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DNI.Modules.Core.Defaults
 {
-    public class DefaultCompiledModuleConfiguration : ICompiledModuleConfiguration
+    internal class DefaultCompiledModuleConfiguration : ICompiledModuleConfiguration
     {
         public IEnumerable<IModule> Modules { get; set; }
     }

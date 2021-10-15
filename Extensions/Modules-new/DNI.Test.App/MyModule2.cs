@@ -17,16 +17,17 @@ namespace DNI.Test.App
 
         public override void ConfigureServices(IServiceCollection serviceCollection)
         {
-            serviceCollection.AddSingleton<MySharedClass>(new MySharedClass { Value = 123456 });
+            serviceCollection.AddSingleton(new MySharedClass { Value = 123456 });
         }
 
         public override void Dispose(bool disposing)
         {
-            throw new NotImplementedException();
+            
         }
 
         public override Task OnStart(CancellationToken cancellationToken)
         {
+            Console.WriteLine(greeting);
             return Task.CompletedTask;
         }
 

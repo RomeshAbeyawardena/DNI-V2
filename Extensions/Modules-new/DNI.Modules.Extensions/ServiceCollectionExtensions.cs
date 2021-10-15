@@ -18,7 +18,7 @@ namespace DNI.Modules.Extensions
             {
                 DefaultModuleConfigurationBuilder builder = new();
                 configureModules(builder);
-                return  builder.Build(new FakeServiceProvider());
+                return  builder.Build(new DefaultFakeServiceProvider());
             }
 
             IModuleRunner ConfigureModuleRunner(IServiceProvider serviceProvider)

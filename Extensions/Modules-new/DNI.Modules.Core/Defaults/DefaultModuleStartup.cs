@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DNI.Modules.Core.Defaults
 {
-    public class DefaultModuleStartup : ModuleBase, IModuleStartup
+    internal class DefaultModuleStartup : ModuleBase, IModuleStartup
     {
         private readonly IModuleConfiguration moduleConfiguration;
         private readonly IModuleRunner moduleRunner;

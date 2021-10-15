@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DNI.Modules.Core.Defaults
 {
-    public class FakeServiceProvider : IServiceProvider
+    internal class DefaultFakeServiceProvider : IServiceProvider
     {
         public object GetService(Type serviceType)
         {

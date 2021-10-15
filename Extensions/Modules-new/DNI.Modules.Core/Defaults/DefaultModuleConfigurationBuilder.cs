@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DNI.Modules.Core.Defaults
 {
-    public class DefaultModuleConfigurationBuilder : IModuleConfigurationBuilder
+    internal class DefaultModuleConfigurationBuilder : IModuleConfigurationBuilder
     {
         public List<Type> moduleTypes;
 

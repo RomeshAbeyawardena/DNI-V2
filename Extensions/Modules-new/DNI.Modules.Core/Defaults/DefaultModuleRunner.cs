@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DNI.Modules.Core.Defaults
 {
-    public class DefaultModuleRunner : ModuleBase, IModuleRunner
+    internal class DefaultModuleRunner : ModuleBase, IModuleRunner
     {
         private readonly IModulesServiceCollection services;
         private readonly IServiceProvider serviceProvider;
@@ -19,6 +19,17 @@ namespace DNI.Modules.Core.Defaults
         private ICompiledModuleConfiguration compiledModuleConfiguration;
         private IServiceProvider moduleServiceProvider;
         private readonly Dictionary<Guid, IEnumerable<IDisposable>> disposableTypesList;
+        private ICompiledModuleConfiguration ConfigureModuleConfiguration(IServiceProvider serviceProvider)
+        {
+            return moduleConfiguration.Compile(serviceProvider);
+        }
+        private Task OnStartModule(IModule module, CancellationToken cancellationToken)
+        {
+            if (disposableTypesList.TryGetValue(module.UniqueId, out var disposables))
+                module.Disposables = disposables;
+
+            return module.StartAsync(cancellationToken);
+        }
 
         public DefaultModuleRunner(
             IServiceProvider serviceProvider,
@@ -32,7 +43,7 @@ namespace DNI.Modules.Core.Defaults
 
         public override void ConfigureServices(IServiceCollection services)
         {
-            var fakeServiceProvider = new FakeServiceProvider();
+            var fakeServiceProvider = new DefaultFakeServiceProvider();
             foreach(var moduleType in moduleConfiguration.ModuleTypes)
             {
                 var module = fakeServiceProvider.Activate<IModule>(moduleType, out var disposables);
@@ -45,26 +56,17 @@ namespace DNI.Modules.Core.Defaults
             services.AddSingleton(ConfigureModuleConfiguration);
         }
 
-        private ICompiledModuleConfiguration ConfigureModuleConfiguration(IServiceProvider serviceProvider)
-        {
-            return moduleConfiguration.Compile(serviceProvider);
-        }
+        
 
         public override Task OnStart(CancellationToken cancellationToken)
         {
             ConfigureServices(services);
-            moduleServiceProvider = new ModuleServiceProvider(serviceProvider, services.BuildServiceProvider());
+            moduleServiceProvider = new DefaultModuleServiceProvider(serviceProvider, services.BuildServiceProvider());
             compiledModuleConfiguration = moduleServiceProvider.GetRequiredService<ICompiledModuleConfiguration>();
             return Task.WhenAll(compiledModuleConfiguration.Modules.ForEach(m => OnStartModule(m, cancellationToken)));
         }
 
-        private Task OnStartModule(IModule module, CancellationToken cancellationToken)
-        {
-            if (disposableTypesList.TryGetValue(module.UniqueId, out var disposables))
-                module.Disposables = disposables;
-
-            return module.StartAsync(cancellationToken);
-        }
+        
 
         public override Task OnStop(CancellationToken cancellationToken)
         {
@@ -73,7 +75,7 @@ namespace DNI.Modules.Core.Defaults
 
         public override void Dispose(bool disposing)
         {
-            
+            compiledModuleConfiguration?.Modules.ForEach(m => m.Dispose());
         }
     }
 }

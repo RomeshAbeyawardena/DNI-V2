@@ -18,8 +18,7 @@ namespace DNI.Test.App
 
             var serviceProvider = services.BuildServiceProvider();
 
-            serviceProvider.GetService<IModuleConfiguration>();
-            using var moduleStartup = serviceProvider.GetService<IModuleStartup>();
+            using var moduleStartup = serviceProvider.GetRequiredService<IModuleStartup>();
 
             Console.WriteLine("Hello World!");
             return moduleStartup

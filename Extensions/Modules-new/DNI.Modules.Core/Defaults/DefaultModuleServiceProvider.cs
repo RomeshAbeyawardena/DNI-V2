@@ -2,12 +2,12 @@
 
 namespace DNI.Modules.Core.Defaults
 {
-    public class ModuleServiceProvider : IServiceProvider
+    internal class DefaultModuleServiceProvider : IServiceProvider
     {
         private readonly IServiceProvider parentServiceProvider;
         private readonly IServiceProvider serviceProvider;
 
-        public ModuleServiceProvider(
+        public DefaultModuleServiceProvider(
             IServiceProvider parentServiceProvider,
             IServiceProvider serviceProvider)
         {

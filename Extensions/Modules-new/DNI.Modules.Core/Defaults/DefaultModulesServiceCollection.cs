@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DNI.Modules.Core.Defaults
 {
-    public class DefaultModulesServiceCollection : IModulesServiceCollection
+    internal class DefaultModulesServiceCollection : IModulesServiceCollection
     {
         private readonly IServiceCollection services;
 
