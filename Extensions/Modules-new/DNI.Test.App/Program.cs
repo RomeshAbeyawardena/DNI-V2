@@ -9,7 +9,7 @@ namespace DNI.Test.App
 {
     class Program
     {
-        static Task Main(string[] args)
+        static async Task Main(string[] args)
         {
             ServiceCollection services = new();
 
@@ -18,12 +18,8 @@ namespace DNI.Test.App
 
             var serviceProvider = services.BuildServiceProvider();
 
-            using var moduleStartup = serviceProvider.GetRequiredService<IModuleStartup>();
-
-            Console.WriteLine("Hello World!");
-            return moduleStartup
-                .StartAsync(CancellationToken.None);
-            
+            using var moduleStartup = await serviceProvider
+                .StartModules(CancellationToken.None);   
         }
     }
 }

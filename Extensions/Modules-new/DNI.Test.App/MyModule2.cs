@@ -17,7 +17,8 @@ namespace DNI.Test.App
 
         public override void ConfigureServices(IServiceCollection serviceCollection)
         {
-            serviceCollection.AddSingleton(new MySharedClass { Value = 123456 });
+            serviceCollection
+                .AddSingleton<IMyService, MyService>();
         }
 
         public override void Dispose(bool disposing)

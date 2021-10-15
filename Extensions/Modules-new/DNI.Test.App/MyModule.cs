@@ -9,17 +9,19 @@ namespace DNI.Test.App
     public class MyModule : ModuleBase
     {
         private readonly string greeting;
-        private readonly MySharedClass mySharedClass;
+        private readonly IMyService myService;
 
-        public MyModule(string greeting, MySharedClass mySharedClass)
+        public MyModule(string greeting, IMyService myService)
         {
             this.greeting = greeting;
-            this.mySharedClass = mySharedClass;
+            this.myService = myService;
         }
 
         public override void ConfigureServices(IServiceCollection serviceCollection)
         {
-            serviceCollection.AddSingleton("Hello");
+            serviceCollection
+                .AddSingleton("Hello")
+                .AddSingleton<IMySharedClass>(new MySharedClass { Value = 123456 });
         }
 
         public override void Dispose(bool disposing)
@@ -30,7 +32,7 @@ namespace DNI.Test.App
         public override Task OnStart(CancellationToken cancellationToken)
         {
             Console.WriteLine(greeting);
-            Console.WriteLine(mySharedClass.Value);
+            Console.WriteLine(myService.MySharedClass.Value);
             return Task.CompletedTask;
         }
 
