@@ -31,9 +31,10 @@ namespace DNI.Extensions
         }
         public static IEnumerable<T> ReplaceAt<T>(this IEnumerable<T> items, int index, T newItem)
         {
-            var itemList = new List<T>(items);
-
-            itemList[index] = newItem;
+            var itemList = new List<T>(items)
+            {
+                [index] = newItem
+            };
 
             return itemList;
         }

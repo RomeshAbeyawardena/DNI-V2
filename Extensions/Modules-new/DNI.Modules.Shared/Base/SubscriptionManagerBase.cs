@@ -14,7 +14,10 @@ namespace DNI.Modules.Shared.Base
 
         public IEnumerable<IDisposable> Subscribers => subscribersList;
 
-        public abstract void Dispose(bool disposing);
+        public virtual void Dispose(bool disposing)
+        {
+
+        }
 
         public SubscriptionManagerBase(IObservable<T> observable)
         {

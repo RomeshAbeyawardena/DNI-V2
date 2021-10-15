@@ -12,16 +12,17 @@ namespace DNI.Modules.Core.Defaults
 {
     internal class DefaultModuleStartup : ModuleBase, IModuleStartup
     {
-        private readonly IModuleConfiguration moduleConfiguration;
         private readonly IModuleRunner moduleRunner;
 
         public DefaultModuleStartup(
             IModuleConfiguration moduleConfiguration,
             IModuleRunner moduleRunner)
         {
-            this.moduleConfiguration = moduleConfiguration;
+            Configuration = moduleConfiguration;
             this.moduleRunner = moduleRunner;
         }
+
+        public IModuleConfiguration Configuration { get; }
 
         public override void ConfigureServices(IServiceCollection serviceCollection)
         {
