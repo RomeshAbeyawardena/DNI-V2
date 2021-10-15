@@ -15,6 +15,11 @@ namespace DNI.Modules.Core.Defaults
         private IEnumerable<IDisposable> disposables;
 #pragma warning restore IDE0052 // Remove unread private members
 
+        public DefaultModuleConfiguration()
+        {
+            options = new Dictionary<Type, object>();
+        }
+
         public IEnumerable<Type> ModuleTypes { get; set; }
 
         public IDictionary<Type, object> Options => options;

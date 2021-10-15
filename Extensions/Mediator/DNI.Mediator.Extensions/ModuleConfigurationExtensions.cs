@@ -1,19 +1,23 @@
 ﻿using DNI.Mediator.Core.Defaults;
 using DNI.Mediator.Shared.Abstractions;
+using DNI.Modules.Extensions;
+using DNI.Modules.Shared.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
 namespace DNI.Mediator.Extensions
 {
-    public static class ServiceCollectionExtensions
+    public static class ModuleConfigurationExtensions
     {
-        public static IServiceCollection ConfigureMediatorModule(
-            this IServiceCollection services,
+        public static IModuleConfiguration ConfigureMediatorModule(
+            this IModuleConfiguration moduleConfiguration,
             Action<IMediatorModuleOptionsBuilder> buildAction)
         {
             IMediatorModuleOptionsBuilder defaultMediatorModuleOptionsBuilder = new DefaultMediatorModuleOptionsBuilder();
             buildAction?.Invoke(defaultMediatorModuleOptionsBuilder);
-            return services.AddSingleton(defaultMediatorModuleOptionsBuilder.Build());
+            moduleConfiguration.ConfigureOptions(defaultMediatorModuleOptionsBuilder.Build());
+
+            return moduleConfiguration;
         }
     }
 }

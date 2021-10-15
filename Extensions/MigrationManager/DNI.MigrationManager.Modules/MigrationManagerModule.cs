@@ -1,34 +1,29 @@
 ﻿using DNI.MigrationManager.Extensions;
 using DNI.MigrationManager.Shared.Abstractions;
-using DNI.Modules.Shared.Attributes;
+using DNI.Modules.Extensions;
+using DNI.Modules.Shared.Abstractions;
 using DNI.Modules.Shared.Base;
 using DNI.Shared.Abstractions;
 using DNI.Shared.Attributes;
 using DNI.Shared.Test;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace DNI.MigrationManager.Modules
 {
-    [RequiresDependencies(typeof(Core.This))]
     public class MigrationManagerModule : ModuleBase
     {
         private readonly IMigrationQueryBuilder migrationQueryBuilder;
 
-        [Resolve] private IRepository<User> UserRepository { get; set; }
-
-        [Resolve] private ILogger<MigrationManagerModule> Logger { get; set; }
-
-        [Resolve] private static IMigrationManagerModuleConfiguration Configuration { get; set; }
-
-        public static void ConfigureServices(IServiceCollection services)
+        public override void ConfigureServices(IServiceCollection services, IModuleConfiguration moduleConfiguration)
         {
             services
                 .AddMigrationServices();
 
-            foreach (var (k, v) in Configuration)
+            foreach (var (k, v) in moduleConfiguration.GetOptions<IMigrationManagerModuleConfiguration>())
             {
                 services.AddMigration(k, v);
             }
@@ -40,19 +35,24 @@ namespace DNI.MigrationManager.Modules
             this.migrationQueryBuilder = migrationQueryBuilder;
         }
 
-        public override Task OnRun(CancellationToken cancellationToken)
+        public override Task OnStart(CancellationToken cancellationToken)
         {
-            Logger.LogInformation("Migration manager running on {0}", Thread.CurrentThread.ManagedThreadId);
+            Console.WriteLine("Migration manager running on {0}", Thread.CurrentThread.ManagedThreadId);
             var sql = migrationQueryBuilder.BuildMigrations("sql");
 
-            Logger.LogInformation(sql);
+            Console.WriteLine(sql);
             return Task.CompletedTask;
         }
 
         public override Task OnStop(CancellationToken cancellationToken)
         {
-            Logger.LogInformation("Migration manager stopping");
+            Console.WriteLine("Migration manager stopping");
             return Task.CompletedTask;
+        }
+
+        public override void OnDispose(bool disposing)
+        {
+            throw new NotImplementedException();
         }
     }
 }

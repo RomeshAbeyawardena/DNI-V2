@@ -1,16 +1,13 @@
 ﻿using DNI.Core.Defaults.Hosts;
 using DNI.Data.Extensions;
-using DNI.Data.Shared.Abstractions.Builders;
+using DNI.Data.Modules;
 using DNI.Data.Shared.Base;
 using DNI.Extensions;
-using DNI.Mediator.Extensions;
-using DNI.MigrationManager.Extensions;
+using DNI.Mediator.Modules.Extensions;
 using DNI.MigrationManager.Shared.Abstractions;
 using DNI.Modules.Extensions;
-using DNI.Shared;
 using DNI.Shared.Abstractions.Hosts;
 using DNI.Shared.Test;
-using DNI.Web.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -59,9 +56,16 @@ namespace DNI.Test.App
 
         private static void ConfigureServices(IServiceCollection services)
         {
-            services.AddModules(builder => builder.ConfigureDbModule(ConfigureDbModule))
-            //services
-            //    .AddLogging(c => c.AddConsole())
+
+            services
+                .AddLogging(c => c.AddConsole())
+                .AddModules(builder => builder.ConfigureDbContextModule(builder => builder
+                .AddDbContext<MyDbContext>((s, b) => b.UseSqlServer(s
+                    .GetService<IConfiguration>()
+                    .GetConnectionString("default")), ServiceLifetime.Scoped))
+                .ConfigureMediatorModule(builder => builder.AddModuleAssemblies()));
+
+
             //services
             //    .AddLogging(c => c.AddConsole())
             //    .ConfigureMigrationManagerModuleConfiguration(c => c.AddMigration("Default", DefaultMigration))
@@ -82,11 +86,6 @@ namespace DNI.Test.App
             //            .SetAssemblyOptions(AssemblyOptions.Startup))
             //        .AddAssembly(Shared.Modules.MigrationManager, a => a
             //            .SetAssemblyOptions(AssemblyOptions.Startup))));
-        }
-
-        private static void ConfigureDbModule(IDbContextModuleOptionsBuilder builder)
-        {
-            builder.AddDbContext<MyDbContext>((s, b) => b.UseSqlServer(s.GetService<IConfiguration>().GetConnectionString("default")), ServiceLifetime.Scoped);
         }
 
         private static void ConfigureWebHost(IWebHostBuilder webHostBuilder)

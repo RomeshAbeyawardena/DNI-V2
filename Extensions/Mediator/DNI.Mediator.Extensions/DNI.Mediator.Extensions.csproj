@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Modules\DNI.Modules.Extensions\DNI.Modules.Extensions.csproj" />
     <ProjectReference Include="..\DNI.Mediator.Core\DNI.Mediator.Core.csproj" />
     <ProjectReference Include="..\DNI.Mediator.Shared\DNI.Mediator.Shared.csproj" />
   </ItemGroup>
