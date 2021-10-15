@@ -73,7 +73,7 @@ namespace DNI.Modules.Core.Defaults
             return Task.WhenAll(compiledModuleConfiguration.Modules.ForEach(m => m.StopAsync(cancellationToken)));
         }
 
-        public override void Dispose(bool disposing)
+        public override void OnDispose(bool disposing)
         {
             compiledModuleConfiguration?.Modules.ForEach(m => m.Dispose());
         }

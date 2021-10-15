@@ -25,7 +25,7 @@ namespace DNI.Test.App
                 .AddSingleton<IMySharedClass>(new MySharedClass { Value = 123456 });
         }
 
-        public override void Dispose(bool disposing)
+        public override void OnDispose(bool disposing)
         {
             
         }

@@ -29,7 +29,7 @@ namespace DNI.Modules.Core.Defaults
             moduleRunner.ConfigureServices(serviceCollection, moduleConfiguration);
         }
 
-        public override void Dispose(bool disposing)
+        public override void OnDispose(bool disposing)
         {
             moduleRunner.Dispose();
         }

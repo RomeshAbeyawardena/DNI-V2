@@ -15,7 +15,7 @@ namespace DNI.Modules.Web
     public class WebModule : ModuleBase
     {
         private IHost host;
-        private IServiceCollection services;
+        private readonly IServiceCollection services;
 
         public WebModule(IServiceCollection services)
         {
@@ -47,7 +47,7 @@ namespace DNI.Modules.Web
                 .Configure(c => c.UseRouting().UseEndpoints(e => e.MapControllers()));
         }
 
-        public override void Dispose(bool disposing)
+        public override void OnDispose(bool disposing)
         {
             host.Dispose();
         }

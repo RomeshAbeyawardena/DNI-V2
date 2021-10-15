@@ -22,7 +22,7 @@ namespace DNI.Test.App
                 .AddSingleton<IMyService, MyService>();
         }
 
-        public override void Dispose(bool disposing)
+        public override void OnDispose(bool disposing)
         {
             
         }
