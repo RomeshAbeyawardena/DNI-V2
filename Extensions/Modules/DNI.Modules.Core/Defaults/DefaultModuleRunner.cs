@@ -21,29 +21,11 @@ namespace DNI.Modules.Core.Defaults
     {
         private readonly CancellationTokenSource cancellationTokenSource;
         private readonly IServiceCollection services;
-        private readonly IServiceProvider serviceProvider;
         private readonly IModuleOptions moduleOptions;
         private IEnumerable<IModule> modules;
         private IServiceProvider builtModuleServices;
-        private IModuleServiceProvider moduleServiceProvider;
         private readonly Dictionary<Type, IModule> modulesCache;
         private readonly List<IDisposable> subscribers;
-        private readonly ILogger<DefaultModuleRunner> logger;
-        private IServiceScope serviceScope;
-        private IModuleServiceProvider ModuleServiceProvider
-        {
-            get
-            {
-                if (moduleServiceProvider == null)
-                {
-                    moduleServiceProvider = new DefaultModuleServiceProvider(serviceProvider, BuiltModuleServices);
-                }
-
-                serviceScope = moduleServiceProvider.CreateScope();
-
-                return moduleServiceProvider;
-            }
-        }
 
         private IServiceProvider BuiltModuleServices
         {
@@ -79,7 +61,7 @@ namespace DNI.Modules.Core.Defaults
             else
             {
                 var parameters = defaultConstructor.GetParameters()
-                    .Select(a => ModuleServiceProvider.GetService(a.ParameterType) ?? serviceScope.ServiceProvider.GetRequiredService(a.ParameterType))
+                    .Select(a => BuiltModuleServices.GetRequiredService(a.ParameterType))
                     .ToArray();
 
                 module = Activator.CreateInstance(type, parameters) as IModule;
@@ -88,7 +70,7 @@ namespace DNI.Modules.Core.Defaults
             }
             subscribers.Add(module.ResultState.Subscribe(OnNext, OnCompleted));
             subscribers.Add(module.State.Subscribe(moduleState));
-            module.AddParameters(module.ResolveDependencies(ModuleServiceProvider));
+            module.AddParameters(module.ResolveDependencies(BuiltModuleServices));
 
             return module;
         }
@@ -110,9 +92,9 @@ namespace DNI.Modules.Core.Defaults
 
         private void RegisterServices(Type type)
         {
-            logger.LogInformation("Configuring services for {0}", type);
+            //logger.LogInformation("Configuring services for {0}", type);
 
-            AddParameters(type.ResolveStaticDependencies(serviceProvider));
+            AddParameters(type.ResolveStaticDependencies(BuiltModuleServices));
             var configureServicesMethod = type.GetMethod("ConfigureServices", BindingFlags.Public | BindingFlags.Static);
 
             var runTimeBindingAttribute = configureServicesMethod.GetCustomAttribute<RuntimeBindingAttribute>();
@@ -125,15 +107,14 @@ namespace DNI.Modules.Core.Defaults
             configureServicesMethod?.Invoke(null, new[] { services });
         }
 
-        public DefaultModuleRunner(IServiceProvider serviceProvider, IModuleOptions moduleOptions)
+        public DefaultModuleRunner(IServiceCollection services, IModuleOptions moduleOptions)
         {
             cancellationTokenSource = new CancellationTokenSource();
-            services = new ServiceCollection();
+            this.services = services;
             modulesCache = new Dictionary<Type, IModule>();
             subscribers = new List<IDisposable>();
-            this.serviceProvider = serviceProvider;
             this.moduleOptions = moduleOptions;
-            this.logger = serviceProvider.GetService<ILogger<DefaultModuleRunner>>();
+            //this.logger = serviceProvider.GetService<ILogger<DefaultModuleRunner>>();
         }
 
         public void Configure(Action<IServiceCollection> configureServices)
@@ -143,7 +124,9 @@ namespace DNI.Modules.Core.Defaults
 
         public override async Task OnRun(CancellationToken cancellationToken)
         {
-            services.AddSingleton(s => ModuleServiceProvider);
+            services
+                .AddSingleton(s => BuiltModuleServices)
+                .AddSingleton(services);
 
             var injectableModules = GetModuleTypes(moduleOptions.ModuleAssembliesOptions.GetAssemblies(a => a.Injectable && a.Discoverable));
 
@@ -169,9 +152,10 @@ namespace DNI.Modules.Core.Defaults
                 .AsImplementedInterfaces()
                 .WithTransientLifetime());
 
-                services.AddEncryptionServices()
-                .AddSingleton(injectableModules.Select(Activate))
-                .OutputServices();
+            services
+            .AddEncryptionServices()
+            .AddSingleton(injectableModules.Select(Activate));
+                ///.OutputServices();
 
             modules = startupModules.Select(Activate);
             await Task.WhenAll(modules.ForEach(m => m.Run(cancellationToken)));
@@ -187,7 +171,6 @@ namespace DNI.Modules.Core.Defaults
         {
             if (dispose)
             {
-                serviceScope.Dispose();
                 modules.ForEach(m => m.Dispose());
                 subscribers.ForEach(m => m.Dispose());
             }

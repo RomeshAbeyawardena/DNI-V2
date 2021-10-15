@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace DNI.Core.Defaults
 {
+    [RegisterService]
     public class DefaultModelEncryptor :  IModelEncryptor
     {
         private readonly IEncryptionOptionsFactory encryptionOptionsFactory;

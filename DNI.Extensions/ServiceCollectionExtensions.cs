@@ -38,5 +38,18 @@ namespace DNI.Extensions
                 .Add(Shared.Enumerations.SymmetricAlgorithm.RSA, () => SymmetricAlgorithm.Create("RSA")));
         }
 
+        public static IServiceCollection Merge(this IServiceCollection target, IServiceCollection services)
+        {
+            foreach (var service in services)
+            {
+                if (!target.Contains(service))
+                {
+                    target.Add(service);
+                }
+            }
+
+            return target;
+        }
+
     }
 }

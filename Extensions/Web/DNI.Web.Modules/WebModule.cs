@@ -1,4 +1,5 @@
-﻿using DNI.Modules.Shared.Attributes;
+﻿using DNI.Extensions;
+using DNI.Modules.Shared.Attributes;
 using DNI.Modules.Shared.Base;
 using DNI.Shared.Abstractions;
 using DNI.Shared.Attributes;
@@ -22,7 +23,7 @@ namespace DNI.Web.Modules
 
         [Resolve] private static IWebModuleOptions Options { get; set; }
         [Resolve] private static IDictionary<Assembly, IAssemblyOptions> AssemblyOptions { get; set; }
-        
+        [Resolve] private static IServiceCollection Services { get; set; }
         [RuntimeBinding(false)]
         public static void ConfigureServices(IServiceCollection services)
         {
@@ -40,7 +41,9 @@ namespace DNI.Web.Modules
             }
 
             mvcBuilder
-                .AddControllersAsServices(); 
+                .AddControllersAsServices();
+            services.Merge(Services);
+            services.OutputServices();
         }
 
         public override Task OnRun(CancellationToken cancellationToken)
@@ -52,7 +55,6 @@ namespace DNI.Web.Modules
                 hostBuilder.ConfigureWebHostDefaults(ConfigureWebHost);
             }
 
-            CancellationTokenSource cancellationTokenSource = new();
             host = hostBuilder.Build();
             return host.RunAsync(cancellationToken);           //Console.WriteLine(host);
         }

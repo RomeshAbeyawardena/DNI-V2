@@ -29,8 +29,7 @@ namespace DNI.Modules.Core.Defaults
         public IModuleStartup Build()
         {
             services.AddSingleton<IDictionary<Assembly, IAssemblyOptions>>(moduleAssemblyOptions);
-            return new DefaultModuleStartup(services, new DefaultModuleRunner(services.BuildServiceProvider(),
-                new DefaultModuleOptions(moduleAssemblyOptions)));
+            return new DefaultModuleStartup(services, new DefaultModuleRunner(services, new DefaultModuleOptions(moduleAssemblyOptions)));
         }
 
         public IModuleStartup Build(Action<IModuleConfigurationBuilder> configure)
