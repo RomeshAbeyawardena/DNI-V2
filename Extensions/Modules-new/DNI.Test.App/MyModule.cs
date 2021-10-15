@@ -1,4 +1,5 @@
-﻿using DNI.Modules.Shared.Base;
+﻿using DNI.Modules.Shared.Abstractions;
+using DNI.Modules.Shared.Base;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading;
@@ -17,7 +18,7 @@ namespace DNI.Test.App
             this.myService = myService;
         }
 
-        public override void ConfigureServices(IServiceCollection serviceCollection)
+        public override void ConfigureServices(IServiceCollection serviceCollection, IModuleConfiguration moduleConfiguration)
         {
             serviceCollection
                 .AddSingleton("Hello")

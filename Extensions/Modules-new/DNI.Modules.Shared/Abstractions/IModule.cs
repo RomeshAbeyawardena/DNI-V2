@@ -15,7 +15,7 @@ namespace DNI.Modules.Shared.Abstractions
         Type ModuleType { get; }
         IEnumerable<Type> ModuleParameters { get; }
         IObservable<IModuleStatus> Status { get; }
-        void ConfigureServices(IServiceCollection serviceCollection);
+        void ConfigureServices(IServiceCollection services, IModuleConfiguration moduleConfiguration);
         Task StartAsync(CancellationToken cancellationToken);
         Task StopAsync(CancellationToken cancellationToken);
     }

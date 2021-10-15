@@ -26,7 +26,7 @@ namespace DNI.Modules.Shared.Base
 
         public IEnumerable<IDisposable> Disposables { get; set; }
 
-        public abstract void ConfigureServices(IServiceCollection serviceCollection);
+        public abstract void ConfigureServices(IServiceCollection serviceCollection, IModuleConfiguration moduleConfiguration);
         public abstract Task OnStart(CancellationToken cancellationToken);
         public abstract Task OnStop(CancellationToken cancellationToken);
 

@@ -24,9 +24,9 @@ namespace DNI.Modules.Core.Defaults
 
         public IModuleConfiguration Configuration { get; }
 
-        public override void ConfigureServices(IServiceCollection serviceCollection)
+        public override void ConfigureServices(IServiceCollection serviceCollection, IModuleConfiguration moduleConfiguration)
         {
-            moduleRunner.ConfigureServices(serviceCollection);
+            moduleRunner.ConfigureServices(serviceCollection, moduleConfiguration);
         }
 
         public override void Dispose(bool disposing)

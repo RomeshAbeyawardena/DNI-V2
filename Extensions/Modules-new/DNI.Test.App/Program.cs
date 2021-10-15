@@ -1,5 +1,6 @@
 ﻿using DNI.Modules.Extensions;
 using DNI.Modules.Shared.Abstractions;
+using DNI.Modules.Web;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading;
@@ -14,7 +15,10 @@ namespace DNI.Test.App
             ServiceCollection services = new();
 
              services
-                .AddModules(configure => configure.AddModule(typeof(MyModule)).AddModule(typeof(MyModule2)));
+                .AddModules(configure => configure
+                .AddModule(typeof(WebModule))
+                .AddModule(typeof(MyModule))
+                .AddModule(typeof(MyModule2)));
 
             var serviceProvider = services.BuildServiceProvider();
 

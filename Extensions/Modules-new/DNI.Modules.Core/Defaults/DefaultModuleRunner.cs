@@ -41,7 +41,7 @@ namespace DNI.Modules.Core.Defaults
             disposableTypesList = new Dictionary<Guid, IEnumerable<IDisposable>>();
         }
 
-        public override void ConfigureServices(IServiceCollection services)
+        public override void ConfigureServices(IServiceCollection services, IModuleConfiguration moduleConfiguration)
         {
             var fakeServiceProvider = new DefaultFakeServiceProvider();
             foreach(var moduleType in moduleConfiguration.ModuleTypes)
@@ -50,7 +50,7 @@ namespace DNI.Modules.Core.Defaults
                 var moduleId = Guid.NewGuid();
                 module.UniqueId = moduleId;
                 disposableTypesList.Add(moduleId, disposables);
-                module.ConfigureServices(services);
+                module.ConfigureServices(services, moduleConfiguration);
             }
 
             services.AddSingleton(ConfigureModuleConfiguration);
@@ -60,7 +60,7 @@ namespace DNI.Modules.Core.Defaults
 
         public override Task OnStart(CancellationToken cancellationToken)
         {
-            ConfigureServices(services);
+            ConfigureServices(services, moduleConfiguration);
             moduleServiceProvider = new DefaultModuleServiceProvider(serviceProvider, services.BuildServiceProvider());
             compiledModuleConfiguration = moduleServiceProvider.GetRequiredService<ICompiledModuleConfiguration>();
             return Task.WhenAll(compiledModuleConfiguration.Modules.ForEach(m => OnStartModule(m, cancellationToken)));
