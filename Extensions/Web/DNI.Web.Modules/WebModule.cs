@@ -5,6 +5,7 @@ using DNI.Modules.Shared.Base;
 using DNI.Shared.Abstractions;
 using DNI.Shared.Attributes;
 using DNI.Web.Shared.Abstractions;
+using DNI.Web.Shared.Abstractions.Builders;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,7 +23,7 @@ namespace DNI.Web.Modules
         private IHost host;
         private readonly IServiceCollection services;
 
-        public WebModule(IServiceCollection services)
+        public WebModule(IServiceCollection services, IWebModuleOptions webModuleOptions)
         {
             this.services = services;
         }
@@ -30,12 +31,19 @@ namespace DNI.Web.Modules
         public override void ConfigureServices(IServiceCollection services, IModuleConfiguration moduleConfiguration)
         {
             var mvcBuilder = services.AddControllers();
-            foreach (var moduleAssembly in moduleConfiguration.GetModuleAssemblies())
+
+            var options = moduleConfiguration.GetOptions<IWebModuleOptions>();
+
+            if (options.UseModuleAssemblies)
             {
-                mvcBuilder.AddApplicationPart(moduleAssembly)
-                    .AddControllersAsServices();
+                foreach (var moduleAssembly in moduleConfiguration.GetModuleAssemblies())
+                {
+                    mvcBuilder.AddApplicationPart(moduleAssembly)
+                        .AddControllersAsServices();
+                }
             }
 
+            services.AddSingleton(options);
             services.AddSingleton(services);
         }
         public override Task OnStart(CancellationToken cancellationToken)

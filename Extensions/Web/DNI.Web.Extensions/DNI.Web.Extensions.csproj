@@ -7,6 +7,8 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Modules\DNI.Modules.Extensions\DNI.Modules.Extensions.csproj" />
+    <ProjectReference Include="..\..\Modules\DNI.Modules.Shared\DNI.Modules.Shared.csproj" />
     <ProjectReference Include="..\DNI.Web.Core\DNI.Web.Core.csproj" />
     <ProjectReference Include="..\DNI.Web.Shared\DNI.Web.Shared.csproj" />
   </ItemGroup>

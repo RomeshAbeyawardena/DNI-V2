@@ -8,6 +8,7 @@ using DNI.MigrationManager.Shared.Abstractions;
 using DNI.Modules.Extensions;
 using DNI.Shared.Abstractions.Hosts;
 using DNI.Shared.Test;
+using DNI.Web.Modules.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -63,8 +64,8 @@ namespace DNI.Test.App
                 .AddDbContext<MyDbContext>((s, b) => b.UseSqlServer(s
                     .GetService<IConfiguration>()
                     .GetConnectionString("default")), ServiceLifetime.Scoped))
-                .ConfigureMediatorModule(builder => builder.AddModuleAssemblies()));
-
+                .ConfigureMediatorModule(builder => builder.AddModuleAssemblies())
+                .ConfigureWebModule(builder => builder.UseModuleAssemblies()));
 
             //services
             //    .AddLogging(c => c.AddConsole())

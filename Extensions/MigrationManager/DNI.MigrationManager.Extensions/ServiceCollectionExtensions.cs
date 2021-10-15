@@ -28,15 +28,6 @@ namespace DNI.MigrationManager.Extensions
                     .Add(typeof(decimal), "DECIMAL(#length)"));
         }
 
-        public static IServiceCollection ConfigureMigrationManagerModuleConfiguration(this IServiceCollection services, Action<IMigrationManagerModuleConfiguration> configure)
-        {
-            var migrationManagerModuleConfiguration = new DefaultMigrationManagerModuleConfiguration();
-
-            configure(migrationManagerModuleConfiguration);
-
-            return services.AddSingleton<IMigrationManagerModuleConfiguration>(migrationManagerModuleConfiguration);
-        }
-
         public static IServiceCollection AddMigration(this IServiceCollection service, string migrationName, Func<IServiceProvider, IMigrationConfigurator, IMigrationOptions> build)
         {
             return service.AddSingleton(s => s.ConfigureMigration(migrationName, build));

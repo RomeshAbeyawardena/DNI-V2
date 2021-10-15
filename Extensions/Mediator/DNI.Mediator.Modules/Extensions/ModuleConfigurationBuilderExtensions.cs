@@ -1,6 +1,7 @@
 ﻿using DNI.Mediator.Extensions;
 using DNI.Mediator.Shared.Abstractions;
 using DNI.Modules.Shared.Abstractions.Builders;
+using DNI.Modules.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace DNI.Mediator.Modules.Extensions
     {
         public static IModuleConfigurationBuilder ConfigureMediatorModule(this IModuleConfigurationBuilder builder, Action<IMediatorModuleOptionsBuilder> configure)
         {
-            return builder.AddModule(typeof(MediatorModule), configuration => configuration
+            return builder.AddModule<MediatorModule>(configuration => configuration
                 .ConfigureMediatorModule(configure));
         }
     }

@@ -1,5 +1,6 @@
 ﻿using DNI.Modules.Shared.Abstractions;
 using DNI.Modules.Shared.Base;
+using DNI.Shared.Attributes;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -24,9 +25,20 @@ namespace DNI.Modules.Core.Defaults
 
         public IModuleConfiguration Configuration { get; }
 
-        public override void ConfigureServices(IServiceCollection serviceCollection, IModuleConfiguration moduleConfiguration)
+        public override void ConfigureServices(IServiceCollection services, IModuleConfiguration moduleConfiguration)
         {
-            moduleRunner.ConfigureServices(serviceCollection, moduleConfiguration);
+            services.Scan(c => c.FromAssemblies(moduleConfiguration.ModuleTypes.Select(a => a.Assembly).Distinct())
+                .AddClasses(t => t.WithAttribute<RegisterServiceAttribute>(s => s.ServiceLifetime == ServiceLifetime.Singleton))
+                .AsImplementedInterfaces()
+                .WithSingletonLifetime()
+                .AddClasses(t => t.WithAttribute<RegisterServiceAttribute>(s => s.ServiceLifetime == ServiceLifetime.Scoped))
+                .AsImplementedInterfaces()
+                .WithScopedLifetime()
+                .AddClasses(t => t.WithAttribute<RegisterServiceAttribute>(s => s.ServiceLifetime == ServiceLifetime.Transient))
+                .AsImplementedInterfaces()
+                .WithTransientLifetime());
+
+            moduleRunner.ConfigureServices(services, moduleConfiguration);
         }
 
         public override void OnDispose(bool disposing)

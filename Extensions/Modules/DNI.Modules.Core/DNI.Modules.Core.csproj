@@ -3,7 +3,9 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
-
+  <ItemGroup>
+    <PackageReference Include="Scrutor" Version="3.3.0" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\DNI.Extensions\DNI.Extensions.csproj" />
     <ProjectReference Include="..\DNI.Modules.Shared\DNI.Modules.Shared.csproj" />
