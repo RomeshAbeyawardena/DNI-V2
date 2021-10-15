@@ -20,8 +20,6 @@ namespace DNI.Data.Extensions
             var methods = typeof(EntityFrameworkServiceCollectionExtensions)
                 .GetMethods();
 
-            
-
             foreach(var method in methods.Where(a => a.Name == "AddDbContext" && a.IsStatic))
             {
                 if (method.GetParameters().Select(a => a.ParameterType).SequenceEqual(parameterTypes))
@@ -31,17 +29,6 @@ namespace DNI.Data.Extensions
             }
 
             return null;
-        }
-
-        public static IServiceCollection ConfigureDbContextModule(
-            this IServiceCollection services,
-            Action<IDbContextModuleOptionsBuilder> buildAction)
-        {
-            var defaultDbContextModuleOptionsBuilder = new DefaultDbContextModuleOptionsBuilder();
-            buildAction(defaultDbContextModuleOptionsBuilder);
-
-            var builtOptions = defaultDbContextModuleOptionsBuilder.Build();
-            return services.AddSingleton(builtOptions);
         }
 
         public  static IServiceCollection Add(this IServiceCollection services, Type serviceType, 

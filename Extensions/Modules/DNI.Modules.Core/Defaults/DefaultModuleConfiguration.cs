@@ -10,17 +10,14 @@ namespace DNI.Modules.Core.Defaults
 {
     internal class DefaultModuleConfiguration : IModuleConfiguration
     {
-
+        private Dictionary<Type, object> options;
 #pragma warning disable IDE0052 // Remove unread private members
         private IEnumerable<IDisposable> disposables;
 #pragma warning restore IDE0052 // Remove unread private members
 
-        public DefaultModuleConfiguration()
-        {
-
-        }
-
         public IEnumerable<Type> ModuleTypes { get; set; }
+
+        public IDictionary<Type, object> Options => options;
 
         public ICompiledModuleConfiguration Compile(IServiceProvider serviceProvider)
         {
@@ -30,7 +27,7 @@ namespace DNI.Modules.Core.Defaults
                 activatedModuleList.Add(serviceProvider.Activate<IModule>(moduleType, out disposables));
             }
 
-            return new DefaultCompiledModuleConfiguration { Modules = activatedModuleList };
+            return new DefaultCompiledModuleConfiguration(options) { Modules = activatedModuleList };
         }
     }
 }

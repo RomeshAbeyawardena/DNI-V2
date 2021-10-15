@@ -1,6 +1,7 @@
 ﻿using DNI.Data.Extensions;
 using DNI.Data.Shared.Abstractions;
-using DNI.Modules.Shared.Attributes;
+using DNI.Modules.Extensions;
+using DNI.Modules.Shared.Abstractions;
 using DNI.Modules.Shared.Base;
 using DNI.Shared.Attributes;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,16 +10,13 @@ using System.Threading.Tasks;
 
 namespace DNI.Data.Modules
 {
-    [RequiresDependencies(typeof(Core.This))]
     public class DbContextModule : ModuleBase
     {
-        [Resolve] private static IDbContextModuleOptions ModuleOptions { get; set; }
-
-        public static void ConfigureServices(IServiceCollection services)
+        public override void ConfigureServices(IServiceCollection services, IModuleConfiguration moduleConfiguration)
         {
             services.AddRequiredServices();
 
-            foreach (var moduleOptionDbContext in ModuleOptions.DbContextTypeOptions)
+            foreach (var moduleOptionDbContext in moduleConfiguration.GetOptions<IDbContextModuleOptions>().DbContextTypeOptions)
             {
                 if (moduleOptionDbContext.DbContextOptionsBuilder != null)
                 {
@@ -36,7 +34,12 @@ namespace DNI.Data.Modules
             }
         }
 
-        public override Task OnRun(CancellationToken cancellationToken)
+        public override void OnDispose(bool disposing)
+        {
+            
+        }
+
+        public override Task OnStart(CancellationToken cancellationToken)
         {
             return Task.CompletedTask;
         }

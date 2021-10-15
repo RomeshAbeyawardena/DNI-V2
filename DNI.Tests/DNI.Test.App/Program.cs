@@ -1,5 +1,6 @@
 ﻿using DNI.Core.Defaults.Hosts;
 using DNI.Data.Extensions;
+using DNI.Data.Shared.Abstractions.Builders;
 using DNI.Data.Shared.Base;
 using DNI.Extensions;
 using DNI.Mediator.Extensions;
@@ -58,26 +59,34 @@ namespace DNI.Test.App
 
         private static void ConfigureServices(IServiceCollection services)
         {
-            services
-                .AddLogging(c => c.AddConsole())
-                .ConfigureMigrationManagerModuleConfiguration(c => c.AddMigration("Default", DefaultMigration))
-                .ConfigureDbContextModule(c => c.AddDbContext<MyDbContext>((s, b) => b
-                    .UseSqlServer(s.GetRequiredService<IConfiguration>()
-                        .GetConnectionString("default"))
-                    .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution), ServiceLifetime.Scoped))
-                .ConfigureMediatorModule(a => a.AddModuleAssemblies())
-                .ConfigureWebModule(a => a.UseModuleAssemblies()
-                .ConfigureWebHost(ConfigureWebHost))
-                .RegisterModules(build => build
-                    .ConfigureAssemblies(c => c
-                    .AddAssembly(Shared.Modules.DbContext, a => a
-                        .SetAssemblyOptions(AssemblyOptions.Startup))
-                    .AddAssembly(Shared.Modules.Mediator, a => a
-                        .SetAssemblyOptions(AssemblyOptions.Startup))
-                    .AddAssembly(Shared.Modules.Web, a => a
-                        .SetAssemblyOptions(AssemblyOptions.Startup))
-                    .AddAssembly(Shared.Modules.MigrationManager, a => a
-                        .SetAssemblyOptions(AssemblyOptions.Startup))));
+            services.AddModules(builder => builder.ConfigureDbModule(ConfigureDbModule))
+            //services
+            //    .AddLogging(c => c.AddConsole())
+            //services
+            //    .AddLogging(c => c.AddConsole())
+            //    .ConfigureMigrationManagerModuleConfiguration(c => c.AddMigration("Default", DefaultMigration))
+            //    .ConfigureDbContextModule(c => c.AddDbContext<MyDbContext>((s, b) => b
+            //        .UseSqlServer(s.GetRequiredService<IConfiguration>()
+            //            .GetConnectionString("default"))
+            //        .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution), ServiceLifetime.Scoped))
+            //    .ConfigureMediatorModule(a => a.AddModuleAssemblies())
+            //    .ConfigureWebModule(a => a.UseModuleAssemblies()
+            //    .ConfigureWebHost(ConfigureWebHost))
+            //    .RegisterModules(build => build
+            //        .ConfigureAssemblies(c => c
+            //        .AddAssembly(Shared.Modules.DbContext, a => a
+            //            .SetAssemblyOptions(AssemblyOptions.Startup))
+            //        .AddAssembly(Shared.Modules.Mediator, a => a
+            //            .SetAssemblyOptions(AssemblyOptions.Startup))
+            //        .AddAssembly(Shared.Modules.Web, a => a
+            //            .SetAssemblyOptions(AssemblyOptions.Startup))
+            //        .AddAssembly(Shared.Modules.MigrationManager, a => a
+            //            .SetAssemblyOptions(AssemblyOptions.Startup))));
+        }
+
+        private static void ConfigureDbModule(IDbContextModuleOptionsBuilder builder)
+        {
+            builder.AddDbContext<MyDbContext>((s, b) => b.UseSqlServer(s.GetService<IConfiguration>().GetConnectionString("default")), ServiceLifetime.Scoped);
         }
 
         private static void ConfigureWebHost(IWebHostBuilder webHostBuilder)

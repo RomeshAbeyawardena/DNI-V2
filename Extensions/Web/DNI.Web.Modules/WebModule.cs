@@ -1,5 +1,6 @@
 ﻿using DNI.Extensions;
-using DNI.Modules.Shared.Attributes;
+using DNI.Modules.Extensions;
+using DNI.Modules.Shared.Abstractions;
 using DNI.Modules.Shared.Base;
 using DNI.Shared.Abstractions;
 using DNI.Shared.Attributes;
@@ -16,92 +17,49 @@ using System.Threading.Tasks;
 
 namespace DNI.Web.Modules
 {
-    [RequiresDependencies(typeof(Core.This))]
     public class WebModule : ModuleBase
     {
         private IHost host;
+        private readonly IServiceCollection services;
 
-        [Resolve] private static IWebModuleOptions Options { get; set; }
-        [Resolve] private static IDictionary<Assembly, IAssemblyOptions> AssemblyOptions { get; set; }
-        [Resolve] private static IServiceCollection Services { get; set; }
-        [RuntimeBinding(false)]
-        public static void ConfigureServices(IServiceCollection services)
+        public WebModule(IServiceCollection services)
         {
-            var mvcBuilder = services
-                .AddControllers(Options.ConfigureMvcOptions);
-
-            var assemblies = Options.UseModuleAssemblies 
-                ? AssemblyOptions.Select(a => a.Key).ToArray()
-                : Options.ToArray();
-
-            foreach (var assembly in assemblies)
-            {
-                mvcBuilder
-                    .AddApplicationPart(assembly);
-            }
-
-            mvcBuilder
-                .AddControllersAsServices();
-            services.Merge(Services);
-            services.OutputServices();
+            this.services = services;
         }
 
-        public override Task OnRun(CancellationToken cancellationToken)
+        public override void ConfigureServices(IServiceCollection services, IModuleConfiguration moduleConfiguration)
         {
-            var hostBuilder = Host.CreateDefaultBuilder();
-
-            if (Options.ConfigureWebHost != null)
+            var mvcBuilder = services.AddControllers();
+            foreach (var moduleAssembly in moduleConfiguration.GetModuleAssemblies())
             {
-                hostBuilder.ConfigureWebHostDefaults(ConfigureWebHost);
+                mvcBuilder.AddApplicationPart(moduleAssembly)
+                    .AddControllersAsServices();
             }
 
-            host = hostBuilder.Build();
-            return host.RunAsync(cancellationToken);           //Console.WriteLine(host);
+            services.AddSingleton(services);
+        }
+        public override Task OnStart(CancellationToken cancellationToken)
+        {
+            host = Host.CreateDefaultBuilder()
+                .ConfigureWebHostDefaults(ConfigureWebHost)
+                .Build();
+            return host.RunAsync(cancellationToken);
         }
 
         private void ConfigureWebHost(IWebHostBuilder webHostBuilder)
         {
-            Options.ConfigureWebHost?.Invoke(webHostBuilder); 
-            webHostBuilder.UseStartup<Startup>();
+            webHostBuilder.ConfigureServices(s => services.ForEach(sv => s.Add(sv)))
+                .Configure(c => c.UseRouting().UseEndpoints(e => e.MapControllers()));
+        }
+
+        public override void OnDispose(bool disposing)
+        {
+            host.Dispose();
         }
 
         public override Task OnStop(CancellationToken cancellationToken)
         {
-            return host?.StopAsync(cancellationToken);
-        }
-
-        public override void Dispose(bool dispose)
-        {
-            if (dispose)
-            {
-                host?.Dispose();
-            }
-        }
-
-
-        class Startup
-        {
-            public void ConfigureServices(IServiceCollection services)
-            {
-                WebModule.ConfigureServices(services);
-            }
-
-            public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-            {
-                if (env.IsDevelopment())
-                {
-                    app.UseDeveloperExceptionPage();
-                }
-
-                app.UseRouting();
-
-                app.UseEndpoints(endpoints =>
-                {
-                    endpoints.MapControllers();
-                });
-
-
-            }
+            return host.StopAsync(cancellationToken);
         }
     }
 }

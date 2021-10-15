@@ -8,6 +8,7 @@ namespace DNI.Modules.Shared.Abstractions
 {
     public interface IModuleConfiguration
     {
+        IDictionary<Type, object> Options { get; }
         IEnumerable<Type> ModuleTypes { get; }
         ICompiledModuleConfiguration Compile(IServiceProvider serviceProvider);
     }

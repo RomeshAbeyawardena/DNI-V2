@@ -1,5 +1,4 @@
-﻿using DNI.Modules.Shared.Attributes;
-using DNI.Modules.Shared.Base;
+﻿using DNI.Modules.Shared.Base;
 using DNI.Mediator.Shared.Abstractions;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,25 +9,29 @@ using MediatR;
 using System.Reflection;
 using DNI.Shared.Abstractions;
 using DNI.Shared.Attributes;
+using DNI.Modules.Shared.Abstractions;
+using DNI.Modules.Extensions;
 
 namespace DNI.Mediator.Modules
 {
-    [RequiresDependencies(typeof(Core.This))]
     public class MediatorModule : ModuleBase
     {
-        [Resolve] private static IDictionary<Assembly, IAssemblyOptions> AssemblyOptions { get; set; }
-        [Resolve] private static IMediatorModuleOptions Options { get; set; }
-
-        public static void ConfigureServices(IServiceCollection services)
+        public override void ConfigureServices(IServiceCollection services, IModuleConfiguration moduleConfiguration)
         {
-            var assemblies = Options.UseModuleAssemblies
-                ? AssemblyOptions.Select(k => k.Key).ToArray()
-                : Options.ToArray();
+            var options = moduleConfiguration.GetOptions<IMediatorModuleOptions>();
+            var assemblies = options.UseModuleAssemblies
+                ? moduleConfiguration.GetModuleAssemblies()
+                : options;
 
-            services.AddMediatR(assemblies);
+            services.AddMediatR(assemblies.ToArray());
         }
 
-        public override Task OnRun(CancellationToken cancellationToken)
+        public override void OnDispose(bool disposing)
+        {
+            
+        }
+
+        public override Task OnStart(CancellationToken cancellationToken)
         {
             return Task.CompletedTask;
         }
