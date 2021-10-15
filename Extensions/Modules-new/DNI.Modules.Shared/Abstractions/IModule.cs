@@ -10,7 +10,8 @@ namespace DNI.Modules.Shared.Abstractions
 {
     public interface IModule : ISubscriptionManager<IModuleStatus>
     {
-        Guid UniqueId { get; }
+        IEnumerable<IDisposable> Disposables { get; set; }
+        Guid UniqueId { get; set; }
         Type ModuleType { get; }
         IEnumerable<Type> ModuleParameters { get; }
         IObservable<IModuleStatus> Status { get; }

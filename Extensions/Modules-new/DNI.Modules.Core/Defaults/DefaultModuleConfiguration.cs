@@ -22,7 +22,7 @@ namespace DNI.Modules.Core.Defaults
             var activatedModuleList = new List<IModule>();
             foreach (var moduleType in ModuleTypes)
             {
-                activatedModuleList.Add(serviceProvider.Activate<IModule>(moduleType));
+                activatedModuleList.Add(serviceProvider.Activate<IModule>(moduleType, out var disposables));
             }
 
             return new DefaultCompiledModuleConfiguration { Modules = activatedModuleList };

@@ -18,7 +18,7 @@ namespace DNI.Modules.Core.Defaults
         private readonly IModuleConfiguration moduleConfiguration;
         private ICompiledModuleConfiguration compiledModuleConfiguration;
         private IServiceProvider moduleServiceProvider;
-        private Dictionary<Type, IEnumerable<IDisposable>> disposableTypesList;
+        private readonly Dictionary<Guid, IEnumerable<IDisposable>> disposableTypesList;
 
         public DefaultModuleRunner(
             IServiceProvider serviceProvider,
@@ -27,7 +27,7 @@ namespace DNI.Modules.Core.Defaults
             this.services = new DefaultModulesServiceCollection();
             this.serviceProvider = serviceProvider;
             this.moduleConfiguration = moduleConfiguration;
-            disposableTypesList = new Dictionary<Type, IEnumerable<IDisposable>>();
+            disposableTypesList = new Dictionary<Guid, IEnumerable<IDisposable>>();
         }
 
         public override void ConfigureServices(IServiceCollection services)
@@ -36,7 +36,9 @@ namespace DNI.Modules.Core.Defaults
             foreach(var moduleType in moduleConfiguration.ModuleTypes)
             {
                 var module = fakeServiceProvider.Activate<IModule>(moduleType, out var disposables);
-                
+                var moduleId = Guid.NewGuid();
+                module.UniqueId = moduleId;
+                disposableTypesList.Add(moduleId, disposables);
                 module.ConfigureServices(services);
             }
 
@@ -53,7 +55,15 @@ namespace DNI.Modules.Core.Defaults
             ConfigureServices(services);
             moduleServiceProvider = new ModuleServiceProvider(serviceProvider, services.BuildServiceProvider());
             compiledModuleConfiguration = moduleServiceProvider.GetRequiredService<ICompiledModuleConfiguration>();
-            return Task.WhenAll(compiledModuleConfiguration.Modules.ForEach(m => m.StartAsync(cancellationToken)));
+            return Task.WhenAll(compiledModuleConfiguration.Modules.ForEach(m => OnStartModule(m, cancellationToken)));
+        }
+
+        private Task OnStartModule(IModule module, CancellationToken cancellationToken)
+        {
+            if (disposableTypesList.TryGetValue(module.UniqueId, out var disposables))
+                module.Disposables = disposables;
+
+            return module.StartAsync(cancellationToken);
         }
 
         public override Task OnStop(CancellationToken cancellationToken)

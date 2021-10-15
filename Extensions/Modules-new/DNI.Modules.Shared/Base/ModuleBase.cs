@@ -22,6 +22,10 @@ namespace DNI.Modules.Shared.Base
 
         public IEnumerable<Type> ModuleParameters => ModuleType.GetConstructorParameterTypes();
 
+        public Guid UniqueId { get; set; }
+
+        public IEnumerable<IDisposable> Disposables { get; set; }
+
         public abstract void ConfigureServices(IServiceCollection serviceCollection);
         public abstract Task OnStart(CancellationToken cancellationToken);
         public abstract Task OnStop(CancellationToken cancellationToken);
@@ -50,6 +54,9 @@ namespace DNI.Modules.Shared.Base
             return OnStop(cancellationToken);
         }
 
-        
+        public override void Dispose(bool disposing)
+        {
+            Disposables.ForEach(d => d.Dispose());
+        }
     }
 }
