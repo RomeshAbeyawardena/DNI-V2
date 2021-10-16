@@ -22,13 +22,15 @@ namespace DNI.Core.Defaults
 
         public string Decrypt(string value, IEncryptionOptions encryptionOptions)
         {
-            using (var memoryStream = new MemoryStream(Convert.FromBase64String(value)))
+            var encryptedBytes = Convert.FromBase64String(value);
+            using (var memoryStream = new MemoryStream(encryptedBytes))
             using (var algorithm = GetSymmetricAlgorithm(encryptionOptions.Algorithm.Value))
-            using (var encryptor = algorithm.CreateEncryptor())
+            using (var encryptor = algorithm.CreateDecryptor(Convert.FromBase64String(encryptionOptions.Key),
+                    Convert.FromBase64String(encryptionOptions.InitialVector)))
             using (var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Read))
             using (var streamReader = new StreamReader(cryptoStream, encryptionOptions.Encoding))
             {
-                return streamReader.ReadToEnd();
+               return streamReader.ReadToEnd();
             }
         }
     }

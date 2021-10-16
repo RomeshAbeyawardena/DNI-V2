@@ -83,6 +83,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNI.Encryption.Extensions",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNI.Encryption.Modules", "Extensions\Encryption\DNI.Encryption.Modules\DNI.Encryption.Modules.csproj", "{44416258-6AB9-49A6-B9C6-DEA073E7A682}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNI.Encryption.Tests", "Extensions\Encryption\DNI.Encryption.Tests\DNI.Encryption.Tests.csproj", "{0602E077-A3FA-4E98-AAC4-EFDB40425AB7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -417,6 +419,18 @@ Global
 		{44416258-6AB9-49A6-B9C6-DEA073E7A682}.Release|x64.Build.0 = Release|Any CPU
 		{44416258-6AB9-49A6-B9C6-DEA073E7A682}.Release|x86.ActiveCfg = Release|Any CPU
 		{44416258-6AB9-49A6-B9C6-DEA073E7A682}.Release|x86.Build.0 = Release|Any CPU
+		{0602E077-A3FA-4E98-AAC4-EFDB40425AB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0602E077-A3FA-4E98-AAC4-EFDB40425AB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0602E077-A3FA-4E98-AAC4-EFDB40425AB7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0602E077-A3FA-4E98-AAC4-EFDB40425AB7}.Debug|x64.Build.0 = Debug|Any CPU
+		{0602E077-A3FA-4E98-AAC4-EFDB40425AB7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0602E077-A3FA-4E98-AAC4-EFDB40425AB7}.Debug|x86.Build.0 = Debug|Any CPU
+		{0602E077-A3FA-4E98-AAC4-EFDB40425AB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0602E077-A3FA-4E98-AAC4-EFDB40425AB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0602E077-A3FA-4E98-AAC4-EFDB40425AB7}.Release|x64.ActiveCfg = Release|Any CPU
+		{0602E077-A3FA-4E98-AAC4-EFDB40425AB7}.Release|x64.Build.0 = Release|Any CPU
+		{0602E077-A3FA-4E98-AAC4-EFDB40425AB7}.Release|x86.ActiveCfg = Release|Any CPU
+		{0602E077-A3FA-4E98-AAC4-EFDB40425AB7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -455,6 +469,7 @@ Global
 		{3F47DEC2-A74F-4994-9AB4-5A362B3DB6AA} = {9E38B804-DD4D-4F02-AC89-375F7A6448DD}
 		{A3ACF770-23AC-44EA-B96D-9FEA1249E276} = {9E38B804-DD4D-4F02-AC89-375F7A6448DD}
 		{44416258-6AB9-49A6-B9C6-DEA073E7A682} = {9E38B804-DD4D-4F02-AC89-375F7A6448DD}
+		{0602E077-A3FA-4E98-AAC4-EFDB40425AB7} = {9E38B804-DD4D-4F02-AC89-375F7A6448DD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BA6EA9F4-0123-4D41-9EA6-C8A9DA2BCA00}

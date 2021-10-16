@@ -42,7 +42,9 @@ namespace DNI.Mediator.Modules.Controllers
         public ActionResult Index(User value)
         {
             var encrypted = modelEncryptor.Encrypt(value);
-            return Ok(encrypted);
+
+            var decrypted = modelEncryptor.Decrypt(encrypted);
+            return Ok(new { encrypted, decrypted });
         }
     }
 }
