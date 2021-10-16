@@ -8,7 +8,7 @@ using System.Text;
 
 namespace DNI.Encryption.tests
 {
-    public class Tests
+    public class EncryptionTests
     {
         private DefaultDecryptor sutDecryptor;
         private DefaultEncryptor sutEncryptor;
@@ -25,7 +25,7 @@ namespace DNI.Encryption.tests
         }
 
         [Test]
-        public void Test1()
+        public void Encrypted_value_should_be_the_same_value_when_decrypted_using_the_same_keys_used_during_encryption()
         {
             var expected = "test";
             encryptionOptionsMock.Setup(a => a.Algorithm)
