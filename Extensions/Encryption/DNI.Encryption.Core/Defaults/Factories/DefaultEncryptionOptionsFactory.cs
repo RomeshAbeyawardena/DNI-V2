@@ -1,5 +1,5 @@
-﻿using DNI.Shared.Abstractions;
-using DNI.Shared.Abstractions.Factories;
+﻿using DNI.Encryption.Shared.Abstractions;
+using DNI.Encryption.Shared.Abstractions.Factories;
 using DNI.Shared.Attributes;
 using Microsoft.Extensions.Configuration;
 using System;

@@ -1,4 +1,4 @@
-﻿namespace DNI.Shared.Enumerations
+﻿namespace DNI.Encryption.Shared.Enumerations
 {
     public enum SymmetricAlgorithm
     {

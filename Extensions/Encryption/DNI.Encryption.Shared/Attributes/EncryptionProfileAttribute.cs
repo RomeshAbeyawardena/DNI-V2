@@ -1,11 +1,11 @@
-﻿using DNI.Shared.Enumerations;
+﻿using DNI.Encryption.Shared.Enumerations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DNI.Shared.Attributes
+namespace DNI.Encryption.Shared.Attributes
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
     public sealed class EncryptionProfileAttribute : Attribute

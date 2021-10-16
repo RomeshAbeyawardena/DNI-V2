@@ -1,7 +1,7 @@
-﻿using DNI.Shared.Abstractions;
-using DNI.Shared.Abstractions.Factories;
+﻿using DNI.Encryption.Shared.Abstractions;
+using DNI.Encryption.Shared.Abstractions.Factories;
+using DNI.Encryption.Shared.Attributes;
 using DNI.Shared.Attributes;
-using DNI.Shared.Base;
 using DNI.Shared.Extensions;
 using System;
 using System.Collections.Generic;
@@ -22,11 +22,11 @@ namespace DNI.Core.Defaults
 
         private object Decrypt(object value, EncryptionProfileAttribute encryptionProfileAttribute, IEncryptionOptions encryptionOptions)
         {
-            if (encryptionProfileAttribute.EncryptionType == Shared.Enumerations.EncryptionType.Encryption)
+            if (encryptionProfileAttribute.EncryptionType == Encryption.Shared.Enumerations.EncryptionType.Encryption)
             {
                 return decryptor.Decrypt(value?.ToString(), encryptionOptions);
             }
-            else if (encryptionProfileAttribute.EncryptionType == Shared.Enumerations.EncryptionType.Hash)
+            else if (encryptionProfileAttribute.EncryptionType == Encryption.Shared.Enumerations.EncryptionType.Hash)
             {
                 return value;
             }
@@ -36,11 +36,11 @@ namespace DNI.Core.Defaults
 
         private object Encrypt(object value, EncryptionProfileAttribute encryptionProfileAttribute, IEncryptionOptions encryptionOptions)
         {
-            if (encryptionProfileAttribute.EncryptionType == Shared.Enumerations.EncryptionType.Encryption)
+            if (encryptionProfileAttribute.EncryptionType == Encryption.Shared.Enumerations.EncryptionType.Encryption)
             {
                 return encryptor.Encrypt(value?.ToString(), encryptionOptions);
             }
-            else if (encryptionProfileAttribute.EncryptionType == Shared.Enumerations.EncryptionType.Hash)
+            else if (encryptionProfileAttribute.EncryptionType == Encryption.Shared.Enumerations.EncryptionType.Hash)
             {
                 return hasher.HashString(value?.ToString());
             }

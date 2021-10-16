@@ -1,7 +1,7 @@
-﻿using DNI.Shared.Enumerations;
+﻿using DNI.Encryption.Shared.Enumerations;
 using System.Text;
 
-namespace DNI.Shared.Abstractions
+namespace DNI.Encryption.Shared.Abstractions
 {
     public interface IEncryptionOptions
     {

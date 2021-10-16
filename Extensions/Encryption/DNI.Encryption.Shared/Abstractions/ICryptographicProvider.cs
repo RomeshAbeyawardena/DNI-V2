@@ -1,4 +1,4 @@
-﻿namespace DNI.Shared.Abstractions
+﻿namespace DNI.Encryption.Shared.Abstractions
 {
     public interface ICryptographicProvider
     {

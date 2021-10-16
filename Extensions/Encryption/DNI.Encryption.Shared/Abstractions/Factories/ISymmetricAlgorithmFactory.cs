@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace DNI.Shared.Base
+namespace DNI.Encryption.Shared.Base
 {
     public interface ISymmetricAlgorithmFactory
     {

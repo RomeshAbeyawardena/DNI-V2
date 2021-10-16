@@ -1,7 +1,7 @@
-﻿using DNI.Shared.Abstractions;
-using DNI.Shared.Enumerations;
+﻿using DNI.Encryption.Shared.Abstractions;
+using DNI.Encryption.Shared.Enumerations;
 
-namespace DNI.Shared.Base
+namespace DNI.Encryption.Shared.Base
 {
     public abstract class CryptographicProviderBase : ICryptographicProvider
     {

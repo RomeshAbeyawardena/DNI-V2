@@ -1,5 +1,5 @@
-﻿using DNI.Shared.Abstractions;
-using DNI.Shared.Enumerations;
+﻿using DNI.Encryption.Shared.Abstractions;
+using DNI.Encryption.Shared.Enumerations;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;

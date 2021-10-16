@@ -1,6 +1,6 @@
-﻿using DNI.Shared.Abstractions;
+﻿using DNI.Encryption.Shared.Abstractions;
 using DNI.Shared.Attributes;
-using DNI.Shared.Base;
+using DNI.Encryption.Shared.Base;
 using System;
 using System.IO;
 using System.Security.Cryptography;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DNI.Shared.Enumerations
+namespace DNI.Encryption.Shared.Enumerations
 {
     public enum EncryptionType
     {
