@@ -10,19 +10,23 @@ namespace DNI.Encryption.Core.Defaults
 {
     public class DefaultEncryptionOptionsBuilder : IEncryptionOptionsBuilder
     {
-        public IEncryptionOptions Build()
+        private DefaultEncryptionModuleOptions encryptionModuleOptions = new();
+
+        public IEncryptionModuleOptions Build()
         {
-            throw new NotImplementedException();
+            return encryptionModuleOptions;
         }
 
         public IEncryptionOptionsBuilder ConfigureOptions(Action<IEncryptionModuleOptions> configure)
         {
-            throw new NotImplementedException();
+            configure?.Invoke(encryptionModuleOptions);
+            return this;
         }
 
         public IEncryptionOptionsBuilder UseModuleAssemblies()
         {
-            throw new NotImplementedException();
+            encryptionModuleOptions.UseModuleAssemblies = true;
+            return this;
         }
     }
 }

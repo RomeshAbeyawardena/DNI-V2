@@ -8,7 +8,7 @@ namespace DNI.Encryption.Shared.Abstractions.Builders
 {
     public interface IEncryptionOptionsBuilder
     {
-        IEncryptionOptions Build();
+        IEncryptionModuleOptions Build();
         IEncryptionOptionsBuilder ConfigureOptions(Action<IEncryptionModuleOptions> configure);
         IEncryptionOptionsBuilder UseModuleAssemblies();
     }

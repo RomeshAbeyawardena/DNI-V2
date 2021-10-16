@@ -13,16 +13,21 @@ namespace DNI.Core.Defaults.Factories
     [RegisterService]
     public class DefaultEncryptionOptionsFactory : IEncryptionOptionsFactory
     {
-        private readonly IConfiguration configuration;
+        private readonly IDictionary<string, IEncryptionOptions> encryptionOptions;
 
-        public DefaultEncryptionOptionsFactory(IConfiguration configuration)
+        public DefaultEncryptionOptionsFactory(IDictionary<string, IEncryptionOptions> encryptionOptions)
         {
-            this.configuration = configuration;
+            this.encryptionOptions = encryptionOptions;
         }
 
         public IEncryptionOptions GetEncryptionOptions(string sectionName)
         {
-            return new DefaultEncryptionOptions(configuration, sectionName);
+            if(encryptionOptions != null)
+            {
+                return new DefaultEncryptionOptions(encryptionOptions, sectionName);
+            }
+
+            throw new NotSupportedException();
         }
     }
 }

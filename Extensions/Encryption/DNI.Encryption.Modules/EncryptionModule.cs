@@ -5,6 +5,7 @@ using DNI.Extensions;
 using DNI.Modules.Extensions;
 using DNI.Modules.Shared.Abstractions;
 using DNI.Modules.Shared.Base;
+using DNI.Shared.Attributes;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace DNI.Encryption.Modules
 {
+    [RequiresDependencies(typeof(Core.This))]
     public class EncryptionModule : ModuleBase
     {
         public override void ConfigureServices(IServiceCollection services, IModuleConfiguration moduleConfiguration)

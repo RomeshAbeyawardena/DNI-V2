@@ -2,6 +2,7 @@
 using DNI.Data.Extensions;
 using DNI.Data.Modules;
 using DNI.Data.Shared.Base;
+using DNI.Encryption.Extensions;
 using DNI.Encryption.Modules.Extensions;
 using DNI.Extensions;
 using DNI.Mediator.Modules.Extensions;
@@ -19,6 +20,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Data;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace DNI.Test.App
@@ -70,7 +72,12 @@ namespace DNI.Test.App
                 .ConfigureWebModule(builder => builder.AddModuleAssemblies())
                 .ConfigureEncryptionModule(builder => builder
                     .UseModuleAssemblies()
-                    .ConfigureOptions(s => { })));
+                    .ConfigureOptions(s => { s
+                        .AddEncryptionOption("Personal", "", "", Encryption.Shared.Enumerations.SymmetricAlgorithm.Aes, Encoding.Default)
+                        .AddEncryptionOption("Common", "", "", Encryption.Shared.Enumerations.SymmetricAlgorithm.Aes, Encoding.Default)
+                        .AddEncryptionOption("Credential", "", "", Encryption.Shared.Enumerations.SymmetricAlgorithm.Aes, Encoding.Default)
+                        .AddEncryptionOption("Secondary", "", "", Encryption.Shared.Enumerations.SymmetricAlgorithm.Aes, Encoding.Default); 
+                    })));
         }
 
         private static void ConfigureWebHost(IWebHostBuilder webHostBuilder)
