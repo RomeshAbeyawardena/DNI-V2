@@ -23,13 +23,15 @@ namespace DNI.Encryption.Core.Defaults
 
         public string Encrypt(string value, IEncryptionOptions encryptionOptions)
         {
+            MemoryStream EncryptOperation(MemoryStream memoryStream, CryptoStream cryptoStream)
+            {
+                using (var streamWriter = new StreamWriter(cryptoStream, encryptionOptions.Encoding))
+                    streamWriter.Write(value);
+                return memoryStream;
+            }
+
             var encryptedBytes = ExecuteSymmetricOperation(Shared.Enumerations.EncryptionMode.Encrypt, 
-                encryptionOptions, CryptoStreamMode.Write,
-                (m, c) => { 
-                    using (var streamWriter = new StreamWriter(c, encryptionOptions.Encoding)) 
-                        streamWriter.Write(value);
-                    return m;
-                }).ToArray();
+                encryptionOptions, CryptoStreamMode.Write, EncryptOperation).ToArray();
 
 
             return Convert.ToBase64String(encryptedBytes);

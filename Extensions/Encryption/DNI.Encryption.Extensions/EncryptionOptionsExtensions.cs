@@ -24,9 +24,9 @@ namespace DNI.Encryption.Extensions
             return options;
         }
         
-        public static IEncryptionModuleOptions AddEncryptionOption(this IEncryptionModuleOptions options, string sectionNamekey)
+        public static IEncryptionModuleOptions AddEncryptionOption(this IEncryptionModuleOptions options, string sectionNamekey, string path = default)
         {
-            options.EncryptionOptionsFactory.Add(sectionNamekey, s => s.GetRequiredService<IEncryptionOptionsFactory>().GetEncryptionOptions(sectionNamekey));
+            options.EncryptionOptionsFactory.Add(sectionNamekey, s => s.GetRequiredService<IEncryptionOptionsFactory>().GetEncryptionOptions(sectionNamekey, path));
             return options;
         }
     }

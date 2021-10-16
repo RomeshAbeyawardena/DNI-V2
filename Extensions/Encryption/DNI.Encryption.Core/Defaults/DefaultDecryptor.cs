@@ -22,16 +22,18 @@ namespace DNI.Encryption.Core.Defaults
 
         public string Decrypt(string value, IEncryptionOptions encryptionOptions)
         {
+            string DecryptOperation(MemoryStream memoryStream, CryptoStream cryptoStream)
+            {
+                using (var streamReader = new StreamReader(cryptoStream, encryptionOptions.Encoding))
+                {
+                    return streamReader.ReadToEnd();
+                }
+            }
+
             var encryptedBytes = Convert.FromBase64String(value);
 
             return ExecuteSymmetricOperation(Shared.Enumerations.EncryptionMode.Decrypt, 
-                encryptionOptions, CryptoStreamMode.Read, (m, c) =>
-                {
-                    using (var streamReader = new StreamReader(c, encryptionOptions.Encoding))
-                    {
-                        return streamReader.ReadToEnd();
-                    }
-                }, encryptedBytes);
+                encryptionOptions, CryptoStreamMode.Read, DecryptOperation, encryptedBytes);
         }
     }
 }
