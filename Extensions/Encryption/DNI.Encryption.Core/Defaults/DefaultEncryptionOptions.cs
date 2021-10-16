@@ -11,18 +11,12 @@ namespace DNI.Core.Defaults
 {
     public class DefaultEncryptionOptions : IEncryptionOptions
     {
-        
         public DefaultEncryptionOptions(string key, string initialVector, SymmetricAlgorithm algorithm, Encoding encoding)
         {
             Key = key;
             InitialVector = initialVector;
             Algorithm = algorithm;
             Encoding = encoding;
-        }
-
-        public DefaultEncryptionOptions(IConfiguration configuration, string sectionName)
-        {
-            configuration.GetSection(sectionName).Bind(this);
         }
 
         public DefaultEncryptionOptions(IDictionary<string, IEncryptionOptions> encryptionOptionsDict, string key)

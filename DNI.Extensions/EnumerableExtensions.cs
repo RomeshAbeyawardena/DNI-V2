@@ -11,6 +11,15 @@ namespace DNI.Extensions
             items.ForEach(item => list.Add(item));
         }
 
+        public static IEnumerable<T> RemoveAt<T>(this IEnumerable<T> items, int index)
+        {
+            var itemList = new List<T>(items);
+
+            itemList.RemoveAt(index);
+
+            return itemList;
+        }
+
         public static IEnumerable<T> AppendMany<T>(this IEnumerable<T> items, IEnumerable<T> itemsToAppend)
         {
             var itemList = new List<T>(items);

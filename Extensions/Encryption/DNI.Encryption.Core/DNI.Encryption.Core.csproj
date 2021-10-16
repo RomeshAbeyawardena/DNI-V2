@@ -10,6 +10,7 @@
   </ItemGroup>
   
   <ItemGroup>
+    <ProjectReference Include="..\..\..\DNI.Extensions\DNI.Extensions.csproj" />
     <ProjectReference Include="..\..\..\DNI.Shared\DNI.Shared.csproj" />
     <ProjectReference Include="..\DNI.Encryption.Shared\DNI.Encryption.Shared.csproj" />
   </ItemGroup>

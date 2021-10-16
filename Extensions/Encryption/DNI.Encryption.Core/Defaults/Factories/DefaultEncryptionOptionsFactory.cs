@@ -1,5 +1,6 @@
 ﻿using DNI.Encryption.Shared.Abstractions;
 using DNI.Encryption.Shared.Abstractions.Factories;
+using DNI.Extensions;
 using DNI.Shared.Attributes;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -26,12 +27,26 @@ namespace DNI.Core.Defaults.Factories
 
         public IEncryptionOptions GetEncryptionOptions(string sectionName, string path)
         {
-            if(encryptionOptions != null)
+            if (!string.IsNullOrWhiteSpace(path))
             {
-                return new DefaultEncryptionOptions(encryptionOptions, sectionName);
+                var paths = path.Split("//", StringSplitOptions.RemoveEmptyEntries);
+                IConfigurationSection section = configuration.GetSection(paths.FirstOrDefault());
+
+                if(section == null)
+                {
+                    throw new NullReferenceException();
+                }
+
+                foreach(var currentSectionName in paths.RemoveAt(0))
+                {
+                    section = configuration.GetSection(currentSectionName);
+                }
+
+                return new DefaultEncryptionOptions(section);
             }
 
-            throw new NotSupportedException();
+            return new DefaultEncryptionOptions(encryptionOptions, sectionName);
+
         }
     }
 }
