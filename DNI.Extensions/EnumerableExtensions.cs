@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DNI.Extensions
 {
@@ -10,14 +11,14 @@ namespace DNI.Extensions
             items.ForEach(item => list.Add(item));
         }
 
-        public static IEnumerable<T> AppendAll<T>(this IEnumerable<T> items, IEnumerable<T> itemsToAppend)
+        public static IEnumerable<T> AppendMany<T>(this IEnumerable<T> items, IEnumerable<T> itemsToAppend)
         {
             var itemList = new List<T>(items);
 
             if (itemsToAppend == null)
                 return itemList;
 
-            itemList.AddRange(itemsToAppend);
+            itemList.AddRange(itemsToAppend.ToArray());
 
             return itemList;
         }

@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 
 namespace DNI.Web.Modules
 {
+    [RequiresDependencies(typeof(DNI.Core.This))]
     public class WebModule : ModuleBase
     {
         private IHost host;

@@ -1,10 +1,12 @@
 ﻿using DNI.Extensions;
 using DNI.Modules.Shared.Abstractions;
 using DNI.Modules.Shared.Base;
+using DNI.Shared.Attributes;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,6 +21,8 @@ namespace DNI.Modules.Core.Defaults
         private ICompiledModuleConfiguration compiledModuleConfiguration;
         private IServiceProvider moduleServiceProvider;
         private readonly Dictionary<Guid, IEnumerable<IDisposable>> disposableTypesList;
+        private readonly List<Action<IServiceCollection, IModuleConfiguration>> serviceConfigurations;
+
         private ICompiledModuleConfiguration ConfigureModuleConfiguration(IServiceProvider serviceProvider)
         {
             return moduleConfiguration.Compile(serviceProvider);
@@ -39,17 +43,20 @@ namespace DNI.Modules.Core.Defaults
             this.serviceProvider = serviceProvider;
             this.moduleConfiguration = moduleConfiguration;
             disposableTypesList = new Dictionary<Guid, IEnumerable<IDisposable>>();
+            serviceConfigurations = new List<Action<IServiceCollection, IModuleConfiguration>>();
         }
 
         public override void ConfigureServices(IServiceCollection services, IModuleConfiguration moduleConfiguration)
         {
+            serviceConfigurations.ForEach(sc => sc?.Invoke(services, moduleConfiguration));
+
             var fakeServiceProvider = new DefaultFakeServiceProvider();
             foreach(var moduleType in moduleConfiguration.ModuleTypes)
             {
                 var module = fakeServiceProvider.Activate<IModule>(moduleType, out var disposables);
                 var moduleId = Guid.NewGuid();
                 module.UniqueId = moduleId;
-                disposableTypesList.Add(moduleId, disposables);
+                disposableTypesList.Add(moduleId, disposables);   
                 module.ConfigureServices(services, moduleConfiguration);
             }
 
@@ -76,6 +83,11 @@ namespace DNI.Modules.Core.Defaults
         public override void OnDispose(bool disposing)
         {
             compiledModuleConfiguration?.Modules.ForEach(m => m.Dispose());
+        }
+
+        public void AddServiceConfiguration(Action<IServiceCollection, IModuleConfiguration> configureAction)
+        {
+            serviceConfigurations.Add(configureAction);
         }
     }
 }

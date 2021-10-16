@@ -1,10 +1,12 @@
-﻿using DNI.Modules.Shared.Abstractions;
+﻿using DNI.Extensions;
+using DNI.Modules.Shared.Abstractions;
 using DNI.Modules.Shared.Base;
 using DNI.Shared.Attributes;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,9 +27,23 @@ namespace DNI.Modules.Core.Defaults
 
         public IModuleConfiguration Configuration { get; }
 
+        private IEnumerable<Assembly> GetAssemblies(Type type)
+        {
+            var requiresDependenciesAttribute = type.GetCustomAttribute<RequiresDependenciesAttribute>();
+
+            if(requiresDependenciesAttribute == null)
+            {
+                return Array.Empty<Assembly>();
+            }
+
+            return requiresDependenciesAttribute.RequiredTypes.Select(t => t.Assembly);
+        }
+
         public override void ConfigureServices(IServiceCollection services, IModuleConfiguration moduleConfiguration)
         {
-            services.Scan(c => c.FromAssemblies(moduleConfiguration.ModuleTypes.Select(a => a.Assembly).Distinct())
+            var dependencies = moduleConfiguration.ModuleTypes.SelectMany(GetAssemblies);
+
+            services.Scan(c => c.FromAssemblies(moduleConfiguration.ModuleTypes.Select(a => a.Assembly).AppendMany(dependencies).Distinct())
                 .AddClasses(t => t.WithAttribute<RegisterServiceAttribute>(s => s.ServiceLifetime == ServiceLifetime.Singleton))
                 .AsImplementedInterfaces()
                 .WithSingletonLifetime()
@@ -37,8 +53,6 @@ namespace DNI.Modules.Core.Defaults
                 .AddClasses(t => t.WithAttribute<RegisterServiceAttribute>(s => s.ServiceLifetime == ServiceLifetime.Transient))
                 .AsImplementedInterfaces()
                 .WithTransientLifetime());
-
-            moduleRunner.ConfigureServices(services, moduleConfiguration);
         }
 
         public override void OnDispose(bool disposing)
@@ -48,6 +62,7 @@ namespace DNI.Modules.Core.Defaults
 
         public override Task OnStart(CancellationToken cancellationToken)
         {
+            moduleRunner.AddServiceConfiguration(ConfigureServices);
             return moduleRunner.StartAsync(cancellationToken);
         }
 

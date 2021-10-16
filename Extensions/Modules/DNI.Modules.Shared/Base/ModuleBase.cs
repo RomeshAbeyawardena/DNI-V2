@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Subjects;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,7 +22,7 @@ namespace DNI.Modules.Shared.Base
         public Type ModuleType => GetType();
 
         public IEnumerable<Type> ModuleParameters => ModuleType.GetConstructorParameterTypes();
-
+        
         public Guid UniqueId { get; set; }
 
         public IEnumerable<IDisposable> Disposables { get; set; }
