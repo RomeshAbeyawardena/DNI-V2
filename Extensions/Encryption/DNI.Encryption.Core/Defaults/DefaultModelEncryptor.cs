@@ -56,7 +56,7 @@ namespace DNI.Core.Defaults
 
             foreach (var property in properties)
             {
-                var encryptionProfileAttribute = property.PropertyType.GetCustomAttribute<EncryptionProfileAttribute>();
+                var encryptionProfileAttribute = property.GetCustomAttribute<EncryptionProfileAttribute>();
 
                 var propertyValue = property.GetValue(model);
 
@@ -67,7 +67,9 @@ namespace DNI.Core.Defaults
 
                 if (encryptionProfileAttribute != null)
                 {
-                   property.SetValue(newInstance, apply(propertyValue, encryptionProfileAttribute, encryptionOptionsFactory.GetEncryptionOptions(encryptionProfileAttribute.SectionName)));
+                   var newValue = apply(propertyValue, encryptionProfileAttribute, 
+                       encryptionOptionsFactory.GetEncryptionOptions(encryptionProfileAttribute.SectionName));
+                   property.SetValue(newInstance, newValue); 
                 }
                 else
                     property.SetValue(newInstance, propertyValue);

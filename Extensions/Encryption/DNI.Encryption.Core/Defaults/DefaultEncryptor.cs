@@ -24,14 +24,16 @@ namespace DNI.Core.Defaults
         public string Encrypt(string value, IEncryptionOptions encryptionOptions)
         {
             using (var memoryStream = new MemoryStream())
-            using (var algorithm = GetSymmetricAlgorithm(encryptionOptions.Algorithm.Value))
-            using (var encryptor = algorithm.CreateEncryptor(
-                Convert.FromBase64String(encryptionOptions.Key),
-                Convert.FromBase64String(encryptionOptions.InitialVector)))
-            using (var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
-            using (var streamWriter = new StreamWriter(cryptoStream, encryptionOptions.Encoding))
             {
-                streamWriter.Write(value);
+                using (var algorithm = GetSymmetricAlgorithm(encryptionOptions.Algorithm.Value))
+                using (var encryptor = algorithm.CreateEncryptor(
+                    Convert.FromBase64String(encryptionOptions.Key),
+                    Convert.FromBase64String(encryptionOptions.InitialVector)))
+                using (var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
+                using (var streamWriter = new StreamWriter(cryptoStream, encryptionOptions.Encoding))
+                {
+                    streamWriter.Write(value);
+                }
                 return Convert.ToBase64String(memoryStream.ToArray());
             }
         }
