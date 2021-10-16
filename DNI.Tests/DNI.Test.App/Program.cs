@@ -2,6 +2,7 @@
 using DNI.Data.Extensions;
 using DNI.Data.Modules;
 using DNI.Data.Shared.Base;
+using DNI.Encryption.Modules.Extensions;
 using DNI.Extensions;
 using DNI.Mediator.Modules.Extensions;
 using DNI.MigrationManager.Shared.Abstractions;
@@ -60,33 +61,16 @@ namespace DNI.Test.App
 
             services
                 .AddLogging(c => c.AddConsole())
-                .AddModules(builder => builder.ConfigureDbContextModule(builder => builder
-                .AddDbContext<MyDbContext>((s, b) => b.UseSqlServer(s
-                    .GetService<IConfiguration>()
-                    .GetConnectionString("default")), ServiceLifetime.Scoped))
+                .AddModules(builder => builder
+                .ConfigureDbContextModule(builder => builder
+                    .AddDbContext<MyDbContext>((s, b) => b.UseSqlServer(s
+                        .GetService<IConfiguration>()
+                        .GetConnectionString("default")), ServiceLifetime.Scoped))
                 .ConfigureMediatorModule(builder => builder.AddModuleAssemblies())
-                .ConfigureWebModule(builder => builder.UseModuleAssemblies()));
-
-            //services
-            //    .AddLogging(c => c.AddConsole())
-            //    .ConfigureMigrationManagerModuleConfiguration(c => c.AddMigration("Default", DefaultMigration))
-            //    .ConfigureDbContextModule(c => c.AddDbContext<MyDbContext>((s, b) => b
-            //        .UseSqlServer(s.GetRequiredService<IConfiguration>()
-            //            .GetConnectionString("default"))
-            //        .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution), ServiceLifetime.Scoped))
-            //    .ConfigureMediatorModule(a => a.AddModuleAssemblies())
-            //    .ConfigureWebModule(a => a.UseModuleAssemblies()
-            //    .ConfigureWebHost(ConfigureWebHost))
-            //    .RegisterModules(build => build
-            //        .ConfigureAssemblies(c => c
-            //        .AddAssembly(Shared.Modules.DbContext, a => a
-            //            .SetAssemblyOptions(AssemblyOptions.Startup))
-            //        .AddAssembly(Shared.Modules.Mediator, a => a
-            //            .SetAssemblyOptions(AssemblyOptions.Startup))
-            //        .AddAssembly(Shared.Modules.Web, a => a
-            //            .SetAssemblyOptions(AssemblyOptions.Startup))
-            //        .AddAssembly(Shared.Modules.MigrationManager, a => a
-            //            .SetAssemblyOptions(AssemblyOptions.Startup))));
+                .ConfigureWebModule(builder => builder.AddModuleAssemblies())
+                .ConfigureEncryptionModule(builder => builder
+                    .UseModuleAssemblies()
+                    .ConfigureOptions(s => { })));
         }
 
         private static void ConfigureWebHost(IWebHostBuilder webHostBuilder)

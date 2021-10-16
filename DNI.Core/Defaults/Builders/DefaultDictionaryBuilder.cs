@@ -3,6 +3,7 @@ using DNI.Shared.Abstractions.Builders;
 using DNI.Shared.Base;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DNI.Core.Defaults.Builders
 {
@@ -11,6 +12,14 @@ namespace DNI.Core.Defaults.Builders
         public static IDictionaryBuilder<TKey, TValue> Create<TKey, TValue>()
         {
             return new DefaultDictionaryBuilder<TKey, TValue>();
+        }
+
+        public static IDictionaryBuilder<TKey, TValue> Create<TKey, TValue>(IDictionary<TKey, TValue> dictionary)
+        {
+            var newDictionary = new DefaultDictionaryBuilder<TKey, TValue>();
+
+            Array.ForEach(dictionary.ToArray(), kvp => newDictionary.Add(kvp));
+            return newDictionary;
         }
 
         public static IDictionary<TKey, TValue> Build<TKey, TValue>(Action<IDictionaryBuilder<TKey, TValue>> buildAction)

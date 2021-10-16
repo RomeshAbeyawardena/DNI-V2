@@ -14,7 +14,7 @@ namespace DNI.Web.Shared.Abstractions.Builders
         IWebModuleOptionsBuilder ConfigureWebHost(Action<IWebHostBuilder> configureAction);
         IWebModuleOptionsBuilder ConfigureMvcOptions(Action<MvcOptions> mvcOptions);
         IWebModuleOptionsBuilder UseDefaultMvcOptions();
-        IWebModuleOptionsBuilder UseModuleAssemblies();
+        IWebModuleOptionsBuilder AddModuleAssemblies();
         new IWebModuleOptions Build();
     }
 }

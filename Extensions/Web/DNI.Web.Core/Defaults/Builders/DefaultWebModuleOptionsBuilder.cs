@@ -34,7 +34,7 @@ namespace DNI.Web.Core.Defaults.Builders
             return this;
         }
 
-        public IWebModuleOptionsBuilder UseModuleAssemblies()
+        public IWebModuleOptionsBuilder AddModuleAssemblies()
         {
             useModuleAssemblies = true;
             return this;

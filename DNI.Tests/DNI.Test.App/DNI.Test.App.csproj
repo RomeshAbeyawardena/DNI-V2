@@ -32,6 +32,9 @@
     <ProjectReference Include="..\..\DNI.Extensions\DNI.Extensions.csproj" />
     <ProjectReference Include="..\..\Extensions\Data\DNI.Data.Extensions\DNI.Data.Extensions.csproj" />
     <ProjectReference Include="..\..\Extensions\Data\DNI.Data.Modules\DNI.Data.Modules.csproj" />
+    <ProjectReference Include="..\..\Extensions\Encryption\DNI.Encryption.Extensions\DNI.Encryption.Extensions.csproj" />
+    <ProjectReference Include="..\..\Extensions\Encryption\DNI.Encryption.Modules\DNI.Encryption.Modules.csproj" />
+    <ProjectReference Include="..\..\Extensions\Encryption\DNI.Encryption.Shared\DNI.Encryption.Shared.csproj" />
     <ProjectReference Include="..\..\Extensions\Mediator\DNI.Mediator.Extensions\DNI.Mediator.Extensions.csproj" />
     <ProjectReference Include="..\..\Extensions\Mediator\DNI.Mediator.Modules\DNI.Mediator.Modules.csproj" />
     <ProjectReference Include="..\..\Extensions\MigrationManager\DNI.MigrationManager.Modules\DNI.MigrationManager.Modules.csproj" />
