@@ -21,6 +21,11 @@ namespace DNI.Encryption.Modules
             services.AddEncryptionServices();
             var encryptionModuleOptions = moduleConfiguration.GetOptions<IEncryptionModuleOptions>();
 
+            if(encryptionModuleOptions.EncryptionOptions.TryGetValue(string.Empty, out var encryptionOptions))
+            {
+                services.AddSingleton(encryptionOptions);
+            }
+
             services.AddSingleton(s => { 
                 var db = DictionaryBuilder.Create(encryptionModuleOptions.EncryptionOptions);
 

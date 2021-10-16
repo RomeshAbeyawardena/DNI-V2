@@ -42,7 +42,7 @@ namespace DNI.Core.Defaults
             }
             else if (encryptionProfileAttribute.EncryptionType == Encryption.Shared.Enumerations.EncryptionType.Hash)
             {
-                return hasher.HashString(value?.ToString());
+                return hasher.HashString(value?.ToString(), encryptionOptions);
             }
 
             throw new NotSupportedException();

@@ -24,7 +24,7 @@ namespace DNI.Core.Defaults
         public string Encrypt(string value, IEncryptionOptions encryptionOptions)
         {
             using (var memoryStream = new MemoryStream())
-            using (var algorithm = GetSymmetricAlgorithm(encryptionOptions.Algorithm))
+            using (var algorithm = GetSymmetricAlgorithm(encryptionOptions.Algorithm.Value))
             using (var encryptor = algorithm.CreateEncryptor(
                 Convert.FromBase64String(encryptionOptions.Key),
                 Convert.FromBase64String(encryptionOptions.InitialVector)))

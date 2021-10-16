@@ -6,7 +6,8 @@ namespace DNI.Encryption.Shared.Abstractions
     public interface IEncryptionOptions
     {
         Encoding Encoding { get; }
-        SymmetricAlgorithm Algorithm { get; }
+        SymmetricAlgorithm? Algorithm { get; }
+        HashAlgorithm? HashAlgorithm { get; }
         string Key { get; }
         string InitialVector { get; }
 

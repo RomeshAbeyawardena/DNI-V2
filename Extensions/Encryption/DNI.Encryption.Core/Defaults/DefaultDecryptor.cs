@@ -23,7 +23,7 @@ namespace DNI.Core.Defaults
         public string Decrypt(string value, IEncryptionOptions encryptionOptions)
         {
             using (var memoryStream = new MemoryStream(Convert.FromBase64String(value)))
-            using (var algorithm = GetSymmetricAlgorithm(encryptionOptions.Algorithm))
+            using (var algorithm = GetSymmetricAlgorithm(encryptionOptions.Algorithm.Value))
             using (var encryptor = algorithm.CreateEncryptor())
             using (var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Read))
             using (var streamReader = new StreamReader(cryptoStream, encryptionOptions.Encoding))

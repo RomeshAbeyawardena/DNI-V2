@@ -13,6 +13,11 @@ namespace DNI.Encryption.Extensions
 {
     public static class EncryptionOptionsExtensions
     {
+        public static IEncryptionModuleOptions AddEncryptionOption(this IEncryptionModuleOptions options, string key, string initialVector, SymmetricAlgorithm algorithm, Encoding encoding)
+        {
+            return options.AddEncryptionOption(string.Empty, key, initialVector, algorithm, encoding);
+        }
+
         public static IEncryptionModuleOptions AddEncryptionOption(this IEncryptionModuleOptions options, string keyName, string key, string initialVector, SymmetricAlgorithm algorithm, Encoding encoding)
         {
             options.EncryptionOptions.Add(keyName, new DefaultEncryptionOptions(key, initialVector, algorithm, encoding));

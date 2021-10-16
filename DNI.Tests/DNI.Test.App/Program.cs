@@ -73,6 +73,7 @@ namespace DNI.Test.App
                 .ConfigureEncryptionModule(builder => builder
                     .UseModuleAssemblies()
                     .ConfigureOptions(s => { s
+                        .AddEncryptionOption("", "", Encryption.Shared.Enumerations.SymmetricAlgorithm.Aes, Encoding.Default)
                         .AddEncryptionOption("Personal", "", "", Encryption.Shared.Enumerations.SymmetricAlgorithm.Aes, Encoding.Default)
                         .AddEncryptionOption("Common", "", "", Encryption.Shared.Enumerations.SymmetricAlgorithm.Aes, Encoding.Default)
                         .AddEncryptionOption("Credential", "", "", Encryption.Shared.Enumerations.SymmetricAlgorithm.Aes, Encoding.Default)

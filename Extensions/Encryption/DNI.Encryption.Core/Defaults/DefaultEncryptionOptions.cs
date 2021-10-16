@@ -38,7 +38,9 @@ namespace DNI.Core.Defaults
 
         public Encoding Encoding { get; set; }
 
-        public SymmetricAlgorithm Algorithm { get; set; }
+        public SymmetricAlgorithm? Algorithm { get; set; }
+
+        public HashAlgorithm? HashAlgorithm { get; set; }
 
         public string Key { get; set; }
 
