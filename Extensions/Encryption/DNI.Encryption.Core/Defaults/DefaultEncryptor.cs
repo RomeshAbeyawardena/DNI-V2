@@ -5,7 +5,7 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 
-namespace DNI.Core.Defaults
+namespace DNI.Encryption.Core.Defaults
 {
     [RegisterService(Microsoft.Extensions.DependencyInjection.ServiceLifetime.Singleton)]
     public class DefaultEncryptor : CryptographicProviderBase, IEncryptor
@@ -23,19 +23,16 @@ namespace DNI.Core.Defaults
 
         public string Encrypt(string value, IEncryptionOptions encryptionOptions)
         {
-            using (var memoryStream = new MemoryStream())
-            {
-                using (var algorithm = GetSymmetricAlgorithm(encryptionOptions.Algorithm.Value))
-                using (var encryptor = algorithm.CreateEncryptor(
-                    Convert.FromBase64String(encryptionOptions.Key),
-                    Convert.FromBase64String(encryptionOptions.InitialVector)))
-                using (var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
-                using (var streamWriter = new StreamWriter(cryptoStream, encryptionOptions.Encoding))
-                {
-                    streamWriter.Write(value);
-                }
-                return Convert.ToBase64String(memoryStream.ToArray());
-            }
+            var encryptedBytes = ExecuteSymmetricOperation(Shared.Enumerations.EncryptionMode.Encrypt, 
+                encryptionOptions, CryptoStreamMode.Write,
+                (m, c) => { 
+                    using (var streamWriter = new StreamWriter(c, encryptionOptions.Encoding)) 
+                        streamWriter.Write(value);
+                    return m;
+                }).ToArray();
+
+
+            return Convert.ToBase64String(encryptedBytes);
         }
     }
 }

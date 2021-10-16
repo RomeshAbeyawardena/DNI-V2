@@ -1,4 +1,4 @@
-using DNI.Core.Defaults;
+using DNI.Encryption.Core.Defaults;
 using DNI.Encryption.Shared.Abstractions;
 using DNI.Encryption.Shared.Base;
 using DNI.Encryption.Shared.Enumerations;
