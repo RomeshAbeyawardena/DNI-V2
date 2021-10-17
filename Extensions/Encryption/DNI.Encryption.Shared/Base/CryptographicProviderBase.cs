@@ -30,7 +30,7 @@ namespace DNI.Encryption.Shared.Base
                 if (key.Length > 32)
                     throw new InvalidOperationException();
 
-                if (iv.Length > 16)
+                if (iv.Length > 16 || iv.Length < 16)
                     throw new InvalidOperationException();
 
                 switch (encryptionMode)

@@ -198,4 +198,49 @@
     <PackageReleaseNotes>
     </PackageReleaseNotes>
   </Package>
+  <Package name="DNI.Encryption.Core">
+    <Description>
+      Encryption core module library
+    </Description>
+    <Tags>
+    </Tags>
+    <PackageReleaseNotes>
+    </PackageReleaseNotes>
+  </Package>
+  <Package name="DNI.Encryption.Extensions">
+    <Description>
+      Encryption extensions library
+    </Description>
+    <Tags>
+    </Tags>
+    <PackageReleaseNotes>
+    </PackageReleaseNotes>
+  </Package>
+  <Package name="DNI.Encryption.Modules">
+    <Description>
+      Encryption module library
+    </Description>
+    <Tags>
+    </Tags>
+    <PackageReleaseNotes>
+    </PackageReleaseNotes>
+  </Package>
+  <Package name="DNI.Encryption.Shared">
+    <Description>
+      Encryption shared library
+    </Description>
+    <Tags>
+    </Tags>
+    <PackageReleaseNotes>
+    </PackageReleaseNotes>
+  </Package>
+  <Package name="DNI.Encryption.Test">
+    <Description>
+      Encryption test library
+    </Description>
+    <Tags>
+    </Tags>
+    <PackageReleaseNotes>
+    </PackageReleaseNotes>
+  </Package>
 </Packages>
