@@ -4,6 +4,7 @@ using DNI.Modules.Shared.Abstractions;
 using DNI.Modules.Shared.Abstractions.Builders;
 using DNI.Modules.Shared.Base;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,8 @@ namespace DNI.Modules.Core.Defaults
         private readonly Dictionary<Guid, IEnumerable<IDisposable>> disposableTypesList;
         private readonly List<Action<IServiceCollection, IModuleConfiguration>> serviceConfigurations;
         private readonly List<IModule> configuredModules;
+        private readonly ILogger<IModuleRunner> logger;
+        private int iterationIndex = 1;
         private ICompiledModuleConfiguration ConfigureModuleConfiguration(IServiceProvider serviceProvider)
         {
             return moduleConfiguration.Compile(serviceProvider, configuredModules);
@@ -35,7 +38,7 @@ namespace DNI.Modules.Core.Defaults
             return module.StartAsync(cancellationToken);
         }
 
-        private void ConfigureModules(IServiceProvider serviceProvider, IModuleConfiguration moduleConfiguration)
+        private void ConfigureModules(IModuleConfiguration moduleConfiguration)
         {
             foreach (var module in configuredModules)
             {
@@ -53,14 +56,18 @@ namespace DNI.Modules.Core.Defaults
             disposableTypesList = new Dictionary<Guid, IEnumerable<IDisposable>>();
             serviceConfigurations = new List<Action<IServiceCollection, IModuleConfiguration>>();
             configuredModules = new List<IModule>();
+            logger = serviceProvider.GetRequiredService<ILogger<IModuleRunner>>();
         }
 
         public override void ConfigureModuleBuilder(IServiceCollection services, IModuleConfigurationBuilder moduleConfigurationBuilder)
         {
+            logger.LogInformation("Configuring module builder...");
             var hasChanged = false;
 
             foreach (var moduleType in moduleConfiguration.ModuleTypes)
             {
+                logger.LogInformation("Configuring module {0}", moduleType);
+
                 if (configuredModules.Any(a => a.ModuleType == moduleType))
                 {
                     continue;
@@ -69,7 +76,9 @@ namespace DNI.Modules.Core.Defaults
                 var module = serviceProvider.Activate<IModule>(moduleType, out var disposables);
                 module.ConfigureModuleBuilder(services, moduleConfigurationBuilder);
                 hasChanged = moduleConfiguration.ApplyConfiguration(moduleConfigurationBuilder);
+
                 var moduleId = Guid.NewGuid();
+                logger.LogInformation("{0} assigned Id: {1}", moduleType, moduleId);
                 module.UniqueId = moduleId;
                 disposableTypesList.Add(moduleId, disposables);
                 configuredModules.Add(module);
@@ -77,34 +86,36 @@ namespace DNI.Modules.Core.Defaults
 
             if (hasChanged)
             {
+                logger.LogInformation("Changes to module configuration have been made by other modules, re-running module builder configuration");
                 ConfigureModuleBuilder(services, moduleConfigurationBuilder);
             }
         }
 
         public override void ConfigureServices(IServiceCollection services, IModuleConfiguration moduleConfiguration)
         {
+            logger.LogInformation("Configuring module service registeration...");
             serviceConfigurations.ForEach(sc => sc?.Invoke(services, moduleConfiguration));
 
-            var fakeServiceProvider = new DefaultFakeServiceProvider();
-
-            ConfigureModules(fakeServiceProvider, moduleConfiguration);
+            ConfigureModules(moduleConfiguration);
 
             services.AddSingleton(ConfigureModuleConfiguration);
         }
 
         public override Task OnStart(CancellationToken cancellationToken)
         {
+            logger.LogInformation("Module runner starting with {0} modules", moduleConfiguration.ModuleTypes.Count());
             ConfigureModuleBuilder(services, new DefaultModuleConfigurationBuilder(moduleConfiguration));
             ConfigureServices(services, moduleConfiguration);
+            logger.LogInformation("Module runner configured with {0} modules", moduleConfiguration.ModuleTypes.Count());
             moduleServiceProvider = new DefaultModuleServiceProvider(serviceProvider, services.BuildServiceProvider());
             compiledModuleConfiguration = moduleServiceProvider.GetRequiredService<ICompiledModuleConfiguration>();
+            logger.LogInformation("Module runner started");
             return Task.WhenAll(compiledModuleConfiguration.Modules.ForEach(m => OnStartModule(m, cancellationToken)));
         }
 
-
-
         public override Task OnStop(CancellationToken cancellationToken)
         {
+            logger.LogInformation("Module runner stopping modules...");
             return Task.WhenAll(compiledModuleConfiguration.Modules.ForEach(m => m.StopAsync(cancellationToken)));
         }
 

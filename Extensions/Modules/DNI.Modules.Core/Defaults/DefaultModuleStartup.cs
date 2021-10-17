@@ -42,7 +42,9 @@ namespace DNI.Modules.Core.Defaults
         {
             var dependencies = moduleConfiguration.ModuleTypes.SelectMany(GetAssemblies);
 
-            services.Scan(c => c.FromAssemblies(moduleConfiguration.ModuleTypes.Select(a => a.Assembly).AppendMany(dependencies).Distinct())
+            services.Scan(c => c.FromAssemblies(moduleConfiguration.ModuleTypes
+                .Select(a => a.Assembly).AppendMany(dependencies)
+                .Distinct())
                 .AddClasses(t => t.WithAttribute<RegisterServiceAttribute>(s => s.ServiceLifetime == ServiceLifetime.Singleton))
                 .AsImplementedInterfaces()
                 .WithSingletonLifetime()
