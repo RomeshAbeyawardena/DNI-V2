@@ -17,14 +17,14 @@ namespace DNI.Modules.Core.Defaults
     {
         private readonly IModulesServiceCollection services;
         private readonly IServiceProvider serviceProvider;
-        private IModuleConfiguration moduleConfiguration;
+        private readonly IModuleConfiguration moduleConfiguration;
         private ICompiledModuleConfiguration compiledModuleConfiguration;
         private IServiceProvider moduleServiceProvider;
         private readonly Dictionary<Guid, IEnumerable<IDisposable>> disposableTypesList;
         private readonly List<Action<IServiceCollection, IModuleConfiguration>> serviceConfigurations;
         private readonly List<IModule> configuredModules;
         private readonly ILogger<IModuleRunner> logger;
-        private int iterationIndex = 1;
+        
         private ICompiledModuleConfiguration ConfigureModuleConfiguration(IServiceProvider serviceProvider)
         {
             return moduleConfiguration.Compile(serviceProvider, configuredModules);
@@ -43,6 +43,10 @@ namespace DNI.Modules.Core.Defaults
             foreach (var module in configuredModules)
             {
                 module.ConfigureServices(services, moduleConfiguration);
+                if (disposableTypesList.TryGetValue(module.UniqueId, out var disposables))
+                {
+                    module.Disposables = disposables;
+                }
             }
         }
 
@@ -67,12 +71,12 @@ namespace DNI.Modules.Core.Defaults
 
             foreach (var moduleType in moduleConfiguration.ModuleTypes)
             {
-                logger.LogInformation("Configuring module {0}", moduleType);
-
                 if (configuredModules.Any(a => a.ModuleType == moduleType))
                 {
                     continue;
                 }
+
+                logger.LogInformation("Configuring module {0}...", moduleType);
 
                 var module = serviceProvider.Activate<IModule>(moduleType, out var disposables);
                 module.ConfigureModuleBuilder(services, moduleConfigurationBuilder);
