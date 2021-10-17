@@ -11,14 +11,22 @@ namespace DNI.Modules.Core.Defaults
 {
     internal class DefaultModuleConfigurationBuilder : IModuleConfigurationBuilder
     {
-        private readonly DefaultModuleConfiguration defaultModuleConfiguration;
+        private readonly IModuleConfiguration defaultModuleConfiguration;
 
         public List<Type> moduleTypes;
 
-        public DefaultModuleConfigurationBuilder()
+        public DefaultModuleConfigurationBuilder(IModuleConfiguration moduleConfiguration)
         {
-            moduleTypes = new();
-            defaultModuleConfiguration = new DefaultModuleConfiguration();
+            moduleTypes = (moduleConfiguration.ModuleTypes != null && moduleConfiguration.ModuleTypes.Any()) 
+                ? new(moduleConfiguration?.ModuleTypes)
+                : new();
+
+            defaultModuleConfiguration = moduleConfiguration;
+        }
+
+        public DefaultModuleConfigurationBuilder() : this(new DefaultModuleConfiguration())
+        {
+
         }
 
         public IModuleConfigurationBuilder AddModule(Type moduleType, Action<IModuleConfiguration> configure = null)
@@ -31,7 +39,7 @@ namespace DNI.Modules.Core.Defaults
         public IModuleConfiguration Build(IServiceProvider serviceProvider)
         {
             defaultModuleConfiguration.ModuleTypes = moduleTypes;
-
+            defaultModuleConfiguration.ServiceProvider = serviceProvider;
             return defaultModuleConfiguration;
         }
     }

@@ -1,5 +1,6 @@
 ﻿using DNI.Modules.Core.Defaults;
 using DNI.Modules.Shared.Abstractions;
+using DNI.Modules.Shared.Abstractions.Builders;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;

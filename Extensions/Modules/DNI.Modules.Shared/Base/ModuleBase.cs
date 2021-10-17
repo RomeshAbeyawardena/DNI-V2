@@ -1,6 +1,7 @@
 ﻿using DNI.Extensions;
 using DNI.Modules.Core.Defaults;
 using DNI.Modules.Shared.Abstractions;
+using DNI.Modules.Shared.Abstractions.Builders;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,11 @@ namespace DNI.Modules.Shared.Base
         public IEnumerable<IDisposable> Disposables { get; set; }
 
         public virtual void OnDispose(bool disposing)
+        {
+
+        }
+
+        public virtual void ConfigureBuilder(IServiceCollection services, IModuleConfigurationBuilder moduleConfigurationBuilder)
         {
 
         }

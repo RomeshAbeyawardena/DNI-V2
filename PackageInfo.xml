@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <Packages>
   <Info>
-    <Version Major="1" Minor="0" Revision="0" Patch="2" />
+    <Version Major="1" Minor="0" Revision="0" Patch="14" />
   </Info>
   <Package name="DNI.Core">
     <Description>Base core library that contains the default implementation for numerous abstractions within the DNI.Shared package</Description>
@@ -234,7 +234,7 @@
     <PackageReleaseNotes>
     </PackageReleaseNotes>
   </Package>
-  <Package name="DNI.Encryption.Test">
+  <Package name="DNI.Encryption.Tests">
     <Description>
       Encryption test library
     </Description>

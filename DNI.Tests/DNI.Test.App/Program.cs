@@ -60,19 +60,9 @@ namespace DNI.Test.App
 
         private static void ConfigureServices(IServiceCollection services)
         {
-
             services
                 .AddLogging(c => c.AddConsole())
-                .AddModules(builder => builder
-                .ConfigureDbContextModule(builder => builder
-                    .AddDbContext<MyDbContext>((s, b) => b.UseSqlServer(s
-                        .GetService<IConfiguration>()
-                        .GetConnectionString("default")), ServiceLifetime.Scoped))
-                .ConfigureMediatorModule(builder => builder.AddModuleAssemblies())
-                .ConfigureWebModule<Program>(builder => builder.AddModuleAssemblies())
-                .ConfigureEncryptionModule(builder => builder
-                    .ImportConfiguration()
-                    .ConfigureOptions(s => s.ImportConfiguration("SecurityProfiles/General"))));
+                .AddModules(builder => builder.AddModule<MyWebEncryptionModule>());
         }
 
         private static void ConfigureWebHost(IWebHostBuilder webHostBuilder)

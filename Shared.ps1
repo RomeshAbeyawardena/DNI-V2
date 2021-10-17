@@ -2,7 +2,6 @@
 function Load-XmlFile(
     [string] $path
     ) {
-
     $xmlDoc = [System.Xml.XmlDocument]::new()
     $xmlDoc.Load("$path")
     return $xmlDoc

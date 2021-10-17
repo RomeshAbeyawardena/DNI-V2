@@ -20,16 +20,25 @@ namespace DNI.Modules.Core.Defaults
             options = new Dictionary<Type, object>();
         }
 
+        public IServiceProvider ServiceProvider { get; set; }
+
         public IEnumerable<Type> ModuleTypes { get; set; }
 
         public IDictionary<Type, object> Options => options;
 
-        public ICompiledModuleConfiguration Compile(IServiceProvider serviceProvider)
+        public ICompiledModuleConfiguration Compile(IServiceProvider serviceProvider, IEnumerable<IModule> configuredModules)
         {
             var activatedModuleList = new List<IModule>();
-            foreach (var moduleType in ModuleTypes)
+            foreach (var module in configuredModules)
             {
-                activatedModuleList.Add(serviceProvider.Activate<IModule>(moduleType, out disposables));
+                var moduleType = module.GetType();
+                
+                if (ModuleTypes.Contains(moduleType))
+                {
+                    var activatedModule = serviceProvider.Activate<IModule>(module.GetType(), out disposables);
+                    activatedModule.UniqueId = module.UniqueId;
+                    activatedModuleList.Add(activatedModule);
+                }
             }
 
             return new DefaultCompiledModuleConfiguration(options) { Modules = activatedModuleList };

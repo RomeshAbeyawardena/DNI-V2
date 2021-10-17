@@ -42,7 +42,8 @@ foreach($node in $xmlNodes)
     $nodeName = $nodeNameAttribute.Value
     $fileToFind = "$nodeName.csproj"
     $projectFile = Find-File -files $files -fileName $fileToFind
-    $childNodes = $node.InnerXml;
+    $childNodes = $node.InnerXml
+
     $destinationXml = Load-XmlFile -path $projectFile.FullName
     $propertyGroupNode = $destinationXml.SelectSingleNode("//Project/PropertyGroup")
     
@@ -64,6 +65,7 @@ foreach($node in $xmlNodes)
 
 if($build -eq $true)
 {
+    dotnet clean
     dotnet pack "final.sln" --nologo -v n --output "$path\\packages\\$buildVersion"
     $patch = 0
     if([System.Int32]::TryParse($versionInfo.Patch, [ref] $patch))

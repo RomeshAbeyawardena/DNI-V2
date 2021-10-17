@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using DNI.Modules.Shared.Abstractions.Builders;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace DNI.Modules.Shared.Abstractions
         IEnumerable<Type> ModuleParameters { get; }
         IObservable<IModuleStatus> Status { get; }
         void ConfigureServices(IServiceCollection services, IModuleConfiguration moduleConfiguration);
+        void ConfigureBuilder(IServiceCollection services, IModuleConfigurationBuilder moduleConfigurationBuilder);
         Task StartAsync(CancellationToken cancellationToken);
         Task StopAsync(CancellationToken cancellationToken);
     }
