@@ -24,14 +24,22 @@ namespace DNI.Encryption.Shared.Base
         {
             ICryptoTransform GetCryptoTransform(System.Security.Cryptography.SymmetricAlgorithm symmetricAlgorithm)
             {
+                var key = Convert.FromBase64String(encryptionOptions.Key);
+                var iv = Convert.FromBase64String(encryptionOptions.InitialVector);
+
+                if (key.Length > 32)
+                    throw new InvalidOperationException();
+
+                if (iv.Length > 16)
+                    throw new InvalidOperationException();
+
                 switch (encryptionMode)
                 {
+
                     case EncryptionMode.Encrypt:
-                        return symmetricAlgorithm.CreateEncryptor(Convert.FromBase64String(encryptionOptions.Key),
-                    Convert.FromBase64String(encryptionOptions.InitialVector));
+                        return symmetricAlgorithm.CreateEncryptor(key, iv);
                     case EncryptionMode.Decrypt:
-                        return symmetricAlgorithm.CreateDecryptor(Convert.FromBase64String(encryptionOptions.Key),
-                    Convert.FromBase64String(encryptionOptions.InitialVector));
+                        return symmetricAlgorithm.CreateDecryptor(key, iv);
                     default:
                         throw new NotSupportedException();
                 }
