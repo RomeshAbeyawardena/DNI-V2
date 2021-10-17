@@ -46,10 +46,12 @@ foreach($node in $xmlNodes)
 
     $destinationXml = Load-XmlFile -path $projectFile.FullName
     $propertyGroupNode = $destinationXml.SelectSingleNode("//Project/PropertyGroup")
+    $guid = [System.Guid]::NewGuid()
+
     
     $propertyGroupNode.InnerXml = $propertyGroupNode.InnerXml + $childNodes + 
     "<PackageId>$nodeName</PackageId>" +
-    "<AssemblyName>$nodeName</AssemblyName>" +
+    "<AssemblyName>$nodeName.$guid</AssemblyName>" +
     "<RootNamespace>$nodeName</RootNamespace>"
     $directory = $projectFile.Directory.FullName
     $newPath = "$directory\\$nodeName.final.csproj"
@@ -66,6 +68,7 @@ foreach($node in $xmlNodes)
 if($build -eq $true)
 {
     dotnet clean
+    dotnet build "final.sln"
     dotnet pack "final.sln" --nologo -v n --output "$path\\packages\\$buildVersion"
     $patch = 0
     if([System.Int32]::TryParse($versionInfo.Patch, [ref] $patch))

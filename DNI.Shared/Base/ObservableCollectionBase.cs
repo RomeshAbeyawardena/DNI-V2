@@ -19,6 +19,7 @@ namespace DNI.Shared.Base
 
         public ObservableCollectionBase(IEnumerable<T> items, bool isReadonly)
         {
+            subject = new Subject<ICollectionEvent<T>>();
             collectionList = new List<T>(items);
             IsReadOnly = isReadonly;
         }
