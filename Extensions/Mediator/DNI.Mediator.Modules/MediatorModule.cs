@@ -21,20 +21,5 @@ namespace DNI.Mediator.Modules
 
             services.AddMediatR(assemblies.ToArray());
         }
-
-        public override void OnDispose(bool disposing)
-        {
-
-        }
-
-        public override Task OnStart(CancellationToken cancellationToken)
-        {
-            return Task.CompletedTask;
-        }
-
-        public override Task OnStop(CancellationToken cancellationToken)
-        {
-            return Task.CompletedTask;
-        }
     }
 }

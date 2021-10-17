@@ -1,5 +1,6 @@
 ﻿using DNI.Modules.Core.Defaults;
 using DNI.Modules.Shared.Abstractions;
+using DNI.Shared.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,21 @@ namespace DNI.Modules.Extensions
 
         public static IEnumerable<Assembly> GetModuleAssemblies(this IModuleConfiguration moduleConfiguration)
         {
-            return moduleConfiguration.ModuleTypes.Select(a => a.Assembly).Distinct();
+            var assemblies = new List<Assembly>();
+
+            foreach (var moduleType in moduleConfiguration.ModuleTypes)
+            {
+                var requiresDependenciesAttribute = moduleType.GetCustomAttribute<RequiresDependenciesAttribute>();
+
+                if (requiresDependenciesAttribute != null)
+                {
+                    assemblies.AddRange(requiresDependenciesAttribute.RequiredTypes.Select(a => a.Assembly));
+                }
+            }
+
+            assemblies.AddRange(moduleConfiguration.ModuleTypes.Select(a => a.Assembly).Distinct());
+
+            return assemblies;
         }
 
         public static void ConfigureOptions<T>(this IModuleConfiguration moduleConfiguration, T options)
