@@ -1,12 +1,15 @@
+. "$path/Shared.ps1"
+
 $path = "$PSScriptRoot"
 $build = $true
-$buildPropsFileName = "$path\\Directory.Build.props"
-$incrementBuildVersion = $true
-$tempFiles = [System.Collections.ArrayList]::new()
-$packageInfoPath = "$path\\PackageInfo.xml"
-
 $newId = [System.Guid]::NewGuid()
-$tempPath = "$env:APPDATA\\$newId"
+$tempPath = "$env:APPDATA\\Automated-Builds\\$newId"
+$solutionDirectory = "$tempPath//v2.1"
+
+
+$buildPropsFileName = "$solutionDirectory\\Directory.Build.props"
+$incrementBuildVersion = $true
+$packageInfoPath = "$solutionDirectory\\PackageInfo.xml"
 
 cd $path
 
@@ -16,18 +19,12 @@ mkdir $tempPath
 
 Copy-Item $path -Destination $tempPath -Recurse
 
-. "$path/Shared.ps1"
+cd "$solutionDirectory"
 
 $xmlDoc = Load-XmlFile -path $packageInfoPath
 
-cd $tempPath
-
-if($build -eq $true)
-{
-    dotnet new sln --force
-}
-
 $files = ls "*.csproj" -Recurse
+
 $xmlNodes = $xmlDoc.SelectNodes("//Packages/Package")
 $versionInfo = $xmlDoc.SelectSingleNode("//Packages/Info/Version")
 
@@ -57,17 +54,13 @@ foreach($node in $xmlNodes)
 
     $destinationXml = Load-XmlFile -path $projectFile.FullName
     $propertyGroupNode = $destinationXml.SelectSingleNode("//Project/PropertyGroup")
-    $guid = [System.Guid]::NewGuid()
 
-    
+
     $propertyGroupNode.InnerXml = $propertyGroupNode.InnerXml + $childNodes + 
     "<PackageId>$nodeName</PackageId>" +
-    "<AssemblyName>$nodeName.$guid</AssemblyName>" +
+    "<AssemblyName>$nodeName</AssemblyName>" +
     "<RootNamespace>$nodeName</RootNamespace>"
     $directory = $projectFile.Directory.FullName
-    $newPath = "$directory\\$nodeName.final.csproj"
-    
-    $ct = $tempFiles.Add($newPath)
     
     if($build -eq $true)
     {
@@ -75,24 +68,6 @@ foreach($node in $xmlNodes)
     }
 }
 
-if($build -eq $true)
-{
-    dotnet clean
-    dotnet build 
-    dotnet pack --nologo -v n --output "$path\\packages\\$buildVersion"
-    $patch = 0
-    if([System.Int32]::TryParse($versionInfo.Patch, [ref] $patch))
-    {
-       $versionInfo.Patch = ($patch + 1).ToString()
-    }
-
-    $xmlDoc.Save($packageInfoPath)
-    foreach($file in $tempFiles) 
-    {
-        $fileInfo = Get-File-Info -filePath $file 
-        $fileInfo.Delete()
-    }
-
-    $solutionFile = Get-File-Info -filePath "$path//final.sln"
-    $solutionFile.Delete()
-}
+dotnet pack --output "$path\\packages\\$buildVersion"
+cd $path
+Remove-Item $tempPath -Recurse -Force

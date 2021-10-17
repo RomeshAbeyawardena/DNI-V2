@@ -2,9 +2,9 @@
   <PropertyGroup>
     <Company>DOT NET Insights</Company>
     <Copyright>Copyright © 2021</Copyright>
-    <AssemblyVersion>1.0.0.16</AssemblyVersion>
-    <FileVersion>1.0.0.16</FileVersion>
-    <Version>1.0.0.16</Version>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <FileVersion>1.0.0.1</FileVersion>
+    <Version>1.0.0.1</Version>
     <Authors>Romesh Abeyawardena</Authors>
     <NeutralLanguage>en-GB</NeutralLanguage>
     <PackageLicenseExpression>(MIT)</PackageLicenseExpression>
