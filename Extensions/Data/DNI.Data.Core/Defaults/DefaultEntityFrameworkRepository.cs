@@ -22,6 +22,7 @@ namespace DNI.Data.Core.Defaults
             stateSubject = subject;
             this.dbContext = dbContext;
             dbSet = dbContext.Set<T>();
+            Query = dbSet;
         }
 
         public IObserver<EntityEntry<T>> EntityEntryState => stateSubject;
