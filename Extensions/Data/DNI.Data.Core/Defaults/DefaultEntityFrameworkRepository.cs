@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reactive.Subjects;
 using System.Threading;
 using System.Threading.Tasks;
@@ -44,7 +45,7 @@ namespace DNI.Data.Core.Defaults
 
         public override Task<T> FindAsync(IEnumerable<T> parameters, CancellationToken cancellationToken)
         {
-            return dbSet.FindAsync(parameters, cancellationToken).AsTask();
+            return dbSet.FindAsync(parameters.ToArray(), cancellationToken: cancellationToken).AsTask();
         }
 
         public override void OnDispose(bool disposing)

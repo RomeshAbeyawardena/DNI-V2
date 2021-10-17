@@ -23,17 +23,14 @@ namespace DNI.MigrationManager.Core.Defaults
         }
 
         private readonly Dictionary<string, IMigrationOptions> migrationOptionsDictionary;
-        private bool isReadOnly;
+        
 
         public ConcurrentQueue<IMigrationOptions> Migrations => this;
 
 
         public void Add(string name, IMigrationOptions migrationOptions)
         {
-            if (!isReadOnly)
-            {
-                migrationOptionsDictionary.Add(name, migrationOptions);
-            }
+            migrationOptionsDictionary.Add(name, migrationOptions);
 
             throw new NotSupportedException("Migration manager is in read-only mode, it can only be used for retrieving migration options, in its current state");
         }

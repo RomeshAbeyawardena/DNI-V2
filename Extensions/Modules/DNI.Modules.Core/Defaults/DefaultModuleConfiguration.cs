@@ -10,7 +10,7 @@ namespace DNI.Modules.Core.Defaults
 {
     internal class DefaultModuleConfiguration : IModuleConfiguration
     {
-        private Dictionary<Type, object> options;
+        private readonly Dictionary<Type, object> options;
 #pragma warning disable IDE0052 // Remove unread private members
         private IEnumerable<IDisposable> disposables;
 #pragma warning restore IDE0052 // Remove unread private members

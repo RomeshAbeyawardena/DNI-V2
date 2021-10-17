@@ -4,8 +4,11 @@
     <TargetFramework>net5.0</TargetFramework>
     
   </PropertyGroup>
-
   <ItemGroup>
+    <PackageReference Include="MediatR " Version="9.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Encryption\DNI.Encryption.Shared\DNI.Encryption.Shared.csproj" />
     <ProjectReference Include="..\..\Modules\DNI.Modules.Shared\DNI.Modules.Shared.csproj" />
   </ItemGroup>
 </Project>
