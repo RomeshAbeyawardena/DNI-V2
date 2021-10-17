@@ -34,7 +34,7 @@ namespace DNI.Data.Core.Defaults
 
         public override ValueTask DisposeAsync()
         {
-            return ValueTask.CompletedTask;
+            return (dbContext?.DisposeAsync()).GetValueOrDefault();
         }
 
         public override T Find(params object[] parameters)
@@ -49,7 +49,7 @@ namespace DNI.Data.Core.Defaults
 
         public override void OnDispose(bool disposing)
         {
-
+            dbContext?.Dispose();
         }
 
         public override int SaveChanges()
