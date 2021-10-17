@@ -20,7 +20,7 @@ namespace DNI.Core.Defaults.Hosts
     /// <inheritdoc cref="IConsoleHost"/>
     public class DefaultConsoleHost : DisposableBase, IConsoleHost
     {
-        public IServiceCollection Services { get;  }
+        public IServiceCollection Services { get; }
 
         internal static IConsoleHost Build(Action<IConsoleHost> buildAction)
         {
@@ -45,7 +45,7 @@ namespace DNI.Core.Defaults.Hosts
             var startMethod = type.GetMethod(methodName, bindingFlags);
             var startupService = ServiceProvider.GetRequiredService(type);
 
-            if(startupService is IDisposable disposable)
+            if (startupService is IDisposable disposable)
             {
                 disposableService = disposable;
             }

@@ -9,7 +9,7 @@ namespace DNI.Web.Core.Defaults
 {
     public class DefaultWebModuleOptions : CollectionBase<Assembly>, IWebModuleOptions
     {
-        public DefaultWebModuleOptions(Action<IWebHostBuilder> configureWebHost, 
+        public DefaultWebModuleOptions(Action<IWebHostBuilder> configureWebHost,
             Action<MvcOptions> configureMvcOptions, bool useModuleAssemblies,
             Assembly hostAssembly)
         {
@@ -18,7 +18,7 @@ namespace DNI.Web.Core.Defaults
             UseModuleAssemblies = useModuleAssemblies;
             HostAssembly = hostAssembly;
         }
-        
+
         public Action<IWebHostBuilder> ConfigureWebHost { get; }
 
         public Action<MvcOptions> ConfigureMvcOptions { get; }

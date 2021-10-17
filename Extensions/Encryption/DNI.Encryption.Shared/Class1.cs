@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DNI.Encryption.Shared
+﻿namespace DNI.Encryption.Shared
 {
     public class Class1
     {

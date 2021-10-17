@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace DNI.Data.Core.Defaults
 {
     public class DefaultEntityFrameworkRepository<TDbContext, T> : BaseRepository<T>, IEntityFrameworkRepository<TDbContext, T>
-        where T: class
+        where T : class
         where TDbContext : DbContext
     {
         private readonly TDbContext dbContext;
@@ -48,7 +48,7 @@ namespace DNI.Data.Core.Defaults
 
         public override void OnDispose(bool disposing)
         {
-           
+
         }
 
         public override int SaveChanges()

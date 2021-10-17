@@ -1,7 +1,5 @@
-﻿using DNI.Shared.Attributes;
-using DNI.Encryption.Shared.Abstractions;
-using DNI.Encryption.Shared.Abstractions.Factories;
-using DNI.Encryption.Shared.Base;
+﻿using DNI.Encryption.Shared.Base;
+using DNI.Shared.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;

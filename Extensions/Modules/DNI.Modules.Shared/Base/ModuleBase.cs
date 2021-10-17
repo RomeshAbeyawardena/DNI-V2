@@ -5,10 +5,7 @@ using DNI.Modules.Shared.Abstractions.Builders;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reactive.Subjects;
-using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,7 +20,7 @@ namespace DNI.Modules.Shared.Base
         public Type ModuleType => GetType();
 
         public IEnumerable<Type> ModuleParameters => ModuleType.GetConstructorParameterTypes();
-        
+
         public Guid UniqueId { get; set; }
 
         public IEnumerable<IDisposable> Disposables { get; set; }
@@ -33,14 +30,22 @@ namespace DNI.Modules.Shared.Base
 
         }
 
-        public virtual void ConfigureBuilder(IServiceCollection services, IModuleConfigurationBuilder moduleConfigurationBuilder)
+        public virtual void ConfigureModuleBuilder(IServiceCollection services, IModuleConfigurationBuilder moduleConfigurationBuilder)
         {
 
         }
 
         public abstract void ConfigureServices(IServiceCollection serviceCollection, IModuleConfiguration moduleConfiguration);
-        public abstract Task OnStart(CancellationToken cancellationToken);
-        public abstract Task OnStop(CancellationToken cancellationToken);
+
+        public virtual Task OnStart(CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
+
+        public virtual Task OnStop(CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
 
         public ModuleBase()
             : this(new Subject<IModuleStatus>())

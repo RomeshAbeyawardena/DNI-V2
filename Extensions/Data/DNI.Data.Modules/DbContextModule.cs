@@ -3,7 +3,6 @@ using DNI.Data.Shared.Abstractions;
 using DNI.Modules.Extensions;
 using DNI.Modules.Shared.Abstractions;
 using DNI.Modules.Shared.Base;
-using DNI.Shared.Attributes;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -36,7 +35,7 @@ namespace DNI.Data.Modules
 
         public override void OnDispose(bool disposing)
         {
-            
+
         }
 
         public override Task OnStart(CancellationToken cancellationToken)

@@ -1,10 +1,8 @@
-﻿using DNI.Modules.Shared.Abstractions;
-
-using System;
+﻿using DNI.Encryption.Core.Defaults;
 using DNI.Encryption.Shared.Abstractions.Builders;
 using DNI.Modules.Extensions;
-using DNI.Encryption.Shared.Abstractions;
-using DNI.Encryption.Core.Defaults;
+using DNI.Modules.Shared.Abstractions;
+using System;
 
 namespace DNI.Encryption.Extensions
 {

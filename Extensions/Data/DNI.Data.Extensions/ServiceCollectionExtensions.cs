@@ -1,6 +1,5 @@
 ﻿using DNI.Data.Core.Defaults;
 using DNI.Data.Shared.Abstractions;
-using DNI.Data.Shared.Abstractions.Builders;
 using DNI.Extensions;
 using DNI.Shared.Abstractions;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +19,7 @@ namespace DNI.Data.Extensions
             var methods = typeof(EntityFrameworkServiceCollectionExtensions)
                 .GetMethods();
 
-            foreach(var method in methods.Where(a => a.Name == "AddDbContext" && a.IsStatic))
+            foreach (var method in methods.Where(a => a.Name == "AddDbContext" && a.IsStatic))
             {
                 if (method.GetParameters().Select(a => a.ParameterType).SequenceEqual(parameterTypes))
                 {
@@ -31,7 +30,7 @@ namespace DNI.Data.Extensions
             return null;
         }
 
-        public  static IServiceCollection Add(this IServiceCollection services, Type serviceType, 
+        public static IServiceCollection Add(this IServiceCollection services, Type serviceType,
             Type serviceImplementationType, ServiceLifetime serviceLifetime)
         {
             services.Add(ServiceDescriptor.Describe(serviceType, serviceImplementationType, serviceLifetime));
@@ -54,7 +53,7 @@ namespace DNI.Data.Extensions
                 return false;
             }
 
-           var genericTypes = type.GetGenericArguments();
+            var genericTypes = type.GetGenericArguments();
 
             genericTypesList.AddRange(genericTypes);
             var genericDbSetType = dbSetType.MakeGenericType(genericTypes?.ToArray());
@@ -62,7 +61,7 @@ namespace DNI.Data.Extensions
             return type == genericDbSetType;
         }
 
-        public static IServiceCollection AddRepositories(this IServiceCollection services, 
+        public static IServiceCollection AddRepositories(this IServiceCollection services,
             Type dbContextType, IEnumerable<Type> repositoryTypes, ServiceLifetime serviceLifetime)
         {
             var repositoryService = typeof(IRepository<>);
@@ -91,8 +90,8 @@ namespace DNI.Data.Extensions
 
             var dbSetPropertyList = new List<Type>();
             var propertyTypes = dbContextType.GetProperties().Select(p => p.PropertyType);
-            
-            foreach(var propertyType in propertyTypes)
+
+            foreach (var propertyType in propertyTypes)
             {
                 if (propertyType.IsDbSet(genericTypeList))
                 {
@@ -104,13 +103,13 @@ namespace DNI.Data.Extensions
         }
 
         public static IServiceCollection AddRepositoriesForDbContext(this IServiceCollection services,
-            Type dbContextType, Action<DbContextOptionsBuilder> optionsAction, ServiceLifetime serviceLifetime  = ServiceLifetime.Scoped)
-            
+            Type dbContextType, Action<DbContextOptionsBuilder> optionsAction, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
+
         {
-            var genericMethod = GetAddDbContextMethod(dbContextType, 
+            var genericMethod = GetAddDbContextMethod(dbContextType,
                 typeof(IServiceCollection), typeof(Action<DbContextOptionsBuilder>),
                 typeof(ServiceLifetime), typeof(ServiceLifetime));
-            genericMethod.Invoke(services, new object [] { services, optionsAction, serviceLifetime, serviceLifetime });
+            genericMethod.Invoke(services, new object[] { services, optionsAction, serviceLifetime, serviceLifetime });
 
             return services
                 .AddRepositories(dbContextType, serviceLifetime);
@@ -118,7 +117,7 @@ namespace DNI.Data.Extensions
 
         public static IServiceCollection AddRepositoriesForDbContext(this IServiceCollection services,
             Type dbContextType, Action<IServiceProvider, DbContextOptionsBuilder> optionsAction, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
-            
+
         {
             var genericMethod = GetAddDbContextMethod(dbContextType,
                 typeof(IServiceCollection), typeof(Action<IServiceProvider, DbContextOptionsBuilder>),
@@ -129,7 +128,7 @@ namespace DNI.Data.Extensions
         }
 
         public static IServiceCollection AddRepositoriesForDbContext<TDbContext>(this IServiceCollection services,
-            Action<IServiceProvider, DbContextOptionsBuilder> optionsAction, ServiceLifetime serviceLifetime =  ServiceLifetime.Scoped)
+            Action<IServiceProvider, DbContextOptionsBuilder> optionsAction, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
             where TDbContext : DbContext
         {
             return services.AddDbContext<TDbContext>(optionsAction, serviceLifetime)
@@ -137,7 +136,7 @@ namespace DNI.Data.Extensions
         }
 
         public static IServiceCollection AddRepositoriesForDbContextPool<TDbContext>(this IServiceCollection services,
-            Action<DbContextOptionsBuilder> optionsAction, int poolSize, ServiceLifetime serviceLifetime  = ServiceLifetime.Transient)
+            Action<DbContextOptionsBuilder> optionsAction, int poolSize, ServiceLifetime serviceLifetime = ServiceLifetime.Transient)
             where TDbContext : DbContext
         {
             return services.AddDbContextPool<TDbContext>(optionsAction, poolSize)

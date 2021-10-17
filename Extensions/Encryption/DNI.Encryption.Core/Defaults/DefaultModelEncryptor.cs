@@ -4,16 +4,12 @@ using DNI.Encryption.Shared.Attributes;
 using DNI.Shared.Attributes;
 using DNI.Shared.Extensions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DNI.Core.Defaults
 {
     [RegisterService]
-    public class DefaultModelEncryptor :  IModelEncryptor
+    public class DefaultModelEncryptor : IModelEncryptor
     {
         private readonly IEncryptionOptionsFactory encryptionOptionsFactory;
         private readonly IEncryptor encryptor;
@@ -60,16 +56,16 @@ namespace DNI.Core.Defaults
 
                 var propertyValue = property.GetValue(model);
 
-                if(propertyValue == null || propertyValue.IsDefault())
+                if (propertyValue == null || propertyValue.IsDefault())
                 {
                     continue;
                 }
 
                 if (encryptionProfileAttribute != null)
                 {
-                   var newValue = apply(propertyValue, encryptionProfileAttribute, 
-                       encryptionOptionsFactory.GetEncryptionOptions(encryptionProfileAttribute.SectionName));
-                   property.SetValue(newInstance, newValue); 
+                    var newValue = apply(propertyValue, encryptionProfileAttribute,
+                        encryptionOptionsFactory.GetEncryptionOptions(encryptionProfileAttribute.SectionName));
+                    property.SetValue(newInstance, newValue);
                 }
                 else
                     property.SetValue(newInstance, propertyValue);
@@ -80,7 +76,7 @@ namespace DNI.Core.Defaults
 
         public DefaultModelEncryptor(
             IEncryptionOptionsFactory encryptionOptionsFactory,
-            IEncryptor encryptor, 
+            IEncryptor encryptor,
             IDecryptor decryptor,
             IHasher hasher)
         {

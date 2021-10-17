@@ -3,10 +3,7 @@ using DNI.Shared.Defaults;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reactive.Subjects;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DNI.Shared.Base
 {

@@ -1,12 +1,12 @@
-﻿using DNI.MigrationManager.Shared.Abstractions.Builders;
-using DNI.MigrationManager.Shared.Abstractions;
+﻿using DNI.MigrationManager.Shared.Abstractions;
+using DNI.MigrationManager.Shared.Abstractions.Builders;
+using DNI.MigrationManager.Shared.Abstractions.Factories;
 using DNI.MigrationManager.Shared.Enumerations;
 using DNI.Shared.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using DNI.MigrationManager.Shared.Abstractions.Factories;
 
 namespace DNI.MigrationManager.Core.Defaults.Builders
 {

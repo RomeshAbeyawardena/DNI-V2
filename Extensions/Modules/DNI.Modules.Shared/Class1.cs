@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DNI.Modules.Shared
+﻿namespace DNI.Modules.Shared
 {
     public class Class1
     {

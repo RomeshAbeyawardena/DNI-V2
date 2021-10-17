@@ -17,7 +17,7 @@ namespace DNI.Modules.Core.Defaults
 
         public object GetService(Type serviceType)
         {
-            return parentServiceProvider.GetService(serviceType) 
+            return parentServiceProvider.GetService(serviceType)
                 ?? serviceProvider.GetService(serviceType);
         }
     }

@@ -1,16 +1,12 @@
-﻿using DNI.Modules.Shared.Base;
-using DNI.Mediator.Shared.Abstractions;
-using System.Collections.Generic;
+﻿using DNI.Mediator.Shared.Abstractions;
+using DNI.Modules.Extensions;
+using DNI.Modules.Shared.Abstractions;
+using DNI.Modules.Shared.Base;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-using MediatR;
-using System.Reflection;
-using DNI.Shared.Abstractions;
-using DNI.Shared.Attributes;
-using DNI.Modules.Shared.Abstractions;
-using DNI.Modules.Extensions;
 
 namespace DNI.Mediator.Modules
 {
@@ -28,7 +24,7 @@ namespace DNI.Mediator.Modules
 
         public override void OnDispose(bool disposing)
         {
-            
+
         }
 
         public override Task OnStart(CancellationToken cancellationToken)

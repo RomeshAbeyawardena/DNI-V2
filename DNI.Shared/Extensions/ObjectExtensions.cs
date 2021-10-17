@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DNI.Shared.Extensions
 {
@@ -10,7 +6,7 @@ namespace DNI.Shared.Extensions
     {
         public static bool IsDefault(this object value)
         {
-            if(value is short _short && _short == default)
+            if (value is short _short && _short == default)
             {
                 return true;
             }

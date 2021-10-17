@@ -1,16 +1,10 @@
 ﻿using DNI.Core.Defaults.Hosts;
-using DNI.Data.Extensions;
-using DNI.Data.Modules;
 using DNI.Data.Shared.Base;
-using DNI.Encryption.Extensions;
-using DNI.Encryption.Modules.Extensions;
 using DNI.Extensions;
-using DNI.Mediator.Modules.Extensions;
 using DNI.MigrationManager.Shared.Abstractions;
 using DNI.Modules.Extensions;
 using DNI.Shared.Abstractions.Hosts;
 using DNI.Shared.Test;
-using DNI.Web.Modules.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -20,14 +14,13 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Data;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DNI.Test.App
 {
     class MyDbContext : DbContextBase
     {
-        public MyDbContext(DbContextOptions dbContextOptions) 
+        public MyDbContext(DbContextOptions dbContextOptions)
             : base(dbContextOptions)
         {
         }
@@ -44,7 +37,7 @@ namespace DNI.Test.App
             Console.WriteLine("Hello World!");
             Console.CancelKeyPress += Console_CancelKeyPress;
             consoleHost = ConsoleHost.Build(ConfigureConsoleHost);
-               
+
             await consoleHost.StartAsync();
         }
 

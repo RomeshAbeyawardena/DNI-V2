@@ -3,8 +3,6 @@ using DNI.Modules.Shared.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DNI.Modules.Core.Defaults
 {
@@ -32,7 +30,7 @@ namespace DNI.Modules.Core.Defaults
             foreach (var module in configuredModules)
             {
                 var moduleType = module.GetType();
-                
+
                 if (ModuleTypes.Contains(moduleType))
                 {
                     var activatedModule = serviceProvider.Activate<IModule>(module.GetType(), out disposables);

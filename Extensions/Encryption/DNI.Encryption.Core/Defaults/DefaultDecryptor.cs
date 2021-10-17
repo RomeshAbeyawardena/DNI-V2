@@ -1,6 +1,6 @@
 ﻿using DNI.Encryption.Shared.Abstractions;
-using DNI.Shared.Attributes;
 using DNI.Encryption.Shared.Base;
+using DNI.Shared.Attributes;
 using System;
 using System.IO;
 using System.Security.Cryptography;
@@ -10,7 +10,7 @@ namespace DNI.Encryption.Core.Defaults
     [RegisterService(Microsoft.Extensions.DependencyInjection.ServiceLifetime.Singleton)]
     public class DefaultDecryptor : CryptographicProviderBase, IDecryptor
     {
-        public DefaultDecryptor(IEncryptionOptions encryptionOptions, ISymmetricAlgorithmFactory symmetricAlgorithmFactory) 
+        public DefaultDecryptor(IEncryptionOptions encryptionOptions, ISymmetricAlgorithmFactory symmetricAlgorithmFactory)
             : base(encryptionOptions, symmetricAlgorithmFactory)
         {
         }
@@ -32,7 +32,7 @@ namespace DNI.Encryption.Core.Defaults
 
             var encryptedBytes = Convert.FromBase64String(value);
 
-            return ExecuteSymmetricOperation(Shared.Enumerations.EncryptionMode.Decrypt, 
+            return ExecuteSymmetricOperation(Shared.Enumerations.EncryptionMode.Decrypt,
                 encryptionOptions, CryptoStreamMode.Read, DecryptOperation, encryptedBytes);
         }
     }

@@ -1,16 +1,16 @@
-﻿using DNI.MigrationManager.Shared.Abstractions;
+﻿using DNI.Extensions;
+using DNI.MigrationManager.Shared.Abstractions;
 using DNI.Shared.Abstractions;
 using DNI.Shared.Attributes;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using DNI.Extensions;
 
 namespace DNI.MigrationManager.Core.Defaults
 {
     [RegisterService]
-    public class DefaultMigrationManager : ConcurrentQueue<IMigrationOptions>,  IMigrationManager
+    public class DefaultMigrationManager : ConcurrentQueue<IMigrationOptions>, IMigrationManager
     {
         public DefaultMigrationManager(IEnumerable<IKeyValuePair<string, IMigrationOptions>> migrationOptionPairs)
         {
@@ -23,8 +23,8 @@ namespace DNI.MigrationManager.Core.Defaults
         }
 
         private readonly Dictionary<string, IMigrationOptions> migrationOptionsDictionary;
-        private bool isReadOnly; 
-        
+        private bool isReadOnly;
+
         public ConcurrentQueue<IMigrationOptions> Migrations => this;
 
 

@@ -15,7 +15,7 @@ namespace DNI.Shared.Base
         }
 
         public CollectionBase(IEnumerable<T> items, bool isReadonly = false)
-            
+
         {
             collection = new List<T>(items);
             IsReadOnly = isReadonly;
@@ -24,7 +24,7 @@ namespace DNI.Shared.Base
         public CollectionBase(bool isReadonly)
             : this(Array.Empty<T>(), isReadonly)
         {
-            
+
         }
 
         public T this[int index] { get => collection[index]; set => collection[index] = value; }

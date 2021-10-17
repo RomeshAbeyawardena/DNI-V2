@@ -1,13 +1,9 @@
 ﻿using DNI.Modules.Core.Defaults;
 using DNI.Modules.Shared.Abstractions;
-using DNI.Modules.Shared.Abstractions.Builders;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DNI.Modules.Extensions
 {
@@ -15,7 +11,7 @@ namespace DNI.Modules.Extensions
     {
         public static T GetOptions<T>(this IModuleConfiguration moduleConfiguration)
         {
-            if(moduleConfiguration.Options.TryGetValue(typeof(T), out var options))
+            if (moduleConfiguration.Options.TryGetValue(typeof(T), out var options))
             {
                 return (T)options;
             }

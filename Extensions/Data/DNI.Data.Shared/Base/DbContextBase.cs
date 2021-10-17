@@ -23,7 +23,7 @@ namespace DNI.Data.Shared.Base
         public DbContextBase(DbContextOptions dbContextOptions)
             : base(dbContextOptions)
         {
-            
+
         }
 
         public override EntityEntry<TEntity> Add<TEntity>(TEntity entity)

@@ -7,6 +7,6 @@ namespace DNI.Shared.Abstractions
     /// </summary>
     public interface IDisposableStartup : IStartup, IDisposable, IAsyncDisposable
     {
-        
+
     }
 }

@@ -42,7 +42,7 @@ namespace DNI.Core.Defaults.Builders
         public DefaultDictionaryBuilder(IDictionary<TKey, TValue> dictionary)
             : base(dictionary)
         {
-            
+
         }
 
         public IDictionary<TKey, TValue> Dictionary => base.dictionary;

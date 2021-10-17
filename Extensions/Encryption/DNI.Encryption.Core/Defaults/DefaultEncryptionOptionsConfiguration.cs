@@ -1,11 +1,6 @@
 ﻿using DNI.Core.Defaults;
 using DNI.Encryption.Shared.Abstractions;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DNI.Encryption.Core.Defaults
 {

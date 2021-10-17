@@ -3,13 +3,10 @@ using DNI.Modules.Core.Extensions;
 using DNI.Modules.Shared.Abstractions;
 using DNI.Modules.Shared.Abstractions.Builders;
 using DNI.Modules.Shared.Base;
-using DNI.Shared.Attributes;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -58,19 +55,19 @@ namespace DNI.Modules.Core.Defaults
             configuredModules = new List<IModule>();
         }
 
-        public override void ConfigureBuilder(IServiceCollection services, IModuleConfigurationBuilder moduleConfigurationBuilder)
+        public override void ConfigureModuleBuilder(IServiceCollection services, IModuleConfigurationBuilder moduleConfigurationBuilder)
         {
             var hasChanged = false;
 
             foreach (var moduleType in moduleConfiguration.ModuleTypes)
             {
-                if(configuredModules.Any(a => a.ModuleType == moduleType))
+                if (configuredModules.Any(a => a.ModuleType == moduleType))
                 {
                     continue;
                 }
 
                 var module = serviceProvider.Activate<IModule>(moduleType, out var disposables);
-                module.ConfigureBuilder(services, moduleConfigurationBuilder);
+                module.ConfigureModuleBuilder(services, moduleConfigurationBuilder);
                 hasChanged = moduleConfiguration.ApplyConfiguration(moduleConfigurationBuilder);
                 var moduleId = Guid.NewGuid();
                 module.UniqueId = moduleId;
@@ -80,7 +77,7 @@ namespace DNI.Modules.Core.Defaults
 
             if (hasChanged)
             {
-                ConfigureBuilder(services, moduleConfigurationBuilder);
+                ConfigureModuleBuilder(services, moduleConfigurationBuilder);
             }
         }
 
@@ -91,20 +88,20 @@ namespace DNI.Modules.Core.Defaults
             var fakeServiceProvider = new DefaultFakeServiceProvider();
 
             ConfigureModules(fakeServiceProvider, moduleConfiguration);
-            
+
             services.AddSingleton(ConfigureModuleConfiguration);
         }
 
         public override Task OnStart(CancellationToken cancellationToken)
         {
-            ConfigureBuilder(services, new DefaultModuleConfigurationBuilder(moduleConfiguration));
+            ConfigureModuleBuilder(services, new DefaultModuleConfigurationBuilder(moduleConfiguration));
             ConfigureServices(services, moduleConfiguration);
             moduleServiceProvider = new DefaultModuleServiceProvider(serviceProvider, services.BuildServiceProvider());
             compiledModuleConfiguration = moduleServiceProvider.GetRequiredService<ICompiledModuleConfiguration>();
             return Task.WhenAll(compiledModuleConfiguration.Modules.ForEach(m => OnStartModule(m, cancellationToken)));
         }
 
-        
+
 
         public override Task OnStop(CancellationToken cancellationToken)
         {

@@ -1,11 +1,8 @@
 ﻿using DNI.Encryption.Shared.Abstractions;
 using DNI.Encryption.Shared.Enumerations;
-using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace DNI.Core.Defaults
 {
@@ -15,13 +12,13 @@ namespace DNI.Core.Defaults
         {
             Key = encryptionOptionsConfiguration.Key;
             InitialVector = encryptionOptionsConfiguration.InitialVector;
-            
+
             if (!string.IsNullOrWhiteSpace(encryptionOptionsConfiguration.SymmetricAlgorithm))
                 Algorithm = Enum.Parse<SymmetricAlgorithm>(encryptionOptionsConfiguration.SymmetricAlgorithm);
-            
+
             if (!string.IsNullOrWhiteSpace(encryptionOptionsConfiguration.HashAlgorithm))
                 HashAlgorithm = Enum.Parse<HashAlgorithm>(encryptionOptionsConfiguration.HashAlgorithm);
-            
+
             if (!string.IsNullOrWhiteSpace(encryptionOptionsConfiguration.Encoding))
                 Encoding = Encoding.GetEncoding(encryptionOptionsConfiguration.Encoding);
         }
@@ -36,7 +33,7 @@ namespace DNI.Core.Defaults
 
         public DefaultEncryptionOptions(IDictionary<string, IEncryptionOptions> encryptionOptionsDict, string key)
         {
-            if(encryptionOptionsDict.TryGetValue(key, out var encryptionOptions))
+            if (encryptionOptionsDict.TryGetValue(key, out var encryptionOptions))
             {
                 Encoding = encryptionOptions.Encoding;
                 Algorithm = encryptionOptions.Algorithm;

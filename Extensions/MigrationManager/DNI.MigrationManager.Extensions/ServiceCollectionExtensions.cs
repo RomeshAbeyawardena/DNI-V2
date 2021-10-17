@@ -1,11 +1,11 @@
-﻿using System;
-using DNI.Core;
+﻿using DNI.Core;
 using DNI.Core.Defaults.Builders;
 using DNI.MigrationManager.Core.Defaults;
 using DNI.MigrationManager.Shared.Abstractions;
 using DNI.Shared.Abstractions;
 using DNI.Shared.Abstractions.Builders;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace DNI.MigrationManager.Extensions
 {

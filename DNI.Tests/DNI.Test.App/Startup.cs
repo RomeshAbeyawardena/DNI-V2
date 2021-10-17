@@ -21,7 +21,7 @@ namespace DNI.Test.App
 
         public static void ConfigureServices(IServiceCollection services)
         {
-            
+
         }
 
         public override void Dispose(bool disposing)

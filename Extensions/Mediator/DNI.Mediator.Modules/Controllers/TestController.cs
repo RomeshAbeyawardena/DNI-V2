@@ -1,7 +1,5 @@
 ﻿using DNI.Encryption.Shared.Abstractions;
 using DNI.Encryption.Shared.Attributes;
-using DNI.Shared.Abstractions;
-using DNI.Shared.Attributes;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DNI.Mediator.Modules.Controllers

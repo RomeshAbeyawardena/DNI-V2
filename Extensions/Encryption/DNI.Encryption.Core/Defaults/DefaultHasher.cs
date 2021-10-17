@@ -2,11 +2,6 @@
 using DNI.Encryption.Shared.Abstractions.Factories;
 using DNI.Shared.Attributes;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DNI.Encryption.Core.Defaults
 {
@@ -16,7 +11,7 @@ namespace DNI.Encryption.Core.Defaults
         private readonly IHasherAlgorithmFactory hasherAlogrithmFactory;
         private readonly IEncryptionOptions encryptionOptions;
 
-        public DefaultHasher(IHasherAlgorithmFactory hasherAlgorithmFactory, 
+        public DefaultHasher(IHasherAlgorithmFactory hasherAlgorithmFactory,
             IEncryptionOptions encryptionOptions)
         {
             this.hasherAlogrithmFactory = hasherAlgorithmFactory;

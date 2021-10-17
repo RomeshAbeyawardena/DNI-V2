@@ -1,9 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DNI.Extensions
 {
@@ -20,11 +16,11 @@ namespace DNI.Extensions
 
             var currentSection = configuration;
 
-            foreach(var _path in paths)
+            foreach (var _path in paths)
             {
                 var foundSection = currentSection.GetSection(_path);
 
-                if(foundSection != null)
+                if (foundSection != null)
                 {
                     //section found, lets look at the next part of the path
                     currentSection = foundSection;

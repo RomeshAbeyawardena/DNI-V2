@@ -46,7 +46,7 @@ namespace DNI.Encryption.Shared.Base
             }
 
 
-            using (var memoryStream = memoryStreamBuffer == null 
+            using (var memoryStream = memoryStreamBuffer == null
                 ? new MemoryStream()
                 : new MemoryStream(memoryStreamBuffer))
             {

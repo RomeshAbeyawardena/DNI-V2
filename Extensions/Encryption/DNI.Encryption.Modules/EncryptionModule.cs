@@ -25,7 +25,7 @@ namespace DNI.Encryption.Modules
         internal IKeyValuePair<string, IEncryptionOptionsConfiguration> Configure(IConfigurationSection configuration)
         {
             return DefaultKeyValuePair
-                .Create(configuration.Key, 
+                .Create(configuration.Key,
                 (IEncryptionOptionsConfiguration)new DefaultEncryptionOptionsConfiguration(configuration));
         }
 
@@ -40,10 +40,10 @@ namespace DNI.Encryption.Modules
                 var configuration = serviceProvider.GetRequiredService<IConfiguration>();
 
                 var configurationSection = configuration.ResolvePath(encryptionModuleOptions.ImportConfigurationPath);
-                
+
                 var configChildren = configurationSection.GetChildren();
-                configChildren.Select(Configure).ForEach(a => db.Add(a.Key == "default" 
-                    ? string.Empty 
+                configChildren.Select(Configure).ForEach(a => db.Add(a.Key == "default"
+                    ? string.Empty
                     : a.Key, a.Value.Build()));
             }
 
@@ -58,7 +58,7 @@ namespace DNI.Encryption.Modules
             var encryptionModuleOptions = moduleConfiguration.GetOptions<IEncryptionModuleOptions>();
 
             services.AddSingleton(s => encryptionModuleOptions.EncryptionOptions
-                .TryGetValue(string.Empty, out var encryptionOptions) 
+                .TryGetValue(string.Empty, out var encryptionOptions)
                 ? encryptionOptions : default);
 
             services.AddSingleton(s => ConfigureEncryptionOptions(s, encryptionModuleOptions));

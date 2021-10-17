@@ -1,11 +1,8 @@
-﻿using DNI.Extensions;
-using DNI.Modules.Shared.Abstractions;
+﻿using DNI.Modules.Shared.Abstractions;
 using DNI.Modules.Shared.Abstractions.Builders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DNI.Modules.Core.Defaults
 {
@@ -17,7 +14,7 @@ namespace DNI.Modules.Core.Defaults
 
         public DefaultModuleConfigurationBuilder(IModuleConfiguration moduleConfiguration)
         {
-            moduleTypes = (moduleConfiguration.ModuleTypes != null && moduleConfiguration.ModuleTypes.Any()) 
+            moduleTypes = (moduleConfiguration.ModuleTypes != null && moduleConfiguration.ModuleTypes.Any())
                 ? new(moduleConfiguration?.ModuleTypes)
                 : new();
 
