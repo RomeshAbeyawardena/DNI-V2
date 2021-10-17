@@ -62,6 +62,7 @@ namespace DNI.Modules.Core.Defaults
         public override void ConfigureModuleBuilder(IServiceCollection services, IModuleConfigurationBuilder moduleConfigurationBuilder)
         {
             logger.LogInformation("Configuring module builder...");
+
             var hasChanged = false;
 
             foreach (var moduleType in moduleConfiguration.ModuleTypes)
@@ -75,7 +76,11 @@ namespace DNI.Modules.Core.Defaults
 
                 var module = serviceProvider.Activate<IModule>(moduleType, out var disposables);
                 module.ConfigureModuleBuilder(services, moduleConfigurationBuilder);
-                hasChanged = moduleConfiguration.ApplyConfiguration(moduleConfigurationBuilder);
+                
+                if (moduleConfiguration.ApplyConfiguration(moduleConfigurationBuilder))
+                {
+                    hasChanged = true;
+                }
 
                 var moduleId = Guid.NewGuid();
                 logger.LogInformation("{0} assigned Id: {1}", moduleType, moduleId);
@@ -89,6 +94,7 @@ namespace DNI.Modules.Core.Defaults
                 logger.LogInformation("Changes to module configuration have been made by other modules, re-running module builder configuration");
                 ConfigureModuleBuilder(services, moduleConfigurationBuilder);
             }
+
         }
 
         public override void ConfigureServices(IServiceCollection services, IModuleConfiguration moduleConfiguration)

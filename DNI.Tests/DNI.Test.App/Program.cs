@@ -55,7 +55,9 @@ namespace DNI.Test.App
         {
             services
                 .AddLogging(c => c.AddConsole())
-                .AddModules(builder => builder.AddModule<MyWebEncryptionModule>());
+                .AddModules(builder => builder
+                    .AddModule<MyWebEncryptionModule>()
+                    .AddModule<MyDbModule>());
         }
 
         private static void ConfigureWebHost(IWebHostBuilder webHostBuilder)

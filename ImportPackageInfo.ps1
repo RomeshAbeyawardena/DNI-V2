@@ -57,12 +57,11 @@ foreach($node in $xmlNodes)
 
     $destinationXml = Load-XmlFile -path $projectFile.FullName
     $propertyGroupNode = $destinationXml.SelectSingleNode("//Project/PropertyGroup")
-    $guid = [System.Guid]::NewGuid()
 
-    
+
     $propertyGroupNode.InnerXml = $propertyGroupNode.InnerXml + $childNodes + 
     "<PackageId>$nodeName</PackageId>" +
-    "<AssemblyName>$nodeName.$guid</AssemblyName>" +
+    "<AssemblyName>$nodeName</AssemblyName>" +
     "<RootNamespace>$nodeName</RootNamespace>"
     $directory = $projectFile.Directory.FullName
     $newPath = "$directory\\$nodeName.final.csproj"
