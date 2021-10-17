@@ -15,9 +15,15 @@ namespace DNI.Core.Defaults
         {
             Key = encryptionOptionsConfiguration.Key;
             InitialVector = encryptionOptionsConfiguration.InitialVector;
-            Algorithm = Enum.Parse<SymmetricAlgorithm>(encryptionOptionsConfiguration.SymmetricAlgorithm);
-            HashAlgorithm = Enum.Parse<HashAlgorithm>(encryptionOptionsConfiguration.HashAlgorithm);
-            Encoding = Encoding.GetEncoding(encryptionOptionsConfiguration.Encoding);
+            
+            if (!string.IsNullOrWhiteSpace(encryptionOptionsConfiguration.SymmetricAlgorithm))
+                Algorithm = Enum.Parse<SymmetricAlgorithm>(encryptionOptionsConfiguration.SymmetricAlgorithm);
+            
+            if (!string.IsNullOrWhiteSpace(encryptionOptionsConfiguration.HashAlgorithm))
+                HashAlgorithm = Enum.Parse<HashAlgorithm>(encryptionOptionsConfiguration.HashAlgorithm);
+            
+            if (!string.IsNullOrWhiteSpace(encryptionOptionsConfiguration.Encoding))
+                Encoding = Encoding.GetEncoding(encryptionOptionsConfiguration.Encoding);
         }
 
         public DefaultEncryptionOptions(string key, string initialVector, SymmetricAlgorithm algorithm, Encoding encoding)

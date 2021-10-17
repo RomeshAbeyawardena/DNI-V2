@@ -29,5 +29,12 @@ namespace DNI.Encryption.Extensions
             options.EncryptionOptions.Add(keyName, new DefaultEncryptionOptions(encryptionOptionsConfiguration));
             return options;
         }
+
+        public static IEncryptionModuleOptions ImportConfiguration(this IEncryptionModuleOptions options, string path = default)
+        {
+            options.ImportConfiguration = true;
+            options.ImportConfigurationPath = path;
+            return options;
+        }
     }
 }

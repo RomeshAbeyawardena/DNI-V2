@@ -8,6 +8,7 @@ using DNI.Web.Shared.Abstractions;
 using DNI.Web.Shared.Abstractions.Builders;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Collections.Generic;
@@ -23,10 +24,12 @@ namespace DNI.Web.Modules
     {
         private IHost host;
         private readonly IServiceCollection services;
+        private readonly IWebModuleOptions options;
 
-        public WebModule(IServiceCollection services, IWebModuleOptions webModuleOptions)
+        public WebModule(IServiceCollection services, IWebModuleOptions options)
         {
             this.services = services;
+            this.options = options;
         }
 
         public override void ConfigureServices(IServiceCollection services, IModuleConfiguration moduleConfiguration)
@@ -47,17 +50,24 @@ namespace DNI.Web.Modules
             services.AddSingleton(options);
             services.AddSingleton(services);
         }
+
         public override Task OnStart(CancellationToken cancellationToken)
         {
             host = Host.CreateDefaultBuilder()
                 .ConfigureWebHostDefaults(ConfigureWebHost)
+                .ConfigureHostConfiguration(a => a
+                    .AddJsonFile("appsettings.json")
+                    .AddUserSecrets(options.HostAssembly))
                 .Build();
             return host.RunAsync(cancellationToken);
         }
 
         private void ConfigureWebHost(IWebHostBuilder webHostBuilder)
         {
-            webHostBuilder.ConfigureServices(s => services.ForEach(sv => s.Add(sv)))
+            webHostBuilder.ConfigureAppConfiguration(c => c
+                .AddJsonFile("appsettings.json")
+                .AddUserSecrets(options.HostAssembly))
+            .ConfigureServices(s => services.ForEach(sv => s.Add(sv)))
                 .Configure(c => c.UseRouting().UseEndpoints(e => e.MapControllers()));
         }
 

@@ -1,4 +1,5 @@
-﻿using DNI.Encryption.Shared.Abstractions;
+﻿using DNI.Core.Defaults;
+using DNI.Encryption.Shared.Abstractions;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace DNI.Encryption.Core.Defaults
 
         public IEncryptionOptions Build()
         {
-            throw new NotImplementedException();
+            return new DefaultEncryptionOptions(this);
         }
     }
 }

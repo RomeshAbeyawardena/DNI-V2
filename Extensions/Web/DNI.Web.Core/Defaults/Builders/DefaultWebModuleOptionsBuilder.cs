@@ -12,9 +12,9 @@ namespace DNI.Web.Core.Defaults.Builders
         private Action<Microsoft.AspNetCore.Hosting.IWebHostBuilder> configureAction;
         private bool useModuleAssemblies;
         
-        public new IWebModuleOptions Build()
+        public IWebModuleOptions Build(Assembly hostAssembly)
         {
-            return new DefaultWebModuleOptions(configureAction, mvcOptions, useModuleAssemblies);
+            return new DefaultWebModuleOptions(configureAction, mvcOptions, useModuleAssemblies, hostAssembly);
         }
 
         public IWebModuleOptionsBuilder ConfigureMvcOptions(Action<Microsoft.AspNetCore.Mvc.MvcOptions> mvcOptions)

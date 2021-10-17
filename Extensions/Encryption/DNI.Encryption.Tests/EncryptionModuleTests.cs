@@ -1,6 +1,7 @@
 ﻿using DNI.Encryption.Modules;
 using DNI.Encryption.Shared.Abstractions;
 using DNI.Modules.Shared.Abstractions;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using NUnit.Framework;
@@ -14,30 +15,60 @@ namespace DNI.Encryption.Tests
 {
     public class EncryptionModuleTests
     {
+        private const string ConfigureEncryptionOptions = "Configure_Encryption_Options";
         private EncryptionModule sut;
-        private Mock<IServiceCollection> serviceCollectionMock = new Mock<IServiceCollection>();
-        private Mock<IModuleConfiguration> moduleConfigurationMock = new Mock<IModuleConfiguration>();
-        private Mock<IEncryptionModuleOptions> encryptionModuleOptionsMock = new Mock<IEncryptionModuleOptions>();
-        private Dictionary<Type, object> optionsDictionary;
+        private Mock<IServiceProvider> serviceCollectionMock;
+        private Mock<IConfiguration> configurationMock;
+        private Mock<IConfigurationSection> configurationSecurityProfileMock;
+        private Mock<IConfigurationSection> configurationGeneralMock;
+        private Mock<IConfigurationSection> configurationGeneralSectionMock;
+        private Mock<IEncryptionModuleOptions> encryptionModuleOptionsMock;
+        private Dictionary<string, IEncryptionOptions> optionsDictionary;
+        private string testFunction = string.Empty;
+
+
+
+
         [SetUp]
         public void Setup()
         {
             sut = new EncryptionModule();
-            optionsDictionary = new Dictionary<Type, object>();
-            serviceCollectionMock = new Mock<IServiceCollection>();
-            moduleConfigurationMock = new Mock<IModuleConfiguration>();
+            optionsDictionary = new Dictionary<string, IEncryptionOptions>();
+            serviceCollectionMock = new Mock<IServiceProvider>();
+            configurationMock = new Mock<IConfiguration>();
+            configurationSecurityProfileMock = new Mock<IConfigurationSection>();
+            configurationGeneralMock = new Mock<IConfigurationSection>();
             encryptionModuleOptionsMock = new Mock<IEncryptionModuleOptions>();
+            configurationGeneralSectionMock = new Mock<IConfigurationSection>();
+
+
+            serviceCollectionMock.Setup(a => a.GetService(typeof(IConfiguration)))
+           .Returns(configurationMock.Object);
+
+            configurationMock.Setup(a => a.GetSection("SecurityProfiles"))
+                .Returns(configurationSecurityProfileMock.Object);
+
+            configurationSecurityProfileMock.Setup(a => a.GetSection("General"))
+                .Returns(configurationGeneralMock.Object);
+
+            configurationGeneralMock.Setup(a => a.GetChildren())
+                .Returns(new[] { configurationGeneralSectionMock.Object });
+
+            encryptionModuleOptionsMock.Setup(a => a.EncryptionOptions)
+                .Returns(optionsDictionary);
+
+            encryptionModuleOptionsMock.Setup(a => a.ImportConfiguration)
+                .Returns(true);
+
+            encryptionModuleOptionsMock.Setup(a => a.ImportConfigurationPath)
+                .Returns("SecurityProfiles/General");
+
         }
 
         [Test]
-        public void Test()
+        public void Configure_Encryption_Options()
         {
-            optionsDictionary.Add(typeof(IEncryptionModuleOptions), encryptionModuleOptionsMock.Object);
-
-            moduleConfigurationMock.Setup(a => a.Options)
-                .Returns(optionsDictionary);
-            sut.ConfigureServices(serviceCollectionMock.Object,
-                moduleConfigurationMock.Object);
+            sut.ConfigureEncryptionOptions(serviceCollectionMock.Object, encryptionModuleOptionsMock.Object);
         }
     }
 }

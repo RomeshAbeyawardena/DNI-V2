@@ -1,4 +1,5 @@
-﻿using DNI.Core.Defaults.Builders;
+﻿using DNI.Core;
+using DNI.Core.Defaults.Builders;
 using DNI.Encryption.Core.Defaults;
 using DNI.Encryption.Extensions;
 using DNI.Encryption.Shared.Abstractions;
@@ -6,10 +7,12 @@ using DNI.Extensions;
 using DNI.Modules.Extensions;
 using DNI.Modules.Shared.Abstractions;
 using DNI.Modules.Shared.Base;
+using DNI.Shared.Abstractions;
 using DNI.Shared.Attributes;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,32 +22,46 @@ namespace DNI.Encryption.Modules
     [RequiresDependencies(typeof(Core.This))]
     public class EncryptionModule : ModuleBase
     {
+        internal IKeyValuePair<string, IEncryptionOptionsConfiguration> Configure(IConfigurationSection configuration)
+        {
+            return DefaultKeyValuePair
+                .Create(configuration.Key, 
+                (IEncryptionOptionsConfiguration)new DefaultEncryptionOptionsConfiguration(configuration));
+        }
+
+        internal IDictionary<string, IEncryptionOptions> ConfigureEncryptionOptions(
+            IServiceProvider serviceProvider,
+            IEncryptionModuleOptions encryptionModuleOptions)
+        {
+            var db = DictionaryBuilder.Create(encryptionModuleOptions.EncryptionOptions);
+
+            if (encryptionModuleOptions.ImportConfiguration)
+            {
+                var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+
+                var configurationSection = configuration.ResolvePath(encryptionModuleOptions.ImportConfigurationPath);
+                
+                var configChildren = configurationSection.GetChildren();
+                configChildren.Select(Configure).ForEach(a => db.Add(a.Key == "default" 
+                    ? string.Empty 
+                    : a.Key, a.Value.Build()));
+            }
+
+            encryptionModuleOptions.EncryptionOptionsFactory.ForEach(a => db.Add(a.Key, a.Value(serviceProvider)));
+
+            return db.Dictionary;
+        }
+
         public override void ConfigureServices(IServiceCollection services, IModuleConfiguration moduleConfiguration)
         {
             services.AddEncryptionServices();
             var encryptionModuleOptions = moduleConfiguration.GetOptions<IEncryptionModuleOptions>();
 
-            if(encryptionModuleOptions.EncryptionOptions.TryGetValue(string.Empty, out var encryptionOptions))
-            {
-                services.AddSingleton(encryptionOptions);
-            }
+            services.AddSingleton(s => encryptionModuleOptions.EncryptionOptions
+                .TryGetValue(string.Empty, out var encryptionOptions) 
+                ? encryptionOptions : default);
 
-            services.AddSingleton(s => { 
-                var db = DictionaryBuilder.Create(encryptionModuleOptions.EncryptionOptions);
-
-                if (encryptionModuleOptions.ImportConfiguration)
-                {
-                    var configuration = s.GetRequiredService<IConfiguration>();
-
-                    var configurationSection = configuration.ResolvePath(encryptionModuleOptions.ImportConfigurationPath);
-
-                    var encryptionOptionsConfiguration = configurationSection.GetChildren().Select(c => new DefaultEncryptionOptionsConfiguration(c));
-                }
-
-                encryptionModuleOptions.EncryptionOptionsFactory.ForEach(a => db.Add(a.Key, a.Value(s)));
-
-                return db.Dictionary;
-            });
+            services.AddSingleton(s => ConfigureEncryptionOptions(s, encryptionModuleOptions));
         }
 
         public override Task OnStart(CancellationToken cancellationToken)
