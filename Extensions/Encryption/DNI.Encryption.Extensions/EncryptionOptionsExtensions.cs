@@ -23,10 +23,10 @@ namespace DNI.Encryption.Extensions
             options.EncryptionOptions.Add(keyName, new DefaultEncryptionOptions(key, initialVector, algorithm, encoding));
             return options;
         }
-        
-        public static IEncryptionModuleOptions AddEncryptionOption(this IEncryptionModuleOptions options, string sectionNamekey, string path = default)
+
+        public static IEncryptionModuleOptions AddEncryptionOption(this IEncryptionModuleOptions options, string keyName, IEncryptionOptionsConfiguration encryptionOptionsConfiguration)
         {
-            options.EncryptionOptionsFactory.Add(sectionNamekey, s => s.GetRequiredService<IEncryptionOptionsFactory>().GetEncryptionOptions(sectionNamekey, path));
+            options.EncryptionOptions.Add(keyName, new DefaultEncryptionOptions(encryptionOptionsConfiguration));
             return options;
         }
     }

@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DNI.Encryption.Core\DNI.Encryption.Core.csproj" />
+    <ProjectReference Include="..\DNI.Encryption.Modules\DNI.Encryption.Modules.csproj" />
     <ProjectReference Include="..\DNI.Encryption.Shared\DNI.Encryption.Shared.csproj" />
   </ItemGroup>
 

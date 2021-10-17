@@ -10,6 +10,7 @@ namespace DNI.Encryption.Shared.Abstractions
     {
         IDictionary<string, Func<IServiceProvider, IEncryptionOptions>> EncryptionOptionsFactory { get; }
         IDictionary<string, IEncryptionOptions> EncryptionOptions { get; }
-        bool UseModuleAssemblies { get; }
+        bool ImportConfiguration { get; }
+        string ImportConfigurationPath { get; }
     }
 }

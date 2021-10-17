@@ -71,7 +71,7 @@ namespace DNI.Test.App
                 .ConfigureMediatorModule(builder => builder.AddModuleAssemblies())
                 .ConfigureWebModule(builder => builder.AddModuleAssemblies())
                 .ConfigureEncryptionModule(builder => builder
-                    .UseModuleAssemblies()
+                    .ImportConfiguration()
                     .ConfigureOptions(s => { s
                         .AddEncryptionOption("Personal", "SecurityProfiles")
                         .AddEncryptionOption("NWU1Nzc0ZTZkYjJlNDI3ZmI5MzVkZmZiYWJkODJlZjA=", "NTEwMWQ3OGFiNWEwNDcx", Encryption.Shared.Enumerations.SymmetricAlgorithm.Aes, Encoding.Default)

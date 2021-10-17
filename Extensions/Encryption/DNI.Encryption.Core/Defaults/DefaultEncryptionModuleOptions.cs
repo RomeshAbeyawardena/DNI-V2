@@ -18,6 +18,7 @@ namespace DNI.Encryption.Core.Defaults
 
         public IDictionary<string, IEncryptionOptions> EncryptionOptions { get; }
 
-        public bool UseModuleAssemblies { get; set; }
+        public bool ImportConfiguration { get; set; }
+        public string ImportConfigurationPath { get; set; }
     }
 }

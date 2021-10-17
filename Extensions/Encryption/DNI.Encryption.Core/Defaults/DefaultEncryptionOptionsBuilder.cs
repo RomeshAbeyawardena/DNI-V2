@@ -10,7 +10,7 @@ namespace DNI.Encryption.Core.Defaults
 {
     public class DefaultEncryptionOptionsBuilder : IEncryptionOptionsBuilder
     {
-        private DefaultEncryptionModuleOptions encryptionModuleOptions = new();
+        private readonly DefaultEncryptionModuleOptions encryptionModuleOptions = new();
 
         public IEncryptionModuleOptions Build()
         {
@@ -23,9 +23,10 @@ namespace DNI.Encryption.Core.Defaults
             return this;
         }
 
-        public IEncryptionOptionsBuilder UseModuleAssemblies()
+        public IEncryptionOptionsBuilder ImportConfiguration(string path = default)
         {
-            encryptionModuleOptions.UseModuleAssemblies = true;
+            encryptionModuleOptions.ImportConfiguration = true;
+            encryptionModuleOptions.ImportConfigurationPath = path;
             return this;
         }
     }

@@ -10,6 +10,6 @@ namespace DNI.Encryption.Shared.Abstractions.Builders
     {
         IEncryptionModuleOptions Build();
         IEncryptionOptionsBuilder ConfigureOptions(Action<IEncryptionModuleOptions> configure);
-        IEncryptionOptionsBuilder UseModuleAssemblies();
+        IEncryptionOptionsBuilder ImportConfiguration(string path = default);
     }
 }
