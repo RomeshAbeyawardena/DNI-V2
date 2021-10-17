@@ -1,15 +1,17 @@
+$path = "$PSScriptRoot"
+
 . "$path/Shared.ps1"
 
-$path = "$PSScriptRoot"
 $build = $true
 $newId = [System.Guid]::NewGuid()
 $tempPath = "$env:APPDATA\\Automated-Builds\\$newId"
 $solutionDirectory = "$tempPath//v2.1"
 
-
 $buildPropsFileName = "$solutionDirectory\\Directory.Build.props"
 $incrementBuildVersion = $true
 $packageInfoPath = "$solutionDirectory\\PackageInfo.xml"
+
+
 
 cd $path
 

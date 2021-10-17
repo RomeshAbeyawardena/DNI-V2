@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -27,7 +28,7 @@ namespace DNI.Modules.Core.Defaults
         
         private ICompiledModuleConfiguration ConfigureModuleConfiguration(IServiceProvider serviceProvider)
         {
-            return moduleConfiguration.Compile(serviceProvider, configuredModules);
+            return moduleConfiguration.Compile(serviceProvider, configuredModules, logger);
         }
 
         private Task OnStartModule(IModule module, CancellationToken cancellationToken)
@@ -126,7 +127,13 @@ namespace DNI.Modules.Core.Defaults
         public override Task OnStop(CancellationToken cancellationToken)
         {
             logger.LogInformation("Module runner stopping modules...");
-            return Task.WhenAll(compiledModuleConfiguration.Modules.ForEach(m => m.StopAsync(cancellationToken)));
+
+            if (compiledModuleConfiguration != null)
+            {
+                return Task.WhenAll(compiledModuleConfiguration.Modules.ForEach(m => m.StopAsync(cancellationToken)));
+            }
+
+            return Task.CompletedTask;
         }
 
         public override void OnDispose(bool disposing)
