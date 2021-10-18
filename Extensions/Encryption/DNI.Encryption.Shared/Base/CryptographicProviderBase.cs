@@ -15,6 +15,21 @@ namespace DNI.Encryption.Shared.Base
             return SymmetricAlgorithmFactory.GetSymmetricAlgorithm(symmetricAlgorithm);
         }
 
+        protected string PerformEncryptionCaseConventionOperation(
+            string value,
+            EncryptionCaseConvention encryptionCaseConvention)
+        {
+            switch(encryptionCaseConvention)
+            {
+                default:
+                case EncryptionCaseConvention.Default:
+                case EncryptionCaseConvention.Uppercase:
+                    return value.ToUpperInvariant();
+                case EncryptionCaseConvention.Lowercase:
+                    return value.ToLowerInvariant();
+            }    
+        }
+
         protected T ExecuteSymmetricOperation<T>(
             EncryptionMode encryptionMode,
             IEncryptionOptions encryptionOptions,

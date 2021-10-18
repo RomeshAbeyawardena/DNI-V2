@@ -14,19 +14,23 @@ namespace DNI.Encryption.tests
         private DefaultEncryptor sutEncryptor;
         private Mock<IEncryptionOptions> encryptionOptionsMock;
         private Mock<ISymmetricAlgorithmFactory> symmetricAlgorithmFactoryMock;
-
+        private Mock<IEncryptionModuleOptions> encryptionModuleOptionsMock;
         [SetUp]
         public void Setup()
         {
-            encryptionOptionsMock = new Mock<IEncryptionOptions>();
-            symmetricAlgorithmFactoryMock = new Mock<ISymmetricAlgorithmFactory>();
-            sutEncryptor = new DefaultEncryptor(encryptionOptionsMock.Object, symmetricAlgorithmFactoryMock.Object);
+            encryptionOptionsMock = new();
+            symmetricAlgorithmFactoryMock = new();
+            encryptionModuleOptionsMock = new();
+            sutEncryptor = new DefaultEncryptor(encryptionModuleOptionsMock.Object, encryptionOptionsMock.Object, symmetricAlgorithmFactoryMock.Object);
             sutDecryptor = new DefaultDecryptor(encryptionOptionsMock.Object, symmetricAlgorithmFactoryMock.Object);
         }
 
         [Test]
         public void Encrypted_value_should_be_the_same_value_when_decrypted_using_the_same_keys_used_during_encryption()
         {
+            encryptionModuleOptionsMock.Setup(a => a.EncryptionCaseConvention)
+                .Returns(EncryptionCaseConvention.Uppercase);
+
             var expected = "test";
             encryptionOptionsMock.Setup(a => a.Algorithm)
                 .Returns(Shared.Enumerations.SymmetricAlgorithm.Aes);
@@ -43,7 +47,7 @@ namespace DNI.Encryption.tests
             var encryptedValue = sutEncryptor.Encrypt(expected, encryptionOptionsMock.Object);
             var decryptedValue = sutDecryptor.Decrypt(encryptedValue, encryptionOptionsMock.Object);
             Assert.AreNotEqual(expected, encryptedValue);
-            Assert.AreEqual(expected, decryptedValue);
+            Assert.AreEqual(expected.ToUpperInvariant(), decryptedValue);
         }
     }
 }

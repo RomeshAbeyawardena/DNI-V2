@@ -57,6 +57,8 @@ namespace DNI.Encryption.Modules
             services.AddEncryptionServices();
             var encryptionModuleOptions = moduleConfiguration.GetOptions<IEncryptionModuleOptions>();
 
+            services.AddSingleton(encryptionModuleOptions);
+
             services.AddSingleton(s => encryptionModuleOptions.EncryptionOptions
                 .TryGetValue(string.Empty, out var encryptionOptions)
                 ? encryptionOptions : default);

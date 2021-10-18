@@ -10,10 +10,14 @@ namespace DNI.Encryption.Core.Defaults
     [RegisterService(Microsoft.Extensions.DependencyInjection.ServiceLifetime.Singleton)]
     public class DefaultEncryptor : CryptographicProviderBase, IEncryptor
     {
-        public DefaultEncryptor(IEncryptionOptions encryptionOptions, ISymmetricAlgorithmFactory symmetricAlgorithmFactory)
+        private readonly IEncryptionModuleOptions encryptionModuleOptions;
+
+        public DefaultEncryptor(
+            IEncryptionModuleOptions encryptionModuleOptions,
+            IEncryptionOptions encryptionOptions, ISymmetricAlgorithmFactory symmetricAlgorithmFactory)
             : base(encryptionOptions, symmetricAlgorithmFactory)
         {
-
+            this.encryptionModuleOptions = encryptionModuleOptions;
         }
 
         public string Encrypt(string value, string key)
@@ -29,6 +33,8 @@ namespace DNI.Encryption.Core.Defaults
                     streamWriter.Write(value);
                 return memoryStream;
             }
+
+            value = PerformEncryptionCaseConventionOperation(value, encryptionModuleOptions.EncryptionCaseConvention);
 
             var encryptedBytes = ExecuteSymmetricOperation(Shared.Enumerations.EncryptionMode.Encrypt,
                 encryptionOptions, CryptoStreamMode.Write, EncryptOperation).ToArray();
