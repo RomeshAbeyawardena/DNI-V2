@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DNI.Mapper.Modules.Extensions;
 
 namespace DNI.Test.App
 {
@@ -25,7 +26,8 @@ namespace DNI.Test.App
             moduleConfigurationBuilder.ConfigureDbContextModule(builder => builder
                     .AddDbContext<MyDbContext>((s, b) => b.UseSqlServer(s
                         .GetService<IConfiguration>()
-                        .GetConnectionString("default")), ServiceLifetime.Scoped));
+                        .GetConnectionString("default")), ServiceLifetime.Scoped))
+                .ConfigureMapperModule(c => c.AddModuleAssemblies());
         }
     }
 }
