@@ -40,7 +40,7 @@ namespace DNI.Modules.Core.Defaults
                 if (ModuleTypes.Contains(moduleType))
                 {
                     var activatedModule = serviceProvider.Activate<IModule>(module.GetType(), out disposables);
-                    activatedModule.UniqueId = module.UniqueId;
+                    activatedModule.SetUniqueId(module.UniqueId);
                     activatedModuleList.Add(activatedModule);
                 }
             }

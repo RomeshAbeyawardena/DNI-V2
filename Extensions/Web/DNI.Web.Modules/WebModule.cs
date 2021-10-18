@@ -34,10 +34,11 @@ namespace DNI.Web.Modules
         public override void ConfigureServices(IServiceCollection services, IModuleConfiguration moduleConfiguration)
         {
             var mvcBuilder = services.AddControllers();
-
+             
             var options = moduleConfiguration.GetOptions<IWebModuleOptions>();
-
             IEnumerable<Assembly> assemblies = options.ToArray();
+
+            options.ConfigureMvcOptions?.Invoke(mvcBuilder);
 
             if (options.UseModuleAssemblies)
             {
@@ -67,10 +68,13 @@ namespace DNI.Web.Modules
 
         private void ConfigureWebHost(IWebHostBuilder webHostBuilder)
         {
+            options.ConfigureWebHost?.Invoke(webHostBuilder);
+
             webHostBuilder.ConfigureAppConfiguration(c => c
                 .AddJsonFile("appsettings.json")
                 .AddUserSecrets(options.HostAssembly))
-            .ConfigureServices(s => services.ForEach(sv => s.Add(sv)))
+            .ConfigureServices(s => services
+                .ForEach(sv => s.Add(sv)))
                 .Configure(c => c.UseRouting().UseEndpoints(e => e.MapControllers()));
         }
 

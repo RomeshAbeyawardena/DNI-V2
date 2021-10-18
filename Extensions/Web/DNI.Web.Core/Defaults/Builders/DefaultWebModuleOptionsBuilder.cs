@@ -1,6 +1,7 @@
 ﻿using DNI.Shared.Base;
 using DNI.Web.Shared.Abstractions;
 using DNI.Web.Shared.Abstractions.Builders;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Reflection;
 
@@ -8,7 +9,7 @@ namespace DNI.Web.Core.Defaults.Builders
 {
     public class DefaultWebModuleOptionsBuilder : AssemblyOptionsBuilderBase, IWebModuleOptionsBuilder
     {
-        private Action<Microsoft.AspNetCore.Mvc.MvcOptions> mvcOptions;
+        private Action<IMvcBuilder> mvcOptions;
         private Action<Microsoft.AspNetCore.Hosting.IWebHostBuilder> configureAction;
         private bool useModuleAssemblies;
 
@@ -17,7 +18,7 @@ namespace DNI.Web.Core.Defaults.Builders
             return new DefaultWebModuleOptions(configureAction, mvcOptions, useModuleAssemblies, hostAssembly);
         }
 
-        public IWebModuleOptionsBuilder ConfigureMvcOptions(Action<Microsoft.AspNetCore.Mvc.MvcOptions> mvcOptions)
+        public IWebModuleOptionsBuilder ConfigureMvcOptions(Action<IMvcBuilder> mvcOptions)
         {
             this.mvcOptions = mvcOptions;
             return this;

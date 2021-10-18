@@ -21,7 +21,7 @@ namespace DNI.Modules.Shared.Base
 
         public IEnumerable<Type> ModuleParameters => ModuleType.GetConstructorParameterTypes();
 
-        public Guid UniqueId { get; set; }
+        public Guid UniqueId { get; private set; }
 
         public IEnumerable<IDisposable> Disposables { get; set; }
 
@@ -60,6 +60,11 @@ namespace DNI.Modules.Shared.Base
             : base(moduleStatusSubject)
         {
             this.moduleStatusSubject = new Subject<IModuleStatus>();
+        }
+
+        public void SetUniqueId(Guid uniqueId)
+        {
+            UniqueId = uniqueId;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
