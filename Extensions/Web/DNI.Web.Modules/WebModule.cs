@@ -33,7 +33,9 @@ namespace DNI.Web.Modules
 
         public override void ConfigureServices(IServiceCollection services, IModuleConfiguration moduleConfiguration)
         {
-            var mvcBuilder = services.AddControllers();
+            var mvcBuilder = services
+                .AddApiVersioning()
+                .AddControllers();
              
             var options = moduleConfiguration.GetOptions<IWebModuleOptions>();
             IEnumerable<Assembly> assemblies = options.ToArray();
@@ -51,8 +53,9 @@ namespace DNI.Web.Modules
                     .AddControllersAsServices();
             }
 
-            services.AddSingleton(options);
-            services.AddSingleton(services);
+            services
+                .AddSingleton(options)
+                .AddSingleton(services);
         }
 
         public override Task OnStart(CancellationToken cancellationToken)

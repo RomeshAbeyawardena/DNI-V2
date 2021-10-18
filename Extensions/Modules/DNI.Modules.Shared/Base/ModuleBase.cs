@@ -53,7 +53,7 @@ namespace DNI.Modules.Shared.Base
         public ModuleBase()
             : this(new Subject<IModuleStatus>())
         {
-
+            UniqueId = Guid.NewGuid();
         }
 
         public ModuleBase(ISubject<IModuleStatus> moduleStatusSubject)
