@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DNI.Encryption.Shared.Enumerations;
+using System;
 using System.Collections.Generic;
 
 namespace DNI.Encryption.Shared.Abstractions
@@ -9,5 +10,6 @@ namespace DNI.Encryption.Shared.Abstractions
         IDictionary<string, IEncryptionOptions> EncryptionOptions { get; }
         bool ImportConfiguration { get; set; }
         string ImportConfigurationPath { get; set; }
+        EncryptionCaseConvention EncryptionCaseConvention { get; set; }
     }
 }

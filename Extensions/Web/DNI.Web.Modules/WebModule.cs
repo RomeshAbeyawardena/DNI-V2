@@ -9,6 +9,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -33,13 +37,17 @@ namespace DNI.Web.Modules
 
             var options = moduleConfiguration.GetOptions<IWebModuleOptions>();
 
+            IEnumerable<Assembly> assemblies = options.ToArray();
+
             if (options.UseModuleAssemblies)
             {
-                foreach (var moduleAssembly in moduleConfiguration.GetModuleAssemblies())
-                {
-                    mvcBuilder.AddApplicationPart(moduleAssembly)
-                        .AddControllersAsServices();
-                }
+                assemblies = assemblies.AppendMany(moduleConfiguration.GetModuleAssemblies());
+            }
+
+            foreach (var moduleAssembly in assemblies)
+            {
+                mvcBuilder.AddApplicationPart(moduleAssembly)
+                    .AddControllersAsServices();
             }
 
             services.AddSingleton(options);
