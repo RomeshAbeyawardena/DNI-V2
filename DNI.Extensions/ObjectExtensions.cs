@@ -1,12 +1,67 @@
-﻿using System;
+﻿using DNI.Shared.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Text;
 
 namespace DNI.Shared.Extensions
 {
     public static class ObjectExtensions
     {
+        public static bool ValidateETag<T>(this T value, string eTag)
+        {
+            return value.CalculateETag().Equals(eTag);
+        }
+
+        public static void UpdateETag<T>(this T value)
+        {
+            var properties = typeof(T).GetProperties();
+
+            var eTag = value.CalculateETag(properties);
+
+            foreach (var property in properties)
+            {
+                var eTagAttribute = property.GetCustomAttribute<ETagAttribute>();
+
+                if (eTagAttribute == null)
+                {
+                    continue;
+                }
+
+                property.SetValue(value, eTag);
+            }
+        }
+
+        public static string CalculateETag<T>(this T model, IEnumerable<PropertyInfo> properties = null)
+        {
+            StringBuilder stringBuilder = new();
+            var modelType = typeof(T);
+
+            if(properties == null)
+            {
+                properties = modelType.GetProperties();
+            }
+
+            foreach(var property in properties)
+            {
+                var eTagAttribute = property.GetCustomAttribute<ETagAttribute>();
+
+                if (eTagAttribute != null)
+                {
+                    continue;
+                }
+
+                var modelValue = property.GetValue(model);
+                if (!modelValue.IsDefault())
+                {
+                    stringBuilder.AppendFormat(":{0}", modelValue);
+                }
+            }
+
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes(stringBuilder.ToString()));
+        }
+
         public static void Extend<T>(this T model, T newModel)
         {
             var modelType = typeof(T);
