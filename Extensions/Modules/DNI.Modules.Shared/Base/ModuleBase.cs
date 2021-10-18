@@ -35,7 +35,10 @@ namespace DNI.Modules.Shared.Base
 
         }
 
-        public abstract void ConfigureServices(IServiceCollection serviceCollection, IModuleConfiguration moduleConfiguration);
+        public virtual void ConfigureServices(IServiceCollection serviceCollection, IModuleConfiguration moduleConfiguration)
+        {
+
+        }
 
         public virtual Task OnStart(CancellationToken cancellationToken)
         {

@@ -11,6 +11,6 @@ namespace DNI.Web.Shared.Base
     [Route("{controller}/{action}")]
     public abstract class ControllerBase : Microsoft.AspNetCore.Mvc.ControllerBase
     {
-        protected T GetService<T>() => HttpContext.RequestServices.GetService<T>();
+        public T GetService<T>() => HttpContext.RequestServices.GetService<T>();
     }
 }
