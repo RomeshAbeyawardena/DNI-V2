@@ -12,7 +12,7 @@ namespace DNI.Mapper.Modules.Extensions
 {
     public static class ModuleConfigurationBuilderExtensions
     {
-        public static IModuleConfigurationBuilder ConfigureEncryptionModule(this IModuleConfigurationBuilder moduleConfigurationBuilder,
+        public static IModuleConfigurationBuilder ConfigureMapperModule(this IModuleConfigurationBuilder moduleConfigurationBuilder,
            Action<IMapperOptionsBuilder> configure)
         {
             return moduleConfigurationBuilder
