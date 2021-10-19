@@ -1,9 +1,5 @@
 ﻿using DNI.Shared.Attributes;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DNI.Tests
 {
@@ -33,5 +29,17 @@ namespace DNI.Tests
 
         [ETag]
         public string ETag { get; set; }
+
+        [MetaProperty(Shared.Enumerations.MetaAction.Add)]
+        public DateTime Created { get; set; }
+
+        [MetaProperty(Shared.Enumerations.MetaAction.Update)]
+        public DateTime? Modified { get; set; }
+
+        [MetaProperty(Shared.Enumerations.MetaAction.Add, Shared.Enumerations.MetaType.UtcDateTimeOffset)]
+        public DateTimeOffset CreatedUtc { get; set; }
+
+        [MetaProperty(Shared.Enumerations.MetaAction.Update)]
+        public DateTimeOffset? ModifiedUtc { get; set; }
     }
 }

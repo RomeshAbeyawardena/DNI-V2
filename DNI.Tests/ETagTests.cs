@@ -4,7 +4,7 @@ using System;
 
 namespace DNI.Tests
 {
-    public class Tests
+    public class ETagTests
     {
         [SetUp]
         public void Setup()
@@ -12,7 +12,7 @@ namespace DNI.Tests
         }
 
         [Test]
-        public void Test1()
+        public void CalculateETag()
         {
             Customer customer = new() 
             {
@@ -58,7 +58,7 @@ namespace DNI.Tests
         }
 
         [Test]
-        public void Test2()
+        public void UpdateETag()
         {
             Customer customer = new()
             {
@@ -82,7 +82,7 @@ namespace DNI.Tests
         }
 
         [Test]
-        public void Test3()
+        public void ValidateETag()
         {
             Customer customer = new()
             {
@@ -123,6 +123,30 @@ namespace DNI.Tests
             actual = customer2.CalculateETag();
 
             Assert.False(customer.ValidateETag(actual));
+        }
+
+        public void UpdateETag_comparison()
+        {
+            Customer customer = new()
+            {
+                BusinessEmailAddress = "lisa.wednesbury@business.com",
+                DateOfBirth = DateTime.Parse("1984-11-12"),
+                EmailAddress = "lisa.w23823@gmail.com",
+                FirstName = "Lisa",
+                Id = Guid.Parse("9ea1a22a-bd64-4aab-820a-c7092ee31720"),
+                LastName = "Wednesbury",
+                MiddleName = "Harrison",
+                MobileNumber = "078876543211",
+                NationalInsuranceNumber = "012345678910",
+                TelephoneNumber = "012345678910",
+                Title = "Ms"
+            };
+
+            customer.UpdateETag();
+
+            Assert.IsNotEmpty(customer.ETag);
+
+            Assert.AreEqual(customer.CalculateETag(), customer.ETag);
         }
     }
 }

@@ -1,5 +1,9 @@
 ﻿using DNI.Data.Shared.Abstractions;
 using DNI.Data.Shared.Base;
+using DNI.Extensions;
+using DNI.Shared.Abstractions;
+using DNI.Shared.Enumerations;
+using DNI.Shared.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
@@ -18,9 +22,13 @@ namespace DNI.Data.Core.Defaults
         private readonly TDbContext dbContext;
         private readonly DbSet<T> dbSet;
         private readonly ISubject<EntityEntry<T>> stateSubject;
-        public DefaultEntityFrameworkRepository(TDbContext dbContext, ISubject<EntityEntry<T>> subject)
+        private readonly IClockProvider clockProvider;
+
+        public DefaultEntityFrameworkRepository(TDbContext dbContext, ISubject<EntityEntry<T>> subject,
+            IClockProvider clockProvider)
         {
             stateSubject = subject;
+            this.clockProvider = clockProvider;
             this.dbContext = dbContext;
             dbSet = dbContext.Set<T>();
             Query = dbSet;
@@ -30,6 +38,7 @@ namespace DNI.Data.Core.Defaults
 
         public override void Add(T item)
         {
+            clockProvider.UpdateValueMetaTags(item, MetaAction.Add);
             stateSubject.OnNext(dbSet.Add(item));
         }
 
@@ -65,6 +74,7 @@ namespace DNI.Data.Core.Defaults
 
         public override void Update(T item)
         {
+            clockProvider.UpdateValueMetaTags(item, MetaAction.Update);
             stateSubject.OnNext(dbContext.Update(item));
         }
     }

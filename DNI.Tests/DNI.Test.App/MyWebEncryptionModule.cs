@@ -1,12 +1,10 @@
-﻿using DNI.Data.Modules;
-using DNI.Encryption.Extensions;
+﻿using DNI.Encryption.Extensions;
 using DNI.Encryption.Modules.Extensions;
 using DNI.Mediator.Modules.Extensions;
 using DNI.Modules.Shared.Abstractions;
 using DNI.Modules.Shared.Abstractions.Builders;
 using DNI.Modules.Shared.Base;
 using DNI.Web.Modules.Extensions;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DNI.Test.App

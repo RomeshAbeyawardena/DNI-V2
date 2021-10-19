@@ -35,16 +35,17 @@ namespace DNI.Modules.Core.Defaults
                 return Array.Empty<Assembly>();
             }
 
-            return requiresDependenciesAttribute.RequiredTypes.Select(t => t.Assembly);
+            return requiresDependenciesAttribute.RequiredTypes.Select(t => t.Assembly).Distinct();
         }
 
         public override void ConfigureServices(IServiceCollection services, IModuleConfiguration moduleConfiguration)
         {
-            var dependencies = moduleConfiguration.ModuleTypes.SelectMany(GetAssemblies);
+            var dependencies = moduleConfiguration.ModuleTypes.SelectMany(GetAssemblies)
+                .AppendMany(moduleConfiguration.ModuleTypes
+                .Select(a => a.Assembly))
+                .Distinct();
 
-            services.Scan(c => c.FromAssemblies(moduleConfiguration.ModuleTypes
-                .Select(a => a.Assembly).AppendMany(dependencies)
-                .Distinct())
+            services.Scan(c => c.FromAssemblies(dependencies)
                 .AddClasses(t => t.WithAttribute<RegisterServiceAttribute>(s => s.ServiceLifetime == ServiceLifetime.Singleton))
                 .AsImplementedInterfaces()
                 .WithSingletonLifetime()

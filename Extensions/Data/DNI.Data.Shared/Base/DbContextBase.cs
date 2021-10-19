@@ -26,6 +26,16 @@ namespace DNI.Data.Shared.Base
 
         }
 
+        public override EntityEntry Add(object entity)
+        {
+            return base.Add(entity);
+        }
+
+        public override EntityEntry Update(object entity)
+        {
+            return base.Update(entity);
+        }
+
         public override EntityEntry<TEntity> Add<TEntity>(TEntity entity)
         {
             return InformOfChange(base.Add(entity));

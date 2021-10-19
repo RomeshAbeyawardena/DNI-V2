@@ -1,4 +1,5 @@
 ﻿using DNI.Shared.Attributes;
+using DNI.Shared.Enumerations;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -9,6 +10,66 @@ namespace DNI.Shared.Extensions
 {
     public static class ObjectExtensions
     {
+        public static object PerformMetaAction(MetaType metaType, Type value, 
+            Func<bool, DateTimeOffset> offSetfactoryMethod = null,
+            Func<bool, DateTime> factoryMethod = null)
+        {
+            object PerformDifferentMetaAction(MetaType metaType)
+            {
+                return PerformMetaAction(metaType, value, offSetfactoryMethod, factoryMethod);
+            }
+
+            switch (metaType)
+            {
+                case MetaType.Unspecified:
+                    if (value == typeof(DateTimeOffset) || value == typeof(DateTimeOffset?))
+                        return PerformDifferentMetaAction(MetaType.UtcDateTimeOffset);
+                    else if (value == typeof(DateTime) || value == typeof(DateTime?))
+                        return PerformDifferentMetaAction(MetaType.UtcDateTime);
+                    else if (value == typeof(string))
+                        return PerformDifferentMetaAction(MetaType.UtcDateTimeOffset).ToString();
+                    else throw new NotSupportedException("Meta action can only be formed on date time instances");
+                case MetaType.DateTime:
+                    return factoryMethod(false);
+                default:
+                case MetaType.DateTimeOffset:
+                    return offSetfactoryMethod(false);
+                case MetaType.UtcDateTime:
+                    return factoryMethod(true);
+                case MetaType.UtcDateTimeOffset:
+                    return offSetfactoryMethod(true);
+            }
+        }
+
+        public static void UpdateMetaTags<T>(this T value, MetaAction metaAction,
+            Func<bool, DateTimeOffset> offSetfactoryMethod = null,
+            Func<bool, DateTime> factoryMethod = null)
+        {
+            if (offSetfactoryMethod == null)
+            {
+                offSetfactoryMethod = (useUtc) => useUtc ? DateTimeOffset.UtcNow : DateTimeOffset.Now;
+            }
+
+            if (factoryMethod == null)
+            {
+                factoryMethod = (useUtc) => useUtc ? DateTime.UtcNow : DateTime.Now;
+            }
+
+            var properties = typeof(T).GetProperties();
+            foreach (var property in properties)
+            {
+                var metaAttribute = property.GetCustomAttribute<MetaPropertyAttribute>();
+
+                if (metaAttribute == null || metaAttribute.MetaAction != metaAction)
+                {
+                    continue;
+                }
+
+                property.SetValue(value, PerformMetaAction(metaAttribute.MetaType, property.PropertyType,
+                    offSetfactoryMethod, factoryMethod));
+            }
+        }
+
         public static bool ValidateETag<T>(this T value, string eTag)
         {
             return value.CalculateETag().Equals(eTag);

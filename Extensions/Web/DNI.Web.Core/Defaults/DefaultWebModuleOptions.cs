@@ -1,7 +1,6 @@
 ﻿using DNI.Shared.Base;
 using DNI.Web.Shared.Abstractions;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Reflection;

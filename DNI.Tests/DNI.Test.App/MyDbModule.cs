@@ -5,11 +5,6 @@ using DNI.Modules.Shared.Base;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DNI.Mapper.Modules.Extensions;
 
 namespace DNI.Test.App

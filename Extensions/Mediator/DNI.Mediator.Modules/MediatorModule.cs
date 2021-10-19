@@ -5,8 +5,6 @@ using DNI.Modules.Shared.Base;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DNI.Mediator.Modules
 {

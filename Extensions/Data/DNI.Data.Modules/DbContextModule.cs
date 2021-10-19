@@ -3,12 +3,14 @@ using DNI.Data.Shared.Abstractions;
 using DNI.Modules.Extensions;
 using DNI.Modules.Shared.Abstractions;
 using DNI.Modules.Shared.Base;
+using DNI.Shared.Attributes;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace DNI.Data.Modules
 {
+    [RequiresDependencies(typeof(DNI.Core.This))]
     public class DbContextModule : ModuleBase
     {
         public override void ConfigureServices(IServiceCollection services, IModuleConfiguration moduleConfiguration)

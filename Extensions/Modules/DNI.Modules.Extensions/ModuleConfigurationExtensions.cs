@@ -36,7 +36,7 @@ namespace DNI.Modules.Extensions
 
             assemblies.AddRange(moduleConfiguration.ModuleTypes.Select(a => a.Assembly).Distinct());
 
-            return assemblies;
+            return assemblies.Distinct();
         }
 
         public static void ConfigureOptions<T>(this IModuleConfiguration moduleConfiguration, T options)
