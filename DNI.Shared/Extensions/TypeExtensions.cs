@@ -29,7 +29,7 @@ namespace DNI.Shared.Extensions
         {
             static void conditionalAction(bool hasAttribute, KeyValuePair<PropertyInfo, TAttribute> item, IDictionary<PropertyInfo, TAttribute> dictionary)
             {
-                if (hasAttribute)
+                if (!hasAttribute)
                     dictionary.Add(item);
             }
 
@@ -41,7 +41,7 @@ namespace DNI.Shared.Extensions
         {
             static void conditionalAction(bool hasAttribute, KeyValuePair<PropertyInfo, TAttribute> item, IDictionary<PropertyInfo, TAttribute> dictionary)
             {
-                if (!hasAttribute)
+                if (hasAttribute)
                     dictionary.Add(item);
             }
 
