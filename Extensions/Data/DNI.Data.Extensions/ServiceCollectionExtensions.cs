@@ -4,6 +4,7 @@ using DNI.Extensions;
 using DNI.Shared.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,7 +43,9 @@ namespace DNI.Data.Extensions
             var subjectType = typeof(ISubject<>);
 
             var subjectImplementationType = typeof(Subject<>);
-            return services.AddSingleton(subjectType, subjectImplementationType);
+            return services
+                .AddSingleton(subjectType, subjectImplementationType)
+                .AddSingleton<ISystemClock, SystemClock>();
         }
 
         private static bool IsDbSet(this Type type, IList<Type> genericTypesList)

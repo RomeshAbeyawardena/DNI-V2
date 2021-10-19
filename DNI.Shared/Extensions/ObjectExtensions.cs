@@ -1,9 +1,21 @@
-﻿using System;
+﻿using DNI.Shared.Abstractions.Builders;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace DNI.Shared.Extensions
 {
     public static class ObjectExtensions
     {
+        public static IDictionary<string,object> GetValues<TAttribute>(this object item)
+            where TAttribute : Attribute
+        {
+            return item.GetType()
+                .GetPropertiesWithAttribute<TAttribute>()
+                .ToDictionary(k => k.Key.Name, v => v.Key.GetValue(item));
+        }
+
         public static bool IsDefault(this object value)
         {
             if (value is short _short && _short == default)

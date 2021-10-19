@@ -1,7 +1,10 @@
-﻿using DNI.Shared.Attributes;
+﻿using DNI.Core.Defaults.Builders;
+using DNI.Shared.Abstractions.Builders;
+using DNI.Shared.Attributes;
 using DNI.Shared.Enumerations;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
@@ -10,9 +13,69 @@ namespace DNI.Shared.Extensions
 {
     public static class ObjectExtensions
     {
-        public static object PerformMetaAction(MetaType metaType, Type value, 
-            Func<bool, DateTimeOffset> offSetfactoryMethod = null,
-            Func<bool, DateTime> factoryMethod = null)
+        public static void Copy<T>(this T source,
+            T destination,
+            Func<PropertyInfo, bool> propertyRules = null,
+            Action<IDictionaryBuilder<string, object>> configureReplacements = null,
+            IEnumerable<PropertyInfo> properties = null)
+        {
+            DefaultDictionaryBuilder<string, object> dictionaryBuilder = new();
+
+            configureReplacements?.Invoke(dictionaryBuilder);
+
+            if (properties != null)
+            {
+                properties = typeof(T).GetProperties();
+            }
+
+            if (propertyRules != null)
+            {
+                properties = properties.Where(propertyRules);
+            }
+
+            foreach (var property in properties)
+            {
+                object defaultValue = null;
+                var propertyValue = property.GetValue(source);
+                bool isDefault = propertyValue.IsDefault();
+                if (isDefault && !dictionaryBuilder.TryGetValue(property.Name, out defaultValue))
+                {
+                    continue;
+                }
+
+                if (isDefault)
+                {
+                    property.SetValue(destination, defaultValue);
+                }
+                else
+                {
+                    property.SetValue(destination, propertyValue);
+                }
+            }
+        }
+
+        public static IDictionary<PropertyInfo, MetaPropertyAttribute> GetMetaProperties(this Type type, MetaAction? metaAction = null)
+        {
+            Dictionary<PropertyInfo, MetaPropertyAttribute> metaPropertyDictionary = new();
+            var properties = type.GetPropertiesWithAttribute<MetaPropertyAttribute>();
+            foreach (var (property, metaAttribute) in properties)
+            {
+
+                if (metaAction.HasValue && metaAction.Value != metaAttribute.MetaAction)
+                {
+                    continue;
+                }
+
+                metaPropertyDictionary.Add(property, metaAttribute);
+
+            }
+
+            return metaPropertyDictionary;
+        }
+
+        public static object PerformMetaAction(MetaType metaType, Type value,
+        Func<bool, DateTimeOffset> offSetfactoryMethod = null,
+        Func<bool, DateTime> factoryMethod = null)
         {
             object PerformDifferentMetaAction(MetaType metaType)
             {
@@ -55,16 +118,9 @@ namespace DNI.Shared.Extensions
                 factoryMethod = (useUtc) => useUtc ? DateTime.UtcNow : DateTime.Now;
             }
 
-            var properties = typeof(T).GetProperties();
-            foreach (var property in properties)
+            var properties = typeof(T).GetMetaProperties(metaAction);
+            foreach (var (property, metaAttribute) in properties)
             {
-                var metaAttribute = property.GetCustomAttribute<MetaPropertyAttribute>();
-
-                if (metaAttribute == null || metaAttribute.MetaAction != metaAction)
-                {
-                    continue;
-                }
-
                 property.SetValue(value, PerformMetaAction(metaAttribute.MetaType, property.PropertyType,
                     offSetfactoryMethod, factoryMethod));
             }
@@ -99,12 +155,12 @@ namespace DNI.Shared.Extensions
             StringBuilder stringBuilder = new();
             var modelType = typeof(T);
 
-            if(properties == null)
+            if (properties == null)
             {
                 properties = modelType.GetProperties();
             }
 
-            foreach(var property in properties)
+            foreach (var property in properties)
             {
                 var eTagAttribute = property.GetCustomAttribute<ETagAttribute>();
 

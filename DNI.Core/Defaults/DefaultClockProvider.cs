@@ -1,7 +1,7 @@
 ﻿using DNI.Shared.Abstractions;
 using DNI.Shared.Attributes;
 using System;
-using System.Reactive.PlatformServices;
+using Microsoft.Extensions.Internal;
 
 namespace DNI.Core.Defaults
 {

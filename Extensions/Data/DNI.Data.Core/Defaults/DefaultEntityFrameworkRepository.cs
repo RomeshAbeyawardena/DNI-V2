@@ -2,12 +2,14 @@
 using DNI.Data.Shared.Base;
 using DNI.Extensions;
 using DNI.Shared.Abstractions;
+using DNI.Shared.Attributes;
 using DNI.Shared.Enumerations;
 using DNI.Shared.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reactive.Subjects;
 using System.Threading;
@@ -74,6 +76,17 @@ namespace DNI.Data.Core.Defaults
 
         public override void Update(T item)
         {
+            var itemType = typeof(T);
+            var keys = item.GetValues<KeyAttribute>();
+            var existingItem = Find(keys);
+
+            if(existingItem != null)
+            {
+                //copy meta values to entry
+                existingItem.Copy(item, properties: itemType
+                    .GetPropertiesWithAttribute<MetaPropertyAttribute>().Select(a => a.Key));
+            }
+
             clockProvider.UpdateValueMetaTags(item, MetaAction.Update);
             stateSubject.OnNext(dbContext.Update(item));
         }
