@@ -9,7 +9,7 @@ namespace DNI.Shared.Extensions
 {
     public static class TypeExtensions
     {
-        public static IDictionary<PropertyInfo, TAttribute> GetPropertiesWithAttribute<TAttribute>(this Type type)
+        public static IDictionary<PropertyInfo, TAttribute> Invoke<TAttribute>(Type type, Action<bool, KeyValuePair<PropertyInfo, TAttribute>, IDictionary<PropertyInfo, TAttribute>> delegateAction)
             where TAttribute : Attribute
         {
             var properties = type.GetProperties();
@@ -18,13 +18,34 @@ namespace DNI.Shared.Extensions
             {
                 var attribute = property.GetCustomAttribute<TAttribute>();
 
-                if (attribute != null)
-                {
-                    propertyAttributeDictionary.Add(property, attribute);
-                }
+                delegateAction((attribute != null), KeyValuePair.Create(property, attribute), propertyAttributeDictionary);
             }
 
             return propertyAttributeDictionary;
+        }
+
+        public static IDictionary<PropertyInfo, TAttribute> GetPropertiesWithoutAttribute<TAttribute>(this Type type)
+            where TAttribute : Attribute
+        {
+            static void conditionalAction(bool hasAttribute, KeyValuePair<PropertyInfo, TAttribute> item, IDictionary<PropertyInfo, TAttribute> dictionary)
+            {
+                if (hasAttribute)
+                    dictionary.Add(item);
+            }
+
+            return Invoke<TAttribute>(type, conditionalAction);
+        }
+
+        public static IDictionary<PropertyInfo, TAttribute> GetPropertiesWithAttribute<TAttribute>(this Type type)
+            where TAttribute : Attribute
+        {
+            static void conditionalAction(bool hasAttribute, KeyValuePair<PropertyInfo, TAttribute> item, IDictionary<PropertyInfo, TAttribute> dictionary)
+            {
+                if (!hasAttribute)
+                    dictionary.Add(item);
+            }
+
+            return Invoke<TAttribute>(type, conditionalAction);
         }
     }
 }

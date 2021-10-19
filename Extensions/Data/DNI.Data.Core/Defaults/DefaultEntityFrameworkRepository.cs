@@ -77,18 +77,18 @@ namespace DNI.Data.Core.Defaults
         public override void Update(T item)
         {
             var itemType = typeof(T);
-            var keys = item.GetValues<KeyAttribute>();
-            var existingItem = Find(keys);
+            var keys = item.GetDictionary<KeyAttribute>();
+            var existingItem = Find(keys.Select(a => a.Value).ToArray());
 
             if(existingItem != null)
             {
                 //copy meta values to entry
-                existingItem.Copy(item, properties: itemType
+                item.Copy(existingItem, properties: itemType
                     .GetPropertiesWithAttribute<MetaPropertyAttribute>().Select(a => a.Key));
             }
 
-            clockProvider.UpdateValueMetaTags(item, MetaAction.Update);
-            stateSubject.OnNext(dbContext.Update(item));
+            clockProvider.UpdateValueMetaTags(existingItem, MetaAction.Update);
+            stateSubject.OnNext(dbContext.Update(existingItem));
         }
     }
 }

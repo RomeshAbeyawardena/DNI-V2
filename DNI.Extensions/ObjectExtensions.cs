@@ -23,7 +23,7 @@ namespace DNI.Shared.Extensions
 
             configureReplacements?.Invoke(dictionaryBuilder);
 
-            if (properties != null)
+            if (properties == null)
             {
                 properties = typeof(T).GetProperties();
             }

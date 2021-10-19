@@ -8,7 +8,7 @@ namespace DNI.Shared.Extensions
 {
     public static class ObjectExtensions
     {
-        public static IDictionary<string,object> GetValues<TAttribute>(this object item)
+        public static IDictionary<string,object> GetDictionary<TAttribute>(this object item)
             where TAttribute : Attribute
         {
             return item.GetType()
