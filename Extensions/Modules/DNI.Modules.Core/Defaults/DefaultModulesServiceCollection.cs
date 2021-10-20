@@ -1,4 +1,4 @@
-﻿using DNI.Extensions;
+using DNI.Extensions;
 using DNI.Modules.Shared.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -17,7 +17,10 @@ namespace DNI.Modules.Core.Defaults
 
             if(services != null)
             {
-                services.ForEach(s => this.services.Add(s));
+                services.ForEach(s => { 
+                  if(!services.Contains(s))
+                    this.services.Add(s);
+                });
             }
         }
 
