@@ -19,7 +19,9 @@ namespace DNI.Modules.Core.Defaults
             {
                 services.ForEach(s => { 
                   if(!services.Contains(s))
+                  {
                     this.services.Add(s);
+                  }
                 });
             }
         }
