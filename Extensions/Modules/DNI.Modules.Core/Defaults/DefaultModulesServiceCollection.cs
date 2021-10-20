@@ -1,4 +1,5 @@
-﻿using DNI.Modules.Shared.Abstractions;
+﻿using DNI.Extensions;
+using DNI.Modules.Shared.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections;
@@ -12,7 +13,12 @@ namespace DNI.Modules.Core.Defaults
 
         public DefaultModulesServiceCollection(IServiceCollection services = default)
         {
-            this.services = services ?? new ServiceCollection();
+            this.services = new ServiceCollection();
+
+            if(services != null)
+            {
+                services.ForEach(s => this.services.Add(s));
+            }
         }
 
         public ServiceDescriptor this[int index] { get => services[index]; set => services[index] = value; }

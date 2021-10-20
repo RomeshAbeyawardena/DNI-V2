@@ -21,7 +21,7 @@ namespace DNI.Tests
                 BusinessEmailAddress = "lisa.wednesbury@business.com",
                 DateOfBirth = DateTime.Parse("1984-11-12"),
                 EmailAddress = "lisa.w23823@gmail.com",
-                FirstName = "Lisa",
+                FirstName = "Henrietta",
                 Id = Guid.Parse("9ea1a22a-bd64-4aab-820a-c7092ee31720"),
                 LastName = "Jordan",
                 MiddleName = "Harrison",
@@ -49,9 +49,11 @@ namespace DNI.Tests
             if (existingItem != null)
             {
                 //copy meta values to entry
-                existingItem.Copy(item, properties: itemType
-                    .GetPropertiesWithAttribute<MetaPropertyAttribute>().Select(a => a.Key));
+                item.Copy(existingItem, properties: itemType
+                    .GetPropertiesWithoutAttribute<MetaPropertyAttribute>().Select(a => a.Key));
             }
+
+            Assert.AreEqual(item.Title, existingItem.Title);
 
         }
     }

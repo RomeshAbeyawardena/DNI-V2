@@ -1,6 +1,7 @@
 ﻿using DNI.Modules.Core.Defaults;
 using DNI.Modules.Shared.Abstractions;
 using DNI.Shared.Attributes;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,9 +51,9 @@ namespace DNI.Modules.Extensions
             moduleConfiguration.Options.Add(optionType, options);
         }
 
-        public static IModuleRunner ConfigureRunner(this IModuleConfiguration moduleConfiguration, IServiceProvider services)
+        public static IModuleRunner ConfigureRunner(this IModuleConfiguration moduleConfiguration, IServiceProvider serviceProvider, IServiceCollection services)
         {
-            return new DefaultModuleRunner(services, moduleConfiguration);
+            return new DefaultModuleRunner(services, serviceProvider, moduleConfiguration);
         }
     }
 }

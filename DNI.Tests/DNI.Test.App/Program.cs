@@ -1,10 +1,8 @@
 ﻿using DNI.Core.Defaults.Hosts;
-using DNI.Data.Shared.Base;
 using DNI.Extensions;
 using DNI.MigrationManager.Shared.Abstractions;
 using DNI.Modules.Extensions;
 using DNI.Shared.Abstractions.Hosts;
-using DNI.Shared.Test;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -18,17 +16,6 @@ using System.Threading.Tasks;
 
 namespace DNI.Test.App
 {
-    class MyDbContext : DbContextBase
-    {
-        public MyDbContext(DbContextOptions dbContextOptions)
-            : base(dbContextOptions)
-        {
-        }
-
-        public DbSet<User> Users { get; set; }
-    }
-
-
     class Program
     {
         static IConsoleHost consoleHost;
@@ -44,11 +31,11 @@ namespace DNI.Test.App
         public static void ConfigureConsoleHost(IConsoleHost consoleHost)
         {
             consoleHost
-                .ConfigureServices<Startup>(ConfigureServices)
                 .AddConfiguration(c => c
                     .AddInMemoryCollection()
                     .AddJsonFile("appsettings.json")
-                    .AddUserSecrets(typeof(Program).Assembly, false));
+                    .AddUserSecrets(typeof(Program).Assembly, false))
+                .ConfigureServices<Startup>(ConfigureServices);
         }
 
         private static void ConfigureServices(IServiceCollection services)
@@ -56,8 +43,8 @@ namespace DNI.Test.App
             services
                 .AddLogging(c => c.AddConsole())
                 .AddModules(builder => builder
-                    .AddModule<MyWebEncryptionModule>()
-                    .AddModule<MyDbModule>());
+                    .AddModule<MyDbModule>()
+                    .AddModule<MyWebEncryptionModule>());
         }
 
         private static void ConfigureWebHost(IWebHostBuilder webHostBuilder)

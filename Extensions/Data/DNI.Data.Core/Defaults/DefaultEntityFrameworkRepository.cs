@@ -80,7 +80,7 @@ namespace DNI.Data.Core.Defaults
             var keys = item.GetDictionary<KeyAttribute>();
             var existingItem = Find(keys.Select(a => a.Value).ToArray());
 
-            if(existingItem != null)
+            if (existingItem != null)
             {
                 //copy meta values to entry
                 item.Copy(existingItem, properties: itemType

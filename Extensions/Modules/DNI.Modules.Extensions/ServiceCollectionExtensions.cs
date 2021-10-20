@@ -20,7 +20,7 @@ namespace DNI.Modules.Extensions
             IModuleRunner ConfigureModuleRunner(IServiceProvider serviceProvider)
             {
                 var moduleConfiguration = serviceProvider.GetRequiredService<IModuleConfiguration>();
-                return moduleConfiguration.ConfigureRunner(serviceProvider);
+                return moduleConfiguration.ConfigureRunner(serviceProvider, services);
             }
 
             return services

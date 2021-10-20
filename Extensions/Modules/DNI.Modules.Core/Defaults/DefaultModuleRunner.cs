@@ -15,7 +15,7 @@ namespace DNI.Modules.Core.Defaults
 {
     internal class DefaultModuleRunner : ModuleBase, IModuleRunner
     {
-        private readonly IModulesServiceCollection services;
+        private IServiceCollection services;
         private readonly IServiceProvider serviceProvider;
         private readonly IModuleConfiguration moduleConfiguration;
         private ICompiledModuleConfiguration compiledModuleConfiguration;
@@ -51,10 +51,11 @@ namespace DNI.Modules.Core.Defaults
         }
 
         public DefaultModuleRunner(
+            IServiceCollection serviceCollection,
             IServiceProvider serviceProvider,
             IModuleConfiguration moduleConfiguration)
         {
-            this.services = new DefaultModulesServiceCollection();
+            this.services = new DefaultModulesServiceCollection(serviceCollection);
             this.serviceProvider = serviceProvider;
             this.moduleConfiguration = moduleConfiguration;
             disposableTypesList = new Dictionary<Guid, IEnumerable<IDisposable>>();
