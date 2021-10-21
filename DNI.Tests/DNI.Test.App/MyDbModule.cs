@@ -16,7 +16,7 @@ namespace DNI.Test.App
 {
     public class MyDbModule : ModuleBase
     {
-        private readonly IRepository<User> userRepository;
+        private readonly IRepository<Customer> userRepository;
 
         public override void ConfigureServices(IServiceCollection serviceCollection, IModuleConfiguration moduleConfiguration)
         {
@@ -25,7 +25,7 @@ namespace DNI.Test.App
 
         public MyDbModule(
             IConfiguration configuration,
-            IRepository<User> userRepository)
+            IRepository<Customer> userRepository)
         {
             this.userRepository = userRepository;
         }
@@ -45,7 +45,21 @@ namespace DNI.Test.App
 
         public override Task OnStart(CancellationToken cancellationToken)
         {
-            userRepository.Update(new User());
+            userRepository.Update(new Customer
+            {
+                Id = new Guid("8b25976a-08be-426d-b9e0-2e417b99f2c7"),
+                BusinessEmailAddress = "test",
+                DateOfBirth = new DateTime(2020, 01, 01),
+                EmailAddress = "test",
+                FirstName = "firstName",
+                LastName = "lastname",
+                MiddleName = "midle",
+                MobileNumber = "012892347234",
+                NationalInsuranceNumber = "ifjrijf",
+                TelephoneNumber = "034893894",
+                Title = "fewrj"
+            });
+            userRepository.SaveChanges();
             return base.OnStart(cancellationToken);
         }
     }

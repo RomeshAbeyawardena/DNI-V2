@@ -11,6 +11,6 @@ namespace DNI.Test.App
         {
         }
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<Customer> Customers { get; set; }
     }
 }

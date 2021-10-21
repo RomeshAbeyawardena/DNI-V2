@@ -30,6 +30,7 @@
   
   <ItemGroup>
     <ProjectReference Include="..\..\DNI.Extensions\DNI.Extensions.csproj" />
+    <ProjectReference Include="..\..\DNI.Shared\DNI.Shared.csproj" />
     <ProjectReference Include="..\..\Extensions\Data\DNI.Data.Extensions\DNI.Data.Extensions.csproj" />
     <ProjectReference Include="..\..\Extensions\Data\DNI.Data.Modules\DNI.Data.Modules.csproj" />
     <ProjectReference Include="..\..\Extensions\Encryption\DNI.Encryption.Extensions\DNI.Encryption.Extensions.csproj" />

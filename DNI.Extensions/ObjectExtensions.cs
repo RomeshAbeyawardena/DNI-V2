@@ -19,6 +19,14 @@ namespace DNI.Shared.Extensions
             Action<IDictionaryBuilder<string, object>> configureReplacements = null,
             IEnumerable<PropertyInfo> properties = null)
         {
+            void SetValue(PropertyInfo property, object oldValue, object newValue)
+            {
+                if(oldValue != newValue)
+                {
+                    property.SetValue(destination, newValue);
+                }
+            }
+
             DefaultDictionaryBuilder<string, object> dictionaryBuilder = new();
 
             configureReplacements?.Invoke(dictionaryBuilder);
@@ -36,6 +44,7 @@ namespace DNI.Shared.Extensions
             foreach (var property in properties)
             {
                 object defaultValue = null;
+                var oldValue = property.GetValue(destination);
                 var propertyValue = property.GetValue(source);
                 bool isDefault = propertyValue.IsDefault();
                 if (isDefault && !dictionaryBuilder.TryGetValue(property.Name, out defaultValue))
@@ -45,11 +54,11 @@ namespace DNI.Shared.Extensions
 
                 if (isDefault)
                 {
-                    property.SetValue(destination, defaultValue);
+                    SetValue(property, oldValue, defaultValue);
                 }
                 else
                 {
-                    property.SetValue(destination, propertyValue);
+                    SetValue(property, oldValue, propertyValue);
                 }
             }
         }

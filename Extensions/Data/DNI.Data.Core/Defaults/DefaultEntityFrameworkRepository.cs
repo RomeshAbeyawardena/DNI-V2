@@ -82,9 +82,8 @@ namespace DNI.Data.Core.Defaults
 
             if (existingItem != null)
             {
-                //copy meta values to entry
-                item.Copy(existingItem, properties: itemType
-                    .GetPropertiesWithAttribute<MetaPropertyAttribute>().Select(a => a.Key));
+                //copy all
+                item.Copy(existingItem);
             }
 
             clockProvider.UpdateValueMetaTags(existingItem, MetaAction.Update);
