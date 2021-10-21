@@ -15,7 +15,7 @@ namespace DNI.Modules.Core.Defaults
 {
     internal class DefaultModuleRunner : ModuleBase, IModuleRunner
     {
-        private IServiceCollection services;
+        private readonly IServiceCollection services;
         private readonly IServiceProvider serviceProvider;
         private readonly IModuleConfiguration moduleConfiguration;
         private ICompiledModuleConfiguration compiledModuleConfiguration;
@@ -55,7 +55,7 @@ namespace DNI.Modules.Core.Defaults
             IServiceProvider serviceProvider,
             IModuleConfiguration moduleConfiguration)
         {
-            this.services = new DefaultModulesServiceCollection(serviceCollection);
+            this.services = new DefaultModulesServiceCollection(serviceProvider, serviceCollection);
             this.serviceProvider = serviceProvider;
             this.moduleConfiguration = moduleConfiguration;
             disposableTypesList = new Dictionary<Guid, IEnumerable<IDisposable>>();
@@ -117,7 +117,7 @@ namespace DNI.Modules.Core.Defaults
             ConfigureModuleBuilder(services, new DefaultModuleConfigurationBuilder(moduleConfiguration));
             ConfigureServices(services, moduleConfiguration);
             logger.LogInformation("Module runner configured with {0} modules", moduleConfiguration.ModuleTypes.Count());
-            moduleServiceProvider = new DefaultModuleServiceProvider(serviceProvider, services.BuildServiceProvider());
+            moduleServiceProvider = services.BuildServiceProvider();
             compiledModuleConfiguration = moduleServiceProvider.GetRequiredService<ICompiledModuleConfiguration>();
             logger.LogInformation("Module runner started");
             return Task.WhenAll(compiledModuleConfiguration.Modules.ForEach(m => OnStartModule(m, cancellationToken)));

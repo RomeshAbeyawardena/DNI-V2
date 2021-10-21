@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -21,11 +22,13 @@ namespace DNI.Web.Modules
     public class WebModule : ModuleBase
     {
         private IHost host;
+        private readonly ILogger<WebModule> logger;
         private readonly IServiceCollection services;
         private readonly IWebModuleOptions options;
 
-        public WebModule(IServiceCollection services, IWebModuleOptions options)
+        public WebModule(ILogger<WebModule> logger, IServiceCollection services, IWebModuleOptions options)
         {
+            this.logger = logger;
             this.services = services;
             this.options = options;
         }

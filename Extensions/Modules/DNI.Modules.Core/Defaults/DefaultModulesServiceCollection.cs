@@ -1,6 +1,7 @@
 using DNI.Extensions;
 using DNI.Modules.Shared.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,17 +12,15 @@ namespace DNI.Modules.Core.Defaults
     {
         private readonly IServiceCollection services;
 
-        public DefaultModulesServiceCollection(IServiceCollection services = default)
+        public DefaultModulesServiceCollection(IServiceProvider serviceProvider, IServiceCollection services = default)
         {
+            var logger = serviceProvider.GetRequiredService<ILogger<IModulesServiceCollection>>();
             this.services = new ServiceCollection();
 
             if(services != null)
             {
                 services.ForEach(s => { 
-                  if(!services.Contains(s))
-                  {
                     this.services.Add(s);
-                  }
                 });
             }
         }
