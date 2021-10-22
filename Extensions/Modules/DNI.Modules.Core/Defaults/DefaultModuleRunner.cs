@@ -55,7 +55,7 @@ namespace DNI.Modules.Core.Defaults
             IServiceProvider serviceProvider,
             IModuleConfiguration moduleConfiguration)
         {
-            this.services = new DefaultModulesServiceCollection(serviceProvider, serviceCollection);
+            this.services = serviceCollection;
             this.serviceProvider = serviceProvider;
             this.moduleConfiguration = moduleConfiguration;
             disposableTypesList = new Dictionary<Guid, IEnumerable<IDisposable>>();
@@ -120,7 +120,14 @@ namespace DNI.Modules.Core.Defaults
             moduleServiceProvider = services.BuildServiceProvider();
             compiledModuleConfiguration = moduleServiceProvider.GetRequiredService<ICompiledModuleConfiguration>();
             logger.LogInformation("Module runner started");
-            return Task.WhenAll(compiledModuleConfiguration.Modules.ForEach(m => OnStartModule(m, cancellationToken)));
+
+            List<Task> taskList = new();
+            foreach(var module in compiledModuleConfiguration.Modules)
+            {
+                taskList.Add(OnStartModule(module, cancellationToken));
+            }
+
+            return Task.WhenAll(taskList);
         }
 
         public override Task OnStop(CancellationToken cancellationToken)

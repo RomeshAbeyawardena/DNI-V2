@@ -1,5 +1,6 @@
 ﻿using DNI.Extensions;
 using DNI.Modules.Shared.Abstractions;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,8 @@ namespace DNI.Modules.Core.Defaults
         {
             options = new Dictionary<Type, object>();
         }
+
+        public IEnumerable<ServiceDescriptor> ServiceDescriptors { get; set; }
 
         public IServiceProvider ServiceProvider { get; set; }
 

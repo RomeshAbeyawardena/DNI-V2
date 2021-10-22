@@ -11,8 +11,6 @@ $buildPropsFileName = "$solutionDirectory\\Directory.Build.props"
 $incrementBuildVersion = $true
 $packageInfoPath = "$solutionDirectory\\PackageInfo.xml"
 
-
-
 cd $path
 
 dotnet clean
