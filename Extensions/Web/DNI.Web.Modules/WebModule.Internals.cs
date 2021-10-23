@@ -63,9 +63,6 @@ namespace DNI.Web.Modules
         {
             applicationBuilder.UseRouting()
                     .UseEndpoints(e => e.MapControllers());
-
-            applicationBuilder
-                    .ApplicationServices = new DefaultWebServiceProvider(applicationBuilder.ApplicationServices, moduleConfiguration.ServiceProvider);            
         }
     }
 }
