@@ -32,8 +32,10 @@ namespace DNI.Core.Defaults.Hosts
         private bool hasStopBeenCalled = false;
         private readonly CancellationTokenSource cancellationTokenSource;
         private IServiceProvider ServiceProvider => Services.BuildServiceProvider();
-        private Type StartupType { get; set; }
+        
         private IDisposable disposableService;
+
+        public Type StartupType { get; private set; }
 
         private void ConfigureServices()
         {

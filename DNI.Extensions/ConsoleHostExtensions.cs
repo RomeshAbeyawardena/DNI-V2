@@ -3,19 +3,30 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Reflection;
 
 namespace DNI.Extensions
 {
     public static class ConsoleHostExtensions
     {
-        public static IConsoleHost AddDefaultConfiguration<T>(this IConsoleHost consoleHost, Action<IConfigurationBuilder> configure)
+        public static IConsoleHost AddDefaultConfiguration(this IConsoleHost consoleHost, Assembly assembly, Action<IConfigurationBuilder> configure = null)
         {
             return consoleHost.AddConfiguration(c => {
                 configure?.Invoke(c);
                 c.AddInMemoryCollection()
                 .AddJsonFile("appsettings.json")
-                .AddUserSecrets(typeof(T).Assembly, false); 
+                .AddUserSecrets(assembly, false);
             });
+        }
+
+        public static IConsoleHost AddDefaultConfiguration(this IConsoleHost consoleHost, Action<IConfigurationBuilder> configure = null)
+        {
+            return AddDefaultConfiguration(consoleHost, consoleHost.StartupType.Assembly, configure);
+        }
+
+        public static IConsoleHost AddDefaultConfiguration<T>(this IConsoleHost consoleHost, Action<IConfigurationBuilder> configure = null)
+        {
+            return AddDefaultConfiguration(consoleHost, typeof(T).Assembly, configure);
         }
 
         public static IConsoleHost AddConfiguration(this IConsoleHost consoleHost, Action<IConfigurationBuilder> configure)

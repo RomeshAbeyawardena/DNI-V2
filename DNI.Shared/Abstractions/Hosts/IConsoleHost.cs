@@ -12,7 +12,11 @@ namespace DNI.Shared.Abstractions.Hosts
         /// Gets the list of <see cref="IServiceCollection"/>
         /// </summary>
         IServiceCollection Services { get; }
-
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public Type StartupType { get; }
         /// <summary>
         /// Configures the <see cref="IServiceCollection"/> instance
         /// </summary>

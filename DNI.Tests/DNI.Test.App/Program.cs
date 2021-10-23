@@ -1,4 +1,5 @@
 ﻿using DNI.Core.Defaults.Hosts;
+using DNI.Extensions;
 using DNI.Modules.Extensions;
 using DNI.Test.Modules;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,7 +15,9 @@ namespace DNI.Test.App
         {
             Console.WriteLine("Hello World!");
             using var consoleHost = ConsoleHost
-                .Build(build => build.ConfigureServices<Startup>(ConfigureServices));
+                .Build(build => build
+                .ConfigureServices<Startup>(ConfigureServices)
+                .AddDefaultConfiguration());
 
             await consoleHost.StartAsync(args: args);
         }
