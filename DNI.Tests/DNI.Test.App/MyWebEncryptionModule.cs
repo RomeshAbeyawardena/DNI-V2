@@ -20,7 +20,9 @@ namespace DNI.Test.App
         {
             moduleConfigurationBuilder
                 .ConfigureMediatorModule(builder => builder.AddModuleAssemblies())
-                .ConfigureWebModule<Program>(builder => builder.AddModuleAssemblies())
+                .ConfigureWebModule<Program>(builder => builder
+                    .AddAssembly<MyWebEncryptionModule>()
+                        .AddModuleAssemblies())
                 .ConfigureEncryptionModule(builder => builder
                     .ImportConfiguration()
                     .ConfigureOptions(s => s.ImportConfiguration("SecurityProfiles/General")));

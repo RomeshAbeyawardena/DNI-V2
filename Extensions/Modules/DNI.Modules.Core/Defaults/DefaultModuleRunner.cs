@@ -34,7 +34,6 @@ namespace DNI.Modules.Core.Defaults
         {
             if (disposableTypesList.TryGetValue(module.UniqueId, out var disposables))
                 module.Disposables = disposables;
-
             return module.StartAsync(cancellationToken);
         }
 
@@ -119,6 +118,7 @@ namespace DNI.Modules.Core.Defaults
             logger.LogInformation("Module runner configured with {0} modules", moduleConfiguration.ModuleTypes.Count());
             moduleServiceProvider = services.BuildServiceProvider();
             compiledModuleConfiguration = moduleServiceProvider.GetRequiredService<ICompiledModuleConfiguration>();
+            moduleConfiguration.ServiceProvider = moduleServiceProvider;
             logger.LogInformation("Module runner started");
 
             List<Task> taskList = new();

@@ -13,11 +13,15 @@ namespace DNI.Shared.Extensions
         {
             var distinctServices = services.Distinct().ToArray();
 
-            services.Clear();
-
-            foreach (var service in distinctServices)
+            if(distinctServices.Count() < services.Count)
             {
-                services.Add(service);
+                services.Clear();
+
+                foreach (var service in distinctServices)
+                {
+                    services.Add(service);
+                }
+
             }
 
             return services;
