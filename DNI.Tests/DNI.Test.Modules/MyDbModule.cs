@@ -1,14 +1,10 @@
 ﻿using DNI.Data.Modules;
-using DNI.Modules.Shared.Abstractions;
 using DNI.Modules.Shared.Abstractions.Builders;
 using DNI.Modules.Shared.Base;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using DNI.Mapper.Modules.Extensions;
-using System.Threading.Tasks;
-using System.Threading;
-using DNI.Shared.Abstractions;
 using System;
 using DNI.Encryption.Modules.Extensions;
 using DNI.Encryption.Extensions;

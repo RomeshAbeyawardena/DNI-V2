@@ -2,7 +2,6 @@
 using DNI.Data.Shared.Base;
 using DNI.Extensions;
 using DNI.Shared.Abstractions;
-using DNI.Shared.Attributes;
 using DNI.Shared.Enumerations;
 using DNI.Shared.Extensions;
 using Microsoft.EntityFrameworkCore;

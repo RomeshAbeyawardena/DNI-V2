@@ -3,11 +3,7 @@ using DNI.Mediator.Shared.Base;
 using DNI.Shared.Abstractions;
 using DNI.Tests.Shared.Request;
 using DNI.Tests.Shared.Models;
-using MediatR;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 

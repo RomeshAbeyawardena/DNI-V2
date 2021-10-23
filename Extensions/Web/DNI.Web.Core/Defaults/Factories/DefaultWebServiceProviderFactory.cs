@@ -1,11 +1,7 @@
 ﻿using DNI.Web.Core.Defaults.Builders;
-using DNI.Web.Core.Defaults.Providers;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DNI.Web.Core.Defaults.Factories
 {

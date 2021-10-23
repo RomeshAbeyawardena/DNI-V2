@@ -1,7 +1,5 @@
 ﻿using DNI.Modules.Shared.Abstractions;
 using DNI.Shared.Base;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using System.Threading;
 using System.Threading.Tasks;
 
