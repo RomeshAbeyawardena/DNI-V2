@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <Packages>
   <Info>
-    <Version Major="1" Minor="1" Revision="0" Patch="12" />
+    <Version Major="1" Minor="1" Revision="0" Patch="13" />
   </Info>
   <Package name="DNI.Core">
     <Description>Base core library that contains the default implementation for numerous abstractions within the DNI.Shared package</Description>

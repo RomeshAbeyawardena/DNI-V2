@@ -38,7 +38,7 @@ namespace DNI.Encryption.Modules
 
             if (encryptionModuleOptions.ImportConfiguration)
             {
-                var configuration = serviceProvider.GetService<IConfiguration>() ?? throw new NullReferenceException($"Unable to find service {typeof(IConfiguration)}, " +
+                var configuration = serviceProvider.GetService<IConfiguration>() ?? throw new NullReferenceException($"Unable to find service: {typeof(IConfiguration)}, " +
                     $"if you are using an instance of {typeof(IConsoleHost)}, ensure you call an overload of AddDefaultConfiguration extension method to register necessary configuration");
 
                 var configurationSection = configuration.ResolvePath(encryptionModuleOptions.ImportConfigurationPath);
