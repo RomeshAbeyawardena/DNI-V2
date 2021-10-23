@@ -68,6 +68,6 @@ foreach($node in $xmlNodes)
     }
 }
 
-dotnet pack --output "$path\\packages\\$buildVersion"
+dotnet pack --output "$path\\packages\\$buildVersion" --include-symbols
 cd $path
 Remove-Item $tempPath -Recurse -Force

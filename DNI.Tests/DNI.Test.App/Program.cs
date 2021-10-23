@@ -3,6 +3,7 @@ using DNI.Extensions;
 using DNI.MigrationManager.Shared.Abstractions;
 using DNI.Modules.Extensions;
 using DNI.Shared.Abstractions.Hosts;
+using DNI.Test.Modules;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;

@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\DNI.Shared\DNI.Shared.csproj" />
+    <ProjectReference Include="..\..\Extensions\Encryption\DNI.Encryption.Shared\DNI.Encryption.Shared.csproj" />
+    <ProjectReference Include="..\..\Extensions\Mediator\DNI.Mediator.Shared\DNI.Mediator.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

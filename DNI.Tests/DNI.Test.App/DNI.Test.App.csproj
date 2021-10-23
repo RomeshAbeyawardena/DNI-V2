@@ -45,6 +45,8 @@
     <ProjectReference Include="..\..\Extensions\Modules\DNI.Modules.Extensions\DNI.Modules.Extensions.csproj" />
     <ProjectReference Include="..\..\Extensions\Web\DNI.Web.Extensions\DNI.Web.Extensions.csproj" />
     <ProjectReference Include="..\..\Extensions\Web\DNI.Web.Modules\DNI.Web.Modules.csproj" />
+    <ProjectReference Include="..\DNI.Test.Modules\DNI.Test.Modules.csproj" />
+    <ProjectReference Include="..\DNI.Tests.Shared\DNI.Tests.Shared.csproj" />
   </ItemGroup>
 
 </Project>

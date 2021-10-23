@@ -1,10 +1,10 @@
 ﻿using DNI.Data.Shared.Base;
-using DNI.Shared.Test;
+using DNI.Tests.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace DNI.Test.App
+namespace DNI.Test.Core
 {
-    class MyDbContext : DbContextBase
+    public class MyDbContext : DbContextBase
     {
         public MyDbContext(DbContextOptions dbContextOptions)
             : base(dbContextOptions)

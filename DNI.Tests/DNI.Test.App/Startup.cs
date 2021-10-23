@@ -19,11 +19,6 @@ namespace DNI.Test.App
             this.logger = logger;
         }
 
-        public static void ConfigureServices(IServiceCollection services)
-        {
-
-        }
-
         public override void Dispose(bool disposing)
         {
             logger.LogInformation("Dispose called");

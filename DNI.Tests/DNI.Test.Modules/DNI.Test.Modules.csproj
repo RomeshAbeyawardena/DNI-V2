@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>11c1371a-9d04-440a-a969-c1d5cdb1e59c</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\DNI.Shared\DNI.Shared.csproj" />
+    <ProjectReference Include="..\..\Extensions\Data\DNI.Data.Modules\DNI.Data.Modules.csproj" />
+    <ProjectReference Include="..\..\Extensions\Encryption\DNI.Encryption.Extensions\DNI.Encryption.Extensions.csproj" />
+    <ProjectReference Include="..\..\Extensions\Encryption\DNI.Encryption.Modules\DNI.Encryption.Modules.csproj" />
+    <ProjectReference Include="..\..\Extensions\Mapper\DNI.Mapper.Modules\DNI.Mapper.Modules.csproj" />
+    <ProjectReference Include="..\..\Extensions\Mediator\DNI.Mediator.Modules\DNI.Mediator.Modules.csproj" />
+    <ProjectReference Include="..\..\Extensions\Modules\DNI.Modules.Shared\DNI.Modules.Shared.csproj" />
+    <ProjectReference Include="..\..\Extensions\Web\DNI.Web.Modules\DNI.Web.Modules.csproj" />
+    <ProjectReference Include="..\DNI.Test.Core\DNI.Test.Core.csproj" />
+    <ProjectReference Include="..\DNI.Tests.Shared\DNI.Tests.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

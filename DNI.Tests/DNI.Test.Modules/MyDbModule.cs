@@ -9,12 +9,12 @@ using DNI.Mapper.Modules.Extensions;
 using System.Threading.Tasks;
 using System.Threading;
 using DNI.Shared.Abstractions;
-using DNI.Shared.Test;
 using System;
 using DNI.Encryption.Modules.Extensions;
 using DNI.Encryption.Extensions;
+using DNI.Test.Core;
 
-namespace DNI.Test.App
+namespace DNI.Test.Modules
 {
     public class MyDbModule : ModuleBase
     {
