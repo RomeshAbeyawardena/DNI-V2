@@ -11,6 +11,8 @@ using System.Threading;
 using DNI.Shared.Abstractions;
 using DNI.Shared.Test;
 using System;
+using DNI.Encryption.Modules.Extensions;
+using DNI.Encryption.Extensions;
 
 namespace DNI.Test.App
 {
@@ -18,8 +20,13 @@ namespace DNI.Test.App
     {
         public override void ConfigureModuleBuilder(IServiceCollection services, IModuleConfigurationBuilder moduleConfigurationBuilder)
         {
-            moduleConfigurationBuilder.ConfigureDbContextModule(builder => builder.AddDbContext<MyDbContext>(ConfigureDbBuilder, ServiceLifetime.Scoped))
-                .ConfigureMapperModule(c => c.AddModuleAssemblies());
+            moduleConfigurationBuilder
+                .ConfigureDbContextModule(builder => builder
+                    .AddDbContext<MyDbContext>(ConfigureDbBuilder, ServiceLifetime.Scoped))
+                .ConfigureMapperModule(c => c.AddModuleAssemblies())
+                .ConfigureEncryptionModule(builder => builder
+                    .ImportConfiguration()
+                    .ConfigureOptions(s => s.ImportConfiguration("SecurityProfiles/General")));
         }
 
         private void ConfigureDbBuilder(IServiceProvider serviceProvider, DbContextOptionsBuilder builder)

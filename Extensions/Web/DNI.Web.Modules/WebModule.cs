@@ -8,6 +8,7 @@ using DNI.Web.Core.Defaults.Factories;
 using DNI.Web.Core.Defaults.Providers;
 using DNI.Web.Shared.Abstractions;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -49,6 +50,9 @@ namespace DNI.Web.Modules
         public override Task OnStart(CancellationToken cancellationToken)
         {
             host = Host.CreateDefaultBuilder()
+                .ConfigureAppConfiguration(c => c
+                    .AddJsonFile("appsettings.json")
+                    .AddUserSecrets(options.HostAssembly))
                 .ConfigureServices(ConfigureServices)
                 .ConfigureWebHostDefaults(ConfigureWebHost)
                 .Build();
