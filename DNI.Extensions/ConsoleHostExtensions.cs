@@ -8,6 +8,14 @@ namespace DNI.Extensions
 {
     public static class ConsoleHostExtensions
     {
+        public static IConsoleHost AddDefaultConfiguration<T>(this IConsoleHost consoleHost, Action<IConfigurationBuilder> configure)
+        {
+            return consoleHost.AddConfiguration(c => c
+                    .AddInMemoryCollection()
+                    .AddJsonFile("appsettings.json")
+                    .AddUserSecrets(typeof(T).Assembly, false));
+        }
+
         public static IConsoleHost AddConfiguration(this IConsoleHost consoleHost, Action<IConfigurationBuilder> configure)
         {
             var configurationBuilder = new ConfigurationBuilder();

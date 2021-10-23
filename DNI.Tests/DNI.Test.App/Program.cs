@@ -1,42 +1,25 @@
 ﻿using DNI.Core.Defaults.Hosts;
-using DNI.Extensions;
-using DNI.MigrationManager.Shared.Abstractions;
 using DNI.Modules.Extensions;
-using DNI.Shared.Abstractions.Hosts;
 using DNI.Test.Modules;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Data;
-using System.Reflection;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace DNI.Test.App
 {
-    class Program
+    public static class Program
     {
-        static IConsoleHost consoleHost;
         static async Task Main(string[] args)
         {
             Console.WriteLine("Hello World!");
-            Console.CancelKeyPress += Console_CancelKeyPress;
-            consoleHost = ConsoleHost.Build(ConfigureConsoleHost);
+            using var consoleHost = ConsoleHost
+                .Build(build => build.ConfigureServices<Startup>(ConfigureServices));
 
-            await consoleHost.StartAsync();
-        }
-
-        public static void ConfigureConsoleHost(IConsoleHost consoleHost)
-        {
-            consoleHost
-                .AddConfiguration(c => c
-                    .AddInMemoryCollection()
-                    .AddJsonFile("appsettings.json")
-                    .AddUserSecrets(typeof(Program).Assembly, false))
-                .ConfigureServices<Startup>(ConfigureServices);
+            await consoleHost.StartAsync(args: args);
         }
 
         private static void ConfigureServices(IServiceCollection services)
@@ -45,42 +28,7 @@ namespace DNI.Test.App
                 .AddLogging(c => c.AddConsole())
                 .AddModules(builder => builder
                     .AddModule<MyDbModule>()
-                    .AddModule<MyWebModule>())
-                .OutputServices();
-        }
-
-        private static void ConfigureWebHost(IWebHostBuilder webHostBuilder)
-        {
-            webHostBuilder.Configure(ConfigureApp);
-        }
-
-        private static void ConfigureApp(IApplicationBuilder applicationBuilder)
-        {
-            applicationBuilder
-                .UseRouting()
-                .UseEndpoints(c => c.MapControllers());
-        }
-
-        private static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
-        {
-            e.Cancel = true;
-            //consoleHost.Stop();
-            consoleHost.Dispose();
-        }
-
-        private static IDbConnection ConfigureDbConnection(IServiceProvider serviceProvider)
-        {
-            var configuration = serviceProvider.GetRequiredService<IConfiguration>();
-            return serviceProvider.GetRequiredService<IDbConnectionFactory>()
-                .GetDbConnection(configuration.GetConnectionString("default"));
-        }
-
-        private static IMigrationOptions DefaultMigration(IServiceProvider arg1, IMigrationConfigurator migrationConfigurator)
-        {
-            return migrationConfigurator
-                .Configure(b => b.AddAssembly(Assembly.GetExecutingAssembly())
-                .ConfigureDbConnectionFactory(ConfigureDbConnection))
-                .Build();
+                    .AddModule<MyWebModule>());
         }
     }
 }
