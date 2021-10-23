@@ -8,6 +8,7 @@ using DNI.Modules.Extensions;
 using DNI.Modules.Shared.Abstractions;
 using DNI.Modules.Shared.Base;
 using DNI.Shared.Abstractions;
+using DNI.Shared.Abstractions.Hosts;
 using DNI.Shared.Attributes;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,7 +38,8 @@ namespace DNI.Encryption.Modules
 
             if (encryptionModuleOptions.ImportConfiguration)
             {
-                var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+                var configuration = serviceProvider.GetService<IConfiguration>() ?? throw new NullReferenceException($"Unable to find service {typeof(IConfiguration)}, " +
+                    $"if you are using an instance of {typeof(IConsoleHost)}, ensure you call an overload of AddDefaultConfiguration extension method to register necessary configuration");
 
                 var configurationSection = configuration.ResolvePath(encryptionModuleOptions.ImportConfigurationPath);
 
