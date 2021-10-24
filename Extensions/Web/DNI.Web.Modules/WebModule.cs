@@ -19,22 +19,18 @@ namespace DNI.Web.Modules
     {
         private IHost host;
         private readonly IModuleConfiguration moduleConfiguration;
-        private IWebModuleOptions options;
+
+        private IWebModuleOptions Options => moduleConfiguration.GetOptions<IWebModuleOptions>(ModuleDescriptor);
 
         public WebModule(
-            IModuleConfiguration moduleConfiguration, 
-            IWebModuleOptions options)
+            IModuleConfiguration moduleConfiguration)
         {
             this.moduleConfiguration = moduleConfiguration;
-            this.options = options;
         }
 
         public override void ConfigureServices(IServiceCollection services, IModuleConfiguration moduleConfiguration)
         {
             moduleConfiguration.ServiceDescriptors = services.ToArray();
-
-            services
-                .AddSingleton(moduleConfiguration.GetOptions<IWebModuleOptions>(ModuleDescriptor));
         }
 
         public override Task OnStart(CancellationToken cancellationToken)
@@ -42,7 +38,7 @@ namespace DNI.Web.Modules
             host = Host.CreateDefaultBuilder()
                 .ConfigureAppConfiguration(c => c
                     .AddJsonFile("appsettings.json")
-                    .AddUserSecrets(options.HostAssembly))
+                    .AddUserSecrets(Options.HostAssembly))
                 .ConfigureServices(ConfigureServices)
                 .ConfigureWebHostDefaults(ConfigureWebHost)
                 .Build();

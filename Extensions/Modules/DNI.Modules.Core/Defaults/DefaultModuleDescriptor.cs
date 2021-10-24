@@ -52,7 +52,9 @@ namespace DNI.Modules.Core.Defaults
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Usage, Id, Type);
+            var hashCode = HashCode.Combine(Usage, Id, Type);
+            Console.WriteLine("Hashcode of {0}: {1}", this, hashCode);
+            return hashCode;
         }
 
         public override string ToString()

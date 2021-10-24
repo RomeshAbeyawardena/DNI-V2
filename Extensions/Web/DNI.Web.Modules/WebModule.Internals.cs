@@ -22,12 +22,11 @@ namespace DNI.Web.Modules
                 .AddApiVersioning()
                 .AddControllers();
 
-            options = moduleConfiguration.GetOptions<IWebModuleOptions>(ModuleDescriptor);
-            IEnumerable<Assembly> assemblies = options.ToArray();
+            IEnumerable<Assembly> assemblies = Options.ToArray();
 
-            options.ConfigureMvcOptions?.Invoke(mvcBuilder);
+            Options.ConfigureMvcOptions?.Invoke(mvcBuilder);
 
-            if (options.UseModuleAssemblies)
+            if (Options.UseModuleAssemblies)
             {
                 assemblies = assemblies.AppendMany(moduleConfiguration.GetModuleAssemblies());
             }
@@ -44,8 +43,8 @@ namespace DNI.Web.Modules
         {
             webHostBuilder
                 .Configure(Configure);
-            
-            options.ConfigureWebHost?.Invoke(webHostBuilder);
+
+            Options.ConfigureWebHost?.Invoke(webHostBuilder);
 
         }
 
