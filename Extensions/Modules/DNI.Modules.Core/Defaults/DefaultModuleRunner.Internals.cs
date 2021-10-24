@@ -31,7 +31,7 @@ namespace DNI.Modules.Core.Defaults
             newCount = 0;
             var hasChanged = false;
 
-            foreach (var moduleType in moduleConfiguration.ModuleDescriptors)
+            foreach (var moduleType in moduleConfiguration.ModuleDescriptors.Where(a => a.Enabled))
             {
                 if (configuredModules.Any(a => a.ModuleDescriptor == moduleType))
                 {

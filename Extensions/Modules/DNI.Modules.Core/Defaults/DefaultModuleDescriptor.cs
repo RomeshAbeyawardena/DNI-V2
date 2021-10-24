@@ -5,26 +5,14 @@ using System;
 
 namespace DNI.Modules.Core.Defaults
 {
-    public static class ModuleDescriptor
-    {
-        public const string DefaultUsage = "default";
-        public static IModuleDescriptor Create<T>(string usage, Guid? identifier = null)
-        {
-            return Create(typeof(T), usage, identifier);
-        }
-
-        public static IModuleDescriptor Create(Type type, string usage, Guid? identifier = null)
-        {
-            return new DefaultModuleDescriptor(type, usage, identifier);
-        }
-    }
-
     public class DefaultModuleDescriptor : IModuleDescriptor
     {
-        public DefaultModuleDescriptor(Type type, string usage, Guid? identifier = null)
+        public DefaultModuleDescriptor(Type type, string usage, Guid? identifier = null, 
+            bool enabled = true)
         {
             Type = type;
             Usage = usage;
+            Enabled = enabled;
 
             if (identifier.HasValue)
             {
@@ -38,6 +26,8 @@ namespace DNI.Modules.Core.Defaults
             else
                 Id = Guid.NewGuid();
         }
+
+        public bool Enabled { get; }
 
         public string Usage { get; }
 
