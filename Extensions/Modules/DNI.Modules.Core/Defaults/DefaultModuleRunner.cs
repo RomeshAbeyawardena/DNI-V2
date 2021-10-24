@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace DNI.Modules.Core.Defaults
 {
-    internal class DefaultModuleRunner : ModuleBase, IModuleRunner
+    internal partial class DefaultModuleRunner : ModuleBase, IModuleRunner
     {
         private readonly IServiceCollection services;
         private readonly IServiceProvider serviceProvider;
@@ -25,30 +25,6 @@ namespace DNI.Modules.Core.Defaults
         private readonly List<IModule> configuredModules;
         private readonly ILogger<IModuleRunner> logger;
         
-        private ICompiledModuleConfiguration ConfigureModuleConfiguration(IServiceProvider serviceProvider)
-        {
-            return moduleConfiguration.Compile(serviceProvider, configuredModules, logger);
-        }
-
-        private Task OnStartModule(IModule module, CancellationToken cancellationToken)
-        {
-            if (disposableTypesList.TryGetValue(module.UniqueId, out var disposables))
-                module.Disposables = disposables;
-            return module.StartAsync(cancellationToken);
-        }
-
-        private void ConfigureModules(IModuleConfiguration moduleConfiguration)
-        {
-            foreach (var module in configuredModules)
-            {
-                module.ConfigureServices(services, moduleConfiguration);
-                if (disposableTypesList.TryGetValue(module.UniqueId, out var disposables))
-                {
-                    module.Disposables = disposables;
-                }
-            }
-        }
-
         public DefaultModuleRunner(
             IServiceCollection serviceCollection,
             IServiceProvider serviceProvider,
@@ -67,35 +43,11 @@ namespace DNI.Modules.Core.Defaults
         {
             logger.LogInformation("Configuring module builder...");
 
-            var hasChanged = false;
+            var hasChanges = ConfigureModulesBuilder(services, moduleConfigurationBuilder, out var newCount);
 
-            foreach (var moduleType in moduleConfiguration.ModuleDescriptors)
+            if (hasChanges)
             {
-                if (configuredModules.Any(a => a.ModuleDescriptor == moduleType))
-                {
-                    continue;
-                }
-
-                logger.LogInformation("Configuring module {0}...", moduleType);
-
-                var module = serviceProvider.Activate<IModule>(moduleType.Type, out var disposables);
-                module.ModuleDescriptor = moduleType;
-                module.ConfigureModuleBuilder(services, moduleConfigurationBuilder);
-                
-                if (moduleConfiguration.ApplyConfiguration(moduleConfigurationBuilder))
-                {
-                    hasChanged = true;
-                }
-
-                logger.LogInformation("{0} assigned Id: {1}", moduleType.Type, module.UniqueId);
-                
-                disposableTypesList.Add(module.UniqueId, disposables);
-                configuredModules.Add(module);
-            }
-
-            if (hasChanged)
-            {
-                logger.LogInformation("Changes to module configuration have been made by other modules, re-running module builder configuration");
+                logger.LogInformation("{0} changes have been detected, re-running module builder configuration", newCount);
                 ConfigureModuleBuilder(services, moduleConfigurationBuilder);
             }
 
