@@ -18,16 +18,13 @@ namespace DNI.Web.Modules
     public partial class WebModule : ModuleBase
     {
         private IHost host;
-        private readonly ILogger<IModule> logger;
         private readonly IModuleConfiguration moduleConfiguration;
         private IWebModuleOptions options;
 
         public WebModule(
-            ILogger<IModule> logger, 
             IModuleConfiguration moduleConfiguration, 
             IWebModuleOptions options)
         {
-            this.logger = logger;
             this.moduleConfiguration = moduleConfiguration;
             this.options = options;
         }

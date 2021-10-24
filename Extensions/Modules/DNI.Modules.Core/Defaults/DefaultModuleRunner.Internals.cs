@@ -30,8 +30,8 @@ namespace DNI.Modules.Core.Defaults
         {
             newCount = 0;
             var hasChanged = false;
-
-            foreach (var moduleDescriptor in moduleConfiguration.ModuleDescriptors.Where(a => a.Enabled))
+            var enabledModuleDescriptors = moduleConfiguration.ModuleDescriptors.Where(a => a.Enabled);
+            foreach (var moduleDescriptor in enabledModuleDescriptors)
             {
                 if (configuredModules.Any(a => a.ModuleDescriptor == moduleDescriptor))
                 {
