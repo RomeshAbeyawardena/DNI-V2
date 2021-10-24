@@ -1,10 +1,10 @@
 ﻿using DNI.Extensions;
 using DNI.Modules.Shared.Abstractions;
+using DNI.Modules.Shared.Abstractions.Collections;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace DNI.Modules.Core.Defaults
@@ -34,9 +34,8 @@ namespace DNI.Modules.Core.Defaults
             var activatedModuleList = new List<IModule>();
             foreach (var module in configuredModules)
             {
-                stringBuilder.AppendLine($"   [x]   \t{module.UniqueId}\t{module.ModuleType.Name}");
+                stringBuilder.AppendLine($"   [x]   \t{module.UniqueId}\t{module.ModuleType.Name} ({module.ModuleDescriptor.Id})");
                 
-
                 if (ModuleDescriptors.Contains(module.ModuleDescriptor))
                 {
                     var activatedModule = serviceProvider.Activate<IModule>(module.GetType(), out var disposables);

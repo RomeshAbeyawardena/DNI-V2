@@ -1,11 +1,7 @@
-﻿using DNI.Shared.Base;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DNI.Modules.Shared.Abstractions
+namespace DNI.Modules.Shared.Abstractions.Collections
 {
     public interface IModuleDescriptorCollection : IList<IModuleDescriptor>, IEnumerable<IModuleDescriptor>
     {

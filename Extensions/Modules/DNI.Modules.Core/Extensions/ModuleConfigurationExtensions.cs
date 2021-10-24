@@ -1,6 +1,5 @@
 ﻿using DNI.Modules.Shared.Abstractions;
 using DNI.Modules.Shared.Abstractions.Builders;
-using System.Linq;
 
 namespace DNI.Modules.Core.Extensions
 {

@@ -1,5 +1,4 @@
-﻿using DNI.Encryption.Shared.Abstractions;
-using DNI.Mediator.Extensions;
+﻿using DNI.Mediator.Extensions;
 using DNI.Tests.Shared.Models;
 using DNI.Tests.Shared.Request;
 using DNI.Web.Shared.Base;

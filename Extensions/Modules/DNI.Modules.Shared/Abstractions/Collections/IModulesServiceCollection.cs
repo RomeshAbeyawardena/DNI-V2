@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace DNI.Modules.Shared.Abstractions
+namespace DNI.Modules.Shared.Abstractions.Collections
 {
     public interface IModulesServiceCollection : IServiceCollection
     {
