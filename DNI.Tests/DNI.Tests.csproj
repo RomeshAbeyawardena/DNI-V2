@@ -8,8 +8,17 @@
 
   <ItemGroup>
     <Compile Remove="DNI.Test.App\**" />
+    <Compile Remove="DNI.Test.Core\**" />
+    <Compile Remove="DNI.Test.Modules\**" />
+    <Compile Remove="DNI.Tests.Shared\**" />
     <EmbeddedResource Remove="DNI.Test.App\**" />
+    <EmbeddedResource Remove="DNI.Test.Core\**" />
+    <EmbeddedResource Remove="DNI.Test.Modules\**" />
+    <EmbeddedResource Remove="DNI.Tests.Shared\**" />
     <None Remove="DNI.Test.App\**" />
+    <None Remove="DNI.Test.Core\**" />
+    <None Remove="DNI.Test.Modules\**" />
+    <None Remove="DNI.Tests.Shared\**" />
   </ItemGroup>
 
   <ItemGroup>
