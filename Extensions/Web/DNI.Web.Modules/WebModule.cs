@@ -37,7 +37,7 @@ namespace DNI.Web.Modules
             moduleConfiguration.ServiceDescriptors = services.ToArray();
 
             services
-                .AddSingleton(moduleConfiguration.GetOptions<IWebModuleOptions>());
+                .AddSingleton(moduleConfiguration.GetOptions<IWebModuleOptions>(ModuleDescriptor));
         }
 
         public override Task OnStart(CancellationToken cancellationToken)

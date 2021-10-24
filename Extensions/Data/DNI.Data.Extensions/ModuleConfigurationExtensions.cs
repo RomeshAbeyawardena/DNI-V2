@@ -10,13 +10,14 @@ namespace DNI.Data.Extensions
     {
         public static IModuleConfiguration ConfigureDbContextModule(
             this IModuleConfiguration moduleConfiguration,
+            IModuleDescriptor moduleDescriptor,
             Action<IDbContextModuleOptionsBuilder> buildAction)
         {
             var defaultDbContextModuleOptionsBuilder = new DefaultDbContextModuleOptionsBuilder();
             buildAction(defaultDbContextModuleOptionsBuilder);
 
             var builtOptions = defaultDbContextModuleOptionsBuilder.Build();
-            moduleConfiguration.ConfigureOptions(builtOptions);
+            moduleConfiguration.ConfigureOptions(moduleDescriptor, builtOptions);
             return moduleConfiguration;
         }
 

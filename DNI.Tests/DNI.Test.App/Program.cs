@@ -28,7 +28,8 @@ namespace DNI.Test.App
                 .AddLogging(c => c.AddConsole())
                 .AddModules(builder => builder
                     .AddModule<MyDbModule>()
-                    .AddModule<MyWebModule>());
+                    .AddModule<MyWebModule>()
+                    .AddModule<MyWebModule2>());
         }
     }
 }

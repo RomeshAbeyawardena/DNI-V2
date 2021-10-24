@@ -17,7 +17,8 @@ namespace DNI.Data.Modules
         {
             services.AddRequiredServices();
 
-            foreach (var moduleOptionDbContext in moduleConfiguration.GetOptions<IDbContextModuleOptions>().DbContextTypeOptions)
+            foreach (var moduleOptionDbContext in moduleConfiguration
+                .GetOptions<IDbContextModuleOptions>(ModuleDescriptor).DbContextTypeOptions)
             {
                 if (moduleOptionDbContext.DbContextOptionsBuilder != null)
                 {

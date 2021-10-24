@@ -8,11 +8,11 @@ namespace DNI.Mapper.Extensions
 {
     public static class ModuleConfigurationExtensions
     {
-        public static IModuleConfiguration ConfigureMapperModule(this IModuleConfiguration moduleConfiguration, Action<IMapperOptionsBuilder> configure)
+        public static IModuleConfiguration ConfigureMapperModule(this IModuleConfiguration moduleConfiguration, IModuleDescriptor moduleDescriptor, Action<IMapperOptionsBuilder> configure)
         {
             var encryptionOptionsBuilder = new DefaultMapperOptionsBuilder();
             configure(encryptionOptionsBuilder);
-            moduleConfiguration.ConfigureOptions(encryptionOptionsBuilder.Build());
+            moduleConfiguration.ConfigureOptions(moduleDescriptor, encryptionOptionsBuilder.Build());
             return moduleConfiguration;
         }
     }

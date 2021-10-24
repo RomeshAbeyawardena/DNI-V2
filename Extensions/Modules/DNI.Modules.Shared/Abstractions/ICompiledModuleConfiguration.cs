@@ -5,7 +5,7 @@ namespace DNI.Modules.Shared.Abstractions
 {
     public interface ICompiledModuleConfiguration
     {
-        IDictionary<Type, object> Options { get; }
+        IDictionary<IModuleDescriptor, object> Options { get; }
         IEnumerable<IModule> Modules { get; }
     }
 }

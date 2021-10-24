@@ -6,12 +6,12 @@ namespace DNI.Modules.Core.Defaults
 {
     internal class DefaultCompiledModuleConfiguration : ICompiledModuleConfiguration
     {
-        public DefaultCompiledModuleConfiguration(IDictionary<Type, object> options)
+        public DefaultCompiledModuleConfiguration(IDictionary<IModuleDescriptor, object> options)
         {
             Options = options;
         }
 
-        public IDictionary<Type, object> Options { get; }
+        public IDictionary<IModuleDescriptor, object> Options { get; }
         public IEnumerable<IModule> Modules { get; set; }
     }
 }

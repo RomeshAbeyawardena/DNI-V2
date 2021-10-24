@@ -11,11 +11,12 @@ namespace DNI.Mediator.Extensions
     {
         public static IModuleConfiguration ConfigureMediatorModule(
             this IModuleConfiguration moduleConfiguration,
+            IModuleDescriptor moduleDescriptor,
             Action<IMediatorModuleOptionsBuilder> buildAction)
         {
             IMediatorModuleOptionsBuilder defaultMediatorModuleOptionsBuilder = new DefaultMediatorModuleOptionsBuilder();
             buildAction?.Invoke(defaultMediatorModuleOptionsBuilder);
-            moduleConfiguration.ConfigureOptions(defaultMediatorModuleOptionsBuilder.Build());
+            moduleConfiguration.ConfigureOptions(moduleDescriptor, defaultMediatorModuleOptionsBuilder.Build());
 
             return moduleConfiguration;
         }

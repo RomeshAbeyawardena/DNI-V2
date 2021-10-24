@@ -22,7 +22,7 @@ namespace DNI.Web.Modules
                 .AddApiVersioning()
                 .AddControllers();
 
-            options = moduleConfiguration.GetOptions<IWebModuleOptions>();
+            options = moduleConfiguration.GetOptions<IWebModuleOptions>(ModuleDescriptor);
             IEnumerable<Assembly> assemblies = options.ToArray();
 
             options.ConfigureMvcOptions?.Invoke(mvcBuilder);

@@ -10,8 +10,8 @@ namespace DNI.Mediator.Modules.Extensions
     {
         public static IModuleConfigurationBuilder ConfigureMigrationModule(this IModuleConfigurationBuilder builder, Action<IMigrationManagerModuleConfiguration> configure)
         {
-            return builder.AddModule<MigrationManagerModule>(configuration => configuration
-                .ConfigureMigrationManagerModuleConfiguration(configure));
+            return builder.AddModule<MigrationManagerModule>((moduleDescriptor, configuration) => configuration
+                .ConfigureMigrationManagerModuleConfiguration(moduleDescriptor, configure));
         }
     }
 }

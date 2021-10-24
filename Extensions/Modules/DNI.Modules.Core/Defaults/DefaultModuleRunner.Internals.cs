@@ -31,17 +31,17 @@ namespace DNI.Modules.Core.Defaults
             newCount = 0;
             var hasChanged = false;
 
-            foreach (var moduleType in moduleConfiguration.ModuleDescriptors.Where(a => a.Enabled))
+            foreach (var moduleDescriptor in moduleConfiguration.ModuleDescriptors.Where(a => a.Enabled))
             {
-                if (configuredModules.Any(a => a.ModuleDescriptor == moduleType))
+                if (configuredModules.Any(a => a.ModuleDescriptor == moduleDescriptor))
                 {
                     continue;
                 }
 
-                logger.LogInformation("Configuring module {0} ({1})...", moduleType.Type, moduleType.Id);
+                logger.LogInformation("Configuring module {0} ({1})...", moduleDescriptor.Type, moduleDescriptor.Id);
 
-                var module = serviceProvider.Activate<IModule>(moduleType.Type, out var disposables);
-                module.ModuleDescriptor = moduleType;
+                var module = serviceProvider.Activate<IModule>(moduleDescriptor.Type, out var disposables);
+                module.ModuleDescriptor = moduleDescriptor;
                 module.ConfigureModuleBuilder(services, moduleConfigurationBuilder);
 
                 if (moduleConfiguration.ApplyConfiguration(moduleConfigurationBuilder, out newCount))
@@ -49,7 +49,7 @@ namespace DNI.Modules.Core.Defaults
                     hasChanged = true;
                 }
 
-                logger.LogInformation("{0} ({1}) assigned Id: {2}", moduleType.Type, moduleType.Id, module.UniqueId);
+                logger.LogInformation("{0} ({1}) assigned Id: {2}", moduleDescriptor.Type, moduleDescriptor.Id, module.UniqueId);
 
                 disposableTypesList.Add(module.UniqueId, disposables);
                 configuredModules.Add(module);

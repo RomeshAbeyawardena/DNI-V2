@@ -57,7 +57,7 @@ namespace DNI.Encryption.Modules
         public override void ConfigureServices(IServiceCollection services, IModuleConfiguration moduleConfiguration)
         {
             services.AddEncryptionServices();
-            var encryptionModuleOptions = moduleConfiguration.GetOptions<IEncryptionModuleOptions>();
+            var encryptionModuleOptions = moduleConfiguration.GetOptions<IEncryptionModuleOptions>(ModuleDescriptor);
 
             services.AddSingleton(encryptionModuleOptions);
 

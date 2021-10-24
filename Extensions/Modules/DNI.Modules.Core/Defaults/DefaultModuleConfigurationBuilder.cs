@@ -27,10 +27,10 @@ namespace DNI.Modules.Core.Defaults
 
         }
 
-        public IModuleConfigurationBuilder AddModule(IModuleDescriptor moduleType, Action<IModuleConfiguration> configure = null)
+        public IModuleConfigurationBuilder AddModule(IModuleDescriptor moduleType, Action<IModuleDescriptor, IModuleConfiguration> configure = null)
         {
             moduleTypes.Add(moduleType);
-            configure?.Invoke(defaultModuleConfiguration);
+            configure?.Invoke(moduleType, defaultModuleConfiguration);
             return this;
         }
 

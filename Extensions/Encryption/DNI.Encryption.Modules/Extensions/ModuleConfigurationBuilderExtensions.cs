@@ -12,7 +12,7 @@ namespace DNI.Encryption.Modules.Extensions
             Action<IEncryptionOptionsBuilder> configure)
         {
             return moduleConfigurationBuilder
-                .AddModule<EncryptionModule>(configuration => configuration.ConfigureEncryptionModule(configure));
+                .AddModule<EncryptionModule>((moduleDescriptor, configuration) => configuration.ConfigureEncryptionModule(moduleDescriptor, configure));
         }
     }
 }

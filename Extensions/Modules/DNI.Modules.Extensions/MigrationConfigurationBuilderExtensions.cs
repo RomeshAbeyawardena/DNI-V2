@@ -7,9 +7,10 @@ namespace DNI.Modules.Extensions
 {
     public static class MigrationConfigurationBuilderExtensions
     {
-        public static IModuleConfigurationBuilder AddModule<T>(this IModuleConfigurationBuilder builder, Action<IModuleConfiguration> configure = null)
+        public static IModuleConfigurationBuilder AddModule<T>(this IModuleConfigurationBuilder builder, Action<IModuleDescriptor, IModuleConfiguration> configure = null)
         {
-            return builder.AddModule(ModuleDescriptor.Create<T>(ModuleDescriptor.DefaultUsage), configure);
+            var moduleDescriptor = ModuleDescriptor.Create<T>(ModuleDescriptor.DefaultUsage);
+            return builder.AddModule(moduleDescriptor, configure);
         }
     }
 }

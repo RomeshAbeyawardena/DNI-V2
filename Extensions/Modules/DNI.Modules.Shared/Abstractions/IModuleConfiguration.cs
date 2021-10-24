@@ -10,7 +10,7 @@ namespace DNI.Modules.Shared.Abstractions
     {
         IEnumerable<ServiceDescriptor> ServiceDescriptors { get; set; }
         IServiceProvider ServiceProvider { get; set; }
-        IDictionary<Type, object> Options { get; }
+        IDictionary<IModuleDescriptor, object> Options { get; }
         IModuleDescriptorCollection ModuleDescriptors { get; set; }
         ICompiledModuleConfiguration Compile(IServiceProvider serviceProvider, IEnumerable<IModule> configuredModules, ILogger logger);
     }

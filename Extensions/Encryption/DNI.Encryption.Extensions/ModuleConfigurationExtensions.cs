@@ -8,11 +8,11 @@ namespace DNI.Encryption.Extensions
 {
     public static class ModuleConfigurationExtensions
     {
-        public static IModuleConfiguration ConfigureEncryptionModule(this IModuleConfiguration moduleConfiguration, Action<IEncryptionOptionsBuilder> configure)
+        public static IModuleConfiguration ConfigureEncryptionModule(this IModuleConfiguration moduleConfiguration, IModuleDescriptor moduleDescriptor, Action<IEncryptionOptionsBuilder> configure)
         {
             var encryptionOptionsBuilder = new DefaultEncryptionOptionsBuilder();
             configure(encryptionOptionsBuilder);
-            moduleConfiguration.ConfigureOptions(encryptionOptionsBuilder.Build());
+            moduleConfiguration.ConfigureOptions(moduleDescriptor, encryptionOptionsBuilder.Build());
             return moduleConfiguration;
         }
     }

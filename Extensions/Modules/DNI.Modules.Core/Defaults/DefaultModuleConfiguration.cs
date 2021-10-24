@@ -11,11 +11,11 @@ namespace DNI.Modules.Core.Defaults
 {
     internal class DefaultModuleConfiguration : IModuleConfiguration
     {
-        private readonly Dictionary<Type, object> options;
+        private readonly Dictionary<IModuleDescriptor, object> options;
 
         public DefaultModuleConfiguration()
         {
-            options = new Dictionary<Type, object>();
+            options = new Dictionary<IModuleDescriptor, object>();
         }
 
         public IEnumerable<ServiceDescriptor> ServiceDescriptors { get; set; }
@@ -24,7 +24,7 @@ namespace DNI.Modules.Core.Defaults
 
         public IModuleDescriptorCollection ModuleDescriptors { get; set; }
 
-        public IDictionary<Type, object> Options => options;
+        public IDictionary<IModuleDescriptor, object> Options => options;
 
         public ICompiledModuleConfiguration Compile(IServiceProvider serviceProvider, IEnumerable<IModule> configuredModules, ILogger logger)
         {

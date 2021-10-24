@@ -11,9 +11,9 @@ namespace DNI.Modules.Extensions
 {
     public static class ModuleConfigurationExtensions
     {
-        public static T GetOptions<T>(this IModuleConfiguration moduleConfiguration)
+        public static T GetOptions<T>(this IModuleConfiguration moduleConfiguration, IModuleDescriptor moduleDescriptor)
         {
-            if (moduleConfiguration.Options.TryGetValue(typeof(T), out var options))
+            if (moduleConfiguration.Options.TryGetValue(moduleDescriptor, out var options))
             {
                 return (T)options;
             }
@@ -40,15 +40,15 @@ namespace DNI.Modules.Extensions
             return assemblies.Distinct();
         }
 
-        public static void ConfigureOptions<T>(this IModuleConfiguration moduleConfiguration, T options)
+        public static void ConfigureOptions<T>(this IModuleConfiguration moduleConfiguration, IModuleDescriptor moduleDescriptor, T options)
         {
             var optionType = typeof(T);
-            if (moduleConfiguration.Options.ContainsKey(optionType))
+            if (moduleConfiguration.Options.ContainsKey(moduleDescriptor))
             {
-                moduleConfiguration.Options[optionType] = options;
+                moduleConfiguration.Options[moduleDescriptor] = options;
             }
 
-            moduleConfiguration.Options.Add(optionType, options);
+            moduleConfiguration.Options.Add(moduleDescriptor, options);
         }
 
         public static IModuleRunner ConfigureRunner(this IModuleConfiguration moduleConfiguration, IServiceProvider serviceProvider, IServiceCollection services)

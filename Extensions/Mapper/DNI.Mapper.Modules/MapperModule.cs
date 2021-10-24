@@ -11,7 +11,7 @@ namespace DNI.Mapper.Modules
     {
         public override void ConfigureServices(IServiceCollection services, IModuleConfiguration moduleConfiguration)
         {
-            var mapperOptions = moduleConfiguration.GetOptions<IMapperOptions>();
+            var mapperOptions = moduleConfiguration.GetOptions<IMapperOptions>(ModuleDescriptor);
 
             var assemblies = mapperOptions.Assemblies;
 

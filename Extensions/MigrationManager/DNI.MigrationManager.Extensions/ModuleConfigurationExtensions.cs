@@ -7,13 +7,13 @@ namespace DNI.Modules.Extensions
 {
     public static class ModuleConfigurationExtensions
     {
-        public static IModuleConfiguration ConfigureMigrationManagerModuleConfiguration(this IModuleConfiguration moduleConfiguration, Action<IMigrationManagerModuleConfiguration> configure)
+        public static IModuleConfiguration ConfigureMigrationManagerModuleConfiguration(this IModuleConfiguration moduleConfiguration, IModuleDescriptor moduleDescriptor, Action<IMigrationManagerModuleConfiguration> configure)
         {
             IMigrationManagerModuleConfiguration migrationManagerModuleConfiguration = new DefaultMigrationManagerModuleConfiguration();
 
             configure(migrationManagerModuleConfiguration);
 
-            moduleConfiguration.ConfigureOptions(migrationManagerModuleConfiguration);
+            moduleConfiguration.ConfigureOptions(moduleDescriptor, migrationManagerModuleConfiguration);
             return moduleConfiguration;
         }
     }

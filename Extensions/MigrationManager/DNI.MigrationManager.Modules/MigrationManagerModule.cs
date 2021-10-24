@@ -19,7 +19,7 @@ namespace DNI.MigrationManager.Modules
             services
                 .AddMigrationServices();
 
-            foreach (var (k, v) in moduleConfiguration.GetOptions<IMigrationManagerModuleConfiguration>())
+            foreach (var (k, v) in moduleConfiguration.GetOptions<IMigrationManagerModuleConfiguration>(ModuleDescriptor))
             {
                 services.AddMigration(k, v);
             }
