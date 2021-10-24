@@ -13,7 +13,6 @@ namespace DNI.Test.Core.Controller
     {
         public Task<IEnumerable<Customer>> Test(CancellationToken cancellationToken)
         {
-            var modelEncryptor = GetService<IModelEncryptor>();
             return this.Send(new TestRequest(), cancellationToken);
         }
     }
