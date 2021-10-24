@@ -50,6 +50,11 @@ namespace DNI.Core.Defaults
 
             var properties = typeof(T).GetProperties();
 
+            if(model == null)
+            {
+                return newInstance;
+            }
+
             foreach (var property in properties)
             {
                 var encryptionProfileAttribute = property.GetCustomAttribute<EncryptionProfileAttribute>();

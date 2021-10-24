@@ -9,6 +9,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Encryption\DNI.Encryption.Shared\DNI.Encryption.Shared.csproj" />
+    <ProjectReference Include="..\..\Modules\DNI.Modules.Extensions\DNI.Modules.Extensions.csproj" />
     <ProjectReference Include="..\..\Modules\DNI.Modules.Shared\DNI.Modules.Shared.csproj" />
     <ProjectReference Include="..\..\Web\DNI.Web.Shared\DNI.Web.Shared.csproj" />
   </ItemGroup>

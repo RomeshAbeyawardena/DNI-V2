@@ -1,4 +1,5 @@
 ﻿using DNI.Encryption.Shared.Abstractions;
+using DNI.Mediator.Shared.Abstractions;
 using DNI.Shared.Abstractions;
 using MediatR;
 using System.Threading;
@@ -6,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace DNI.Mediator.Shared.Base
 {
-    public abstract class EncryptedRepositoryRequestHandlerBase<TRequest, TModel> : IRequestHandler<TRequest, TModel>
-        where TRequest : IRequest<TModel>
+    public abstract class EncryptedRepositoryRequestHandlerBase<TRequest, TModel> : IRequestHandler<TRequest, IResponse<TModel>>
+        where TRequest : IRequest<IResponse<TModel>>
     {
         protected IModelEncryptor Encryptor { get; }
         protected IRepository<TModel> Repository { get; }
@@ -22,13 +23,13 @@ namespace DNI.Mediator.Shared.Base
             this.Repository = modelRepository;
         }
 
-        public virtual async Task<TModel> Handle(TRequest request, CancellationToken cancellationToken)
+        public virtual async Task<IResponse<TModel>> Handle(TRequest request, CancellationToken cancellationToken)
         {
             var result = await Get(request, cancellationToken);
 
             if(result != null)
             {
-                return Encryptor.Decrypt(result);
+                return Response.Success(Encryptor.Decrypt(result));
             }
 
             return default;

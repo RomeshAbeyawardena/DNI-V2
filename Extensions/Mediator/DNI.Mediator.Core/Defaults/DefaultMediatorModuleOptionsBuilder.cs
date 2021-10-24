@@ -1,6 +1,7 @@
 ﻿using DNI.Mediator.Shared.Abstractions;
 using DNI.Shared.Base;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace DNI.Mediator.Core.Defaults
@@ -8,9 +9,16 @@ namespace DNI.Mediator.Core.Defaults
     public class DefaultMediatorModuleOptionsBuilder : AssemblyOptionsBuilderBase, IMediatorModuleOptionsBuilder
     {
         private bool useModuleAssemblies;
+        private IEnumerable<Type> handledExceptionTypes;
         public IMediatorModuleOptionsBuilder AddModuleAssemblies()
         {
             useModuleAssemblies = true;
+            return this;
+        }
+
+        public IMediatorModuleOptionsBuilder SetHandledExceptionTypes(IEnumerable<Type> handledExceptionTypes)
+        {
+            this.handledExceptionTypes = handledExceptionTypes;
             return this;
         }
 
@@ -34,7 +42,7 @@ namespace DNI.Mediator.Core.Defaults
 
         IMediatorModuleOptions IMediatorModuleOptionsBuilder.Build()
         {
-            return new DefaultMediatorModuleOptions(base.Build(), useModuleAssemblies);
+            return new DefaultMediatorModuleOptions(base.Build(), useModuleAssemblies) { HandledExceptionTypes = handledExceptionTypes };
         }
     }
 }

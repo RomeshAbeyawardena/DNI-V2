@@ -1,4 +1,5 @@
 ﻿using DNI.Encryption.Shared.Abstractions;
+using DNI.Mediator.Shared.Abstractions;
 using DNI.Shared.Abstractions;
 using DNI.Shared.Exceptions;
 using DNI.Shared.Extensions;
@@ -12,8 +13,21 @@ using System.Threading.Tasks;
 
 namespace DNI.Mediator.Shared.Base
 {
-    public abstract class EncryptedRepositorySaveHandlerBase<TRequest, TModel, TKey> : IRequestHandler<TRequest, TKey>
-        where TRequest : IRequest<TKey>
+    public abstract class EncryptedRepositorySaveHandlerBase<TRequest, TModel> 
+        : EncryptedRepositorySaveHandlerBase<TRequest, TModel, Guid>
+        where TRequest : IRequest<IResponse<Guid>>
+    {
+        public EncryptedRepositorySaveHandlerBase(
+           IModelEncryptor encryptor,
+           IAsyncRepository<TModel> modelRepository)
+            : base(encryptor, modelRepository)
+        {
+
+        }
+    }
+
+    public abstract class EncryptedRepositorySaveHandlerBase<TRequest, TModel, TKey> : IRequestHandler<TRequest, IResponse<TKey>>
+        where TRequest : IRequest<IResponse<TKey>>
     {
         protected IModelEncryptor Encryptor { get; }
         protected IAsyncRepository<TModel> Repository { get; }
@@ -47,7 +61,7 @@ namespace DNI.Mediator.Shared.Base
             return Task.FromResult(true);
         }
 
-        public virtual async Task<TKey> Handle(TRequest request, CancellationToken cancellationToken)
+        public virtual async Task<IResponse<TKey>> Handle(TRequest request, CancellationToken cancellationToken)
         {
             var model = GetModel(request);
             var encryptedCustomer = Encryptor.Encrypt(model);
@@ -70,7 +84,7 @@ namespace DNI.Mediator.Shared.Base
             }
 
             await Repository.SaveChangesAsync(cancellationToken);
-            return key;
+            return Response.Success(key);
         }
     }
 }

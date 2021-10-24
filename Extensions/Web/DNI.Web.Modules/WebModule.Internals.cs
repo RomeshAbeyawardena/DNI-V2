@@ -2,6 +2,7 @@
 using DNI.Modules.Extensions;
 using DNI.Shared.Extensions;
 using DNI.Web.Core.Defaults.Providers;
+using DNI.Web.Core.Middleware;
 using DNI.Web.Shared.Abstractions.Providers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -49,8 +50,10 @@ namespace DNI.Web.Modules
 
         private void Configure(IApplicationBuilder applicationBuilder)
         {
-            applicationBuilder.UseRouting()
-                    .UseEndpoints(e => e.MapControllers());
+            applicationBuilder
+                .UseRouting()
+                .UseEndpoints(e => e.MapControllers())
+                .UseMiddleware<BadRequestExceptionMiddleware>();
         }
     }
 }

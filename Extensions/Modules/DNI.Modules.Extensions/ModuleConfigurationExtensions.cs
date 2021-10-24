@@ -11,6 +11,14 @@ namespace DNI.Modules.Extensions
 {
     public static class ModuleConfigurationExtensions
     {
+        public static T GetOptions<TModule, T>(this IModuleConfiguration moduleConfiguration)
+        {
+            var opts = moduleConfiguration.Options
+                .FirstOrDefault(a => a.Key.Type == typeof(TModule)).Value;
+
+            return (T)opts;
+        }
+
         public static T GetOptions<T>(this IModuleConfiguration moduleConfiguration, IModuleDescriptor moduleDescriptor)
         {
             if (moduleConfiguration.Options.TryGetValue(moduleDescriptor, out var options))

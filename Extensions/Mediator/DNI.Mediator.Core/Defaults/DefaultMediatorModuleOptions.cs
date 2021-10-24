@@ -1,5 +1,6 @@
 ﻿using DNI.Mediator.Shared.Abstractions;
 using DNI.Shared.Base;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -14,5 +15,7 @@ namespace DNI.Mediator.Core.Defaults
         }
 
         public bool UseModuleAssemblies { get; }
+
+        public IEnumerable<Type> HandledExceptionTypes { get; set; }
     }
 }
