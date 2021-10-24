@@ -8,9 +8,9 @@ namespace DNI.Modules.Core.Extensions
     {
         public static bool ApplyConfiguration(this IModuleConfiguration moduleConfiguration, IModuleConfigurationBuilder moduleConfigurationBuilder)
         {
-            var ct = moduleConfiguration.ModuleDescriptors.Count();
+            var ct = moduleConfiguration.ModuleDescriptors.Count;
             moduleConfigurationBuilder.Build(moduleConfiguration.ServiceProvider);
-            var newct = moduleConfiguration.ModuleDescriptors.Count();
+            var newct = moduleConfiguration.ModuleDescriptors.Count;
 
             return ct != newct;
         }

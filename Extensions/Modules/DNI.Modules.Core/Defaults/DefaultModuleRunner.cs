@@ -87,7 +87,7 @@ namespace DNI.Modules.Core.Defaults
                     hasChanged = true;
                 }
 
-                logger.LogInformation("{0} assigned Id: {1}", moduleType, module.UniqueId);
+                logger.LogInformation("{0} assigned Id: {1}", moduleType.Type, module.UniqueId);
                 
                 disposableTypesList.Add(module.UniqueId, disposables);
                 configuredModules.Add(module);

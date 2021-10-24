@@ -17,7 +17,7 @@ namespace DNI.Modules.Shared.Base
 
         public IObservable<IModuleStatus> Status => moduleStatusSubject;
 
-        public Type ModuleType => GetType();
+        public Type ModuleType => ModuleDescriptor?.Type ?? GetType();
 
         public IEnumerable<Type> ModuleParameters => ModuleType.GetConstructorParameterTypes();
 
@@ -81,10 +81,30 @@ namespace DNI.Modules.Shared.Base
             return OnStop(cancellationToken);
         }
 
+        public bool Equals(IModule module)
+        {
+            return module.UniqueId == UniqueId;
+        }
+
         public override void Dispose(bool disposing)
         {
             Disposables.ForEach(d => d.Dispose());
             OnDispose(disposing);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(UniqueId, ModuleType);
+        }
+
+        public override string ToString()
+        {
+            return $"Id: {UniqueId}, Type: {ModuleType}";
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as IModule);
         }
     }
 }
