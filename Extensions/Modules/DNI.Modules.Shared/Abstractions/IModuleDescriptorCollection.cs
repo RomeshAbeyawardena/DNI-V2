@@ -9,6 +9,6 @@ namespace DNI.Modules.Shared.Abstractions
 {
     public interface IModuleDescriptorCollection : IList<IModuleDescriptor>, IEnumerable<IModuleDescriptor>
     {
-        
+        IEnumerable<Type> Types { get; }
     }
 }

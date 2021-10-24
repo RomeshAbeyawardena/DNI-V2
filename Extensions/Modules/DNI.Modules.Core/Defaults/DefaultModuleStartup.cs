@@ -40,9 +40,8 @@ namespace DNI.Modules.Core.Defaults
 
         public override void ConfigureServices(IServiceCollection services, IModuleConfiguration moduleConfiguration)
         {
-            var dependencies = moduleConfiguration.ModuleTypes.SelectMany(GetAssemblies)
-                .AppendMany(moduleConfiguration.ModuleTypes
-                .Select(a => a.Assembly))
+            var dependencies = moduleConfiguration.ModuleDescriptors.Types.SelectMany(GetAssemblies)
+                .AppendMany(moduleConfiguration.ModuleDescriptors.Types.Select(a => a.Assembly))
                 .Distinct();
             
             services.Scan(c => c.FromAssemblies(dependencies)

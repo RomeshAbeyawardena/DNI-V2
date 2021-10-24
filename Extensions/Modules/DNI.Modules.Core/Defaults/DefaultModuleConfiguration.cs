@@ -12,9 +12,6 @@ namespace DNI.Modules.Core.Defaults
     internal class DefaultModuleConfiguration : IModuleConfiguration
     {
         private readonly Dictionary<Type, object> options;
-#pragma warning disable IDE0052 // Remove unread private members
-        private IEnumerable<IDisposable> disposables;
-#pragma warning restore IDE0052 // Remove unread private members
 
         public DefaultModuleConfiguration()
         {
@@ -25,7 +22,7 @@ namespace DNI.Modules.Core.Defaults
 
         public IServiceProvider ServiceProvider { get; set; }
 
-        public IEnumerable<Type> ModuleTypes { get; set; }
+        public IModuleDescriptorCollection ModuleDescriptors { get; set; }
 
         public IDictionary<Type, object> Options => options;
 
@@ -38,11 +35,12 @@ namespace DNI.Modules.Core.Defaults
             foreach (var module in configuredModules)
             {
                 stringBuilder.AppendLine($"   [x]   \t{module.UniqueId}\t{module.ModuleType.Name}");
-                var moduleType = module.GetType();
+                
 
-                if (ModuleTypes.Contains(moduleType))
+                if (ModuleDescriptors.Contains(module.ModuleDescriptor))
                 {
-                    var activatedModule = serviceProvider.Activate<IModule>(module.GetType(), out disposables);
+                    var activatedModule = serviceProvider.Activate<IModule>(module.GetType(), out var disposables);
+                    activatedModule.ModuleDescriptor = module.ModuleDescriptor;
                     activatedModule.SetUniqueId(module.UniqueId);
                     activatedModuleList.Add(activatedModule);
                 }

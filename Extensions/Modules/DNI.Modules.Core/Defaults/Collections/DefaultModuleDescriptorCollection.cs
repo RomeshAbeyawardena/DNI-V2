@@ -10,6 +10,12 @@ namespace DNI.Modules.Core.Defaults.Collections
 {
     public class DefaultModuleDescriptorCollection : CollectionBase<IModuleDescriptor>, IModuleDescriptorCollection
     {
-        
+        public DefaultModuleDescriptorCollection(IEnumerable<IModuleDescriptor> moduleDescriptors)
+            : base(moduleDescriptors)
+        {
+
+        }
+
+        public IEnumerable<Type> Types => this.Select(m => m.Type);
     }
 }

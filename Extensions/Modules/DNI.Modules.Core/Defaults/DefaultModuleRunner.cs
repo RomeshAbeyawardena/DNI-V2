@@ -69,16 +69,17 @@ namespace DNI.Modules.Core.Defaults
 
             var hasChanged = false;
 
-            foreach (var moduleType in moduleConfiguration.ModuleTypes)
+            foreach (var moduleType in moduleConfiguration.ModuleDescriptors)
             {
-                if (configuredModules.Any(a => a.ModuleType == moduleType))
+                if (configuredModules.Any(a => a.ModuleDescriptor == moduleType))
                 {
                     continue;
                 }
 
                 logger.LogInformation("Configuring module {0}...", moduleType);
 
-                var module = serviceProvider.Activate<IModule>(moduleType, out var disposables);
+                var module = serviceProvider.Activate<IModule>(moduleType.Type, out var disposables);
+                module.ModuleDescriptor = moduleType;
                 module.ConfigureModuleBuilder(services, moduleConfigurationBuilder);
                 
                 if (moduleConfiguration.ApplyConfiguration(moduleConfigurationBuilder))
@@ -112,10 +113,10 @@ namespace DNI.Modules.Core.Defaults
 
         public override Task OnStart(CancellationToken cancellationToken)
         {
-            logger.LogInformation("Module runner starting with {0} modules", moduleConfiguration.ModuleTypes.Count());
+            logger.LogInformation("Module runner starting with {0} modules", moduleConfiguration.ModuleDescriptors.Count);
             ConfigureModuleBuilder(services, new DefaultModuleConfigurationBuilder(moduleConfiguration));
             ConfigureServices(services, moduleConfiguration);
-            logger.LogInformation("Module runner configured with {0} modules", moduleConfiguration.ModuleTypes.Count());
+            logger.LogInformation("Module runner configured with {0} modules", moduleConfiguration.ModuleDescriptors.Count);
             moduleServiceProvider = services.BuildServiceProvider();
             compiledModuleConfiguration = moduleServiceProvider.GetRequiredService<ICompiledModuleConfiguration>();
             moduleConfiguration.ServiceProvider = moduleServiceProvider;

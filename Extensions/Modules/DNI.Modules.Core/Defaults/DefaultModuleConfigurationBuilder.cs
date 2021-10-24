@@ -1,4 +1,5 @@
-﻿using DNI.Modules.Shared.Abstractions;
+﻿using DNI.Modules.Core.Defaults.Collections;
+using DNI.Modules.Shared.Abstractions;
 using DNI.Modules.Shared.Abstractions.Builders;
 using System;
 using System.Collections.Generic;
@@ -10,12 +11,12 @@ namespace DNI.Modules.Core.Defaults
     {
         private readonly IModuleConfiguration defaultModuleConfiguration;
 
-        public List<Type> moduleTypes;
+        public List<IModuleDescriptor> moduleTypes;
 
         public DefaultModuleConfigurationBuilder(IModuleConfiguration moduleConfiguration)
         {
-            moduleTypes = (moduleConfiguration.ModuleTypes != null && moduleConfiguration.ModuleTypes.Any())
-                ? new(moduleConfiguration?.ModuleTypes)
+            moduleTypes = (moduleConfiguration.ModuleDescriptors != null && moduleConfiguration.ModuleDescriptors.Any())
+                ? new(moduleConfiguration?.ModuleDescriptors)
                 : new();
 
             defaultModuleConfiguration = moduleConfiguration;
@@ -26,7 +27,7 @@ namespace DNI.Modules.Core.Defaults
 
         }
 
-        public IModuleConfigurationBuilder AddModule(Type moduleType, Action<IModuleConfiguration> configure = null)
+        public IModuleConfigurationBuilder AddModule(IModuleDescriptor moduleType, Action<IModuleConfiguration> configure = null)
         {
             moduleTypes.Add(moduleType);
             configure?.Invoke(defaultModuleConfiguration);
@@ -35,7 +36,7 @@ namespace DNI.Modules.Core.Defaults
 
         public IModuleConfiguration Build(IServiceProvider serviceProvider)
         {
-            defaultModuleConfiguration.ModuleTypes = moduleTypes;
+            defaultModuleConfiguration.ModuleDescriptors = new DefaultModuleDescriptorCollection(moduleTypes);
             defaultModuleConfiguration.ServiceProvider = serviceProvider;
             return defaultModuleConfiguration;
         }

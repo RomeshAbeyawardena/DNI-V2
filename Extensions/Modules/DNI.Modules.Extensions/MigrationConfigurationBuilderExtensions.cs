@@ -1,4 +1,5 @@
-﻿using DNI.Modules.Shared.Abstractions;
+﻿using DNI.Modules.Core.Defaults;
+using DNI.Modules.Shared.Abstractions;
 using DNI.Modules.Shared.Abstractions.Builders;
 using System;
 
@@ -8,7 +9,7 @@ namespace DNI.Modules.Extensions
     {
         public static IModuleConfigurationBuilder AddModule<T>(this IModuleConfigurationBuilder builder, Action<IModuleConfiguration> configure = null)
         {
-            return builder.AddModule(typeof(T), configure);
+            return builder.AddModule(ModuleDescriptor.Create<T>(ModuleDescriptor.DefaultUsage), configure);
         }
     }
 }

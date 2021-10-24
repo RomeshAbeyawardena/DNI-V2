@@ -25,6 +25,8 @@ namespace DNI.Modules.Shared.Base
 
         public IEnumerable<IDisposable> Disposables { get; set; }
 
+        public IModuleDescriptor ModuleDescriptor { get; set; }
+
         public virtual void OnDispose(bool disposing)
         {
 

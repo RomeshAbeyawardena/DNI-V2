@@ -25,9 +25,9 @@ namespace DNI.Modules.Extensions
         {
             var assemblies = new List<Assembly>();
 
-            foreach (var moduleType in moduleConfiguration.ModuleTypes)
+            foreach (var moduleType in moduleConfiguration.ModuleDescriptors)
             {
-                var requiresDependenciesAttribute = moduleType.GetCustomAttribute<RequiresDependenciesAttribute>();
+                var requiresDependenciesAttribute = moduleType.Type.GetCustomAttribute<RequiresDependenciesAttribute>();
 
                 if (requiresDependenciesAttribute != null)
                 {
@@ -35,7 +35,7 @@ namespace DNI.Modules.Extensions
                 }
             }
 
-            assemblies.AddRange(moduleConfiguration.ModuleTypes.Select(a => a.Assembly).Distinct());
+            assemblies.AddRange(moduleConfiguration.ModuleDescriptors.Select(a => a.Type.Assembly).Distinct());
 
             return assemblies.Distinct();
         }
