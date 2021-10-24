@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace DNI.Mediator.Shared.Base
 {
     public abstract class EncryptedRepositoryRequestListHandlerBase<TRequest, TModel> : IRequestHandler<TRequest, IResponse<IEnumerable<TModel>>>
-        where TRequest : IRequest<IResponse<IEnumerable<TModel>>>
+        where TRequest : Abstractions.IRequest<IEnumerable<TModel>>
     {
         protected IModelEncryptor Encryptor { get; }
         protected IRepository<TModel> Repository { get; }

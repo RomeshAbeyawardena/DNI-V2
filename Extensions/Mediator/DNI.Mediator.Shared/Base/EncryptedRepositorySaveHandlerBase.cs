@@ -10,12 +10,11 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-
 namespace DNI.Mediator.Shared.Base
 {
     public abstract class EncryptedRepositorySaveHandlerBase<TRequest, TModel> 
         : EncryptedRepositorySaveHandlerBase<TRequest, TModel, Guid>
-        where TRequest : IRequest<IResponse<Guid>>
+        where TRequest : Abstractions.IRequest<Guid>
     {
         public EncryptedRepositorySaveHandlerBase(
            IModelEncryptor encryptor,
@@ -27,7 +26,7 @@ namespace DNI.Mediator.Shared.Base
     }
 
     public abstract class EncryptedRepositorySaveHandlerBase<TRequest, TModel, TKey> : IRequestHandler<TRequest, IResponse<TKey>>
-        where TRequest : IRequest<IResponse<TKey>>
+        where TRequest : Abstractions.IRequest<TKey>
     {
         protected IModelEncryptor Encryptor { get; }
         protected IAsyncRepository<TModel> Repository { get; }

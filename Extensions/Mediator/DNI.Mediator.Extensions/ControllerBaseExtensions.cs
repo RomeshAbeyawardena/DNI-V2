@@ -28,7 +28,7 @@ namespace DNI.Mediator.Extensions
             return controllerBase.BadRequest(response.Exception.Message);
         }
 
-        public static Task<TResponse> Send<TResponse>(this ControllerBase controllerBase, IRequest<TResponse> request, CancellationToken cancellationToken)
+        public static Task<TResponse> Send<TResponse>(this ControllerBase controllerBase, MediatR.IRequest<TResponse> request, CancellationToken cancellationToken)
         {
             var mediator = controllerBase.GetService<IMediator>();
 
