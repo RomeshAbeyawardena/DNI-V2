@@ -1,4 +1,5 @@
-﻿using DNI.Mediator.Shared.Abstractions;
+﻿using DNI.Extensions;
+using DNI.Mediator.Shared.Abstractions;
 using DNI.Web.Shared.Base;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,13 @@ namespace DNI.Mediator.Extensions
             if (response.Succeeded)
             {
                 return controllerBase.Ok(response.Result);
+            }
+
+            if(response.ValidationFailures != null 
+                && response.ValidationFailures.Count > 1)
+            {
+                response.ValidationFailures.ForEach(a => controllerBase.ModelState.AddModelError(a.Property.Name, a.Exception.Message));
+                return controllerBase.BadRequest(controllerBase.ModelState);
             }
 
             return controllerBase.BadRequest(response.Exception.Message);

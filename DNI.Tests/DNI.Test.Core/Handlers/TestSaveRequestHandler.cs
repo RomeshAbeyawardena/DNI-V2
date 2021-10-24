@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using DNI.Core.Defaults;
 using DNI.Encryption.Shared.Abstractions;
 using DNI.Mediator.Shared.Base;
 using DNI.Shared.Abstractions;
@@ -38,7 +39,12 @@ namespace DNI.Test.Core.Handlers
 
         protected override Task<bool> ValidateModel(Customer model, CancellationToken cancellationToken, out IEnumerable<IValidationFailure> validationFailures)
         {
-            validationFailures = Array.Empty<IValidationFailure>();
+            List<IValidationFailure> validationFailuresList = new();
+
+            validationFailuresList.Add(ValidationFailure.Create(model, new ArgumentException("First name must be more than 2 characters long", "FirstName"), "FirstName"));
+            validationFailuresList.Add(ValidationFailure.Create(model, new ArgumentException("Last name must be more than 2 characters long", "LastName"), "LastName"));
+            validationFailuresList.Add(ValidationFailure.Create(model, new ArgumentException("Email Address must be a valid e-mail address", "EmailAddress"), "EmailAddress"));
+            validationFailures = validationFailuresList;
             return Task.FromResult(false);
         }
     }

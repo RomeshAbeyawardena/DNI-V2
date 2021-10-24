@@ -8,7 +8,20 @@ using System.Threading.Tasks;
 
 namespace DNI.Core.Defaults
 {
-    public class DefaultValidationFailure : IValidationFailure
+    public static class ValidationFailure
+    {
+        public static IValidationFailure Create(object model, Exception exception, string propertyName)
+        {
+            return new DefaultValidationFailure(model, exception, propertyName);
+        }
+
+        public static IValidationFailure Create(object model, Exception exception, PropertyInfo property = null)
+        {
+            return new DefaultValidationFailure(model, exception, property);
+        }
+    }
+
+    internal class DefaultValidationFailure : IValidationFailure
     {
         public DefaultValidationFailure(object model, Exception exception, string propertyName)
             : this(model, exception)

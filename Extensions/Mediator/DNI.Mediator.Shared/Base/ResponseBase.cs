@@ -22,9 +22,9 @@ namespace DNI.Mediator.Shared.Base
             return new ResponseBase<T>(result);
         }
 
-        public static IResponse Failed(Exception exception)
+        public static IResponse Failed(Exception exception, IEnumerable<IValidationFailure> validationFailures = default)
         {
-            return new ResponseBase(exception);
+            return new ResponseBase(exception, validationFailures);
         }
 
         public static IResponse Failed(IEnumerable<IValidationFailure> validationFailures)
@@ -78,7 +78,8 @@ namespace DNI.Mediator.Shared.Base
             Succeeded = result != null;
         }
 
-        public ResponseBase(Exception exception)
+        public ResponseBase(Exception exception, IEnumerable<IValidationFailure> validationFailures = default)
+            : this(validationFailures)
         {
             Exception = exception;
             Succeeded = false;

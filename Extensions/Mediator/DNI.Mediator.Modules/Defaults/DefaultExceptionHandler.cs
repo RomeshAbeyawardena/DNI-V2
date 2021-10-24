@@ -2,6 +2,7 @@
 using DNI.Mediator.Shared.Base;
 using DNI.Modules.Extensions;
 using DNI.Modules.Shared.Abstractions;
+using DNI.Shared.Abstractions;
 using DNI.Shared.Exceptions;
 using MediatR.Pipeline;
 using System;
@@ -27,6 +28,16 @@ namespace DNI.Mediator.Modules.Defaults
         public Task Handle(TRequest request, TException exception, 
             RequestExceptionHandlerState<TResponse> state, CancellationToken cancellationToken)
         {
+            IEnumerable<IValidationFailure> GetValidationFailures()
+            {
+                if (exception is ModelStateException modelStateException)
+                {
+                    return modelStateException.ValidationFailures;
+                }
+
+                return Array.Empty<IValidationFailure>();
+            }
+
             var options = moduleConfiguration.GetOptions<MediatorModule, IMediatorModuleOptions>();
 
             List<Type> handledExceptionTypesList = new();
@@ -38,6 +49,7 @@ namespace DNI.Mediator.Modules.Defaults
 
             if(handledExceptionTypesList.Any(a => a == exception.GetType()))
             {
+                
                 var responseType = typeof(TResponse);
                 var responseBaseType = typeof(IResponse);
                 var responseBaseGenericType = typeof(ResponseBase<>);
@@ -46,13 +58,12 @@ namespace DNI.Mediator.Modules.Defaults
                 {
                     var genericArguments = responseType.GetGenericArguments();
                     responseBaseGenericType = responseBaseGenericType.MakeGenericType(genericArguments);
-                    state.SetHandled((TResponse)Activator.CreateInstance(responseBaseGenericType, Response.Failed(exception)));
+                    state.SetHandled((TResponse)Activator.CreateInstance(responseBaseGenericType, Response.Failed(exception, GetValidationFailures())));
                 }
                 else
                 {
-                    state.SetHandled((TResponse)Response.Failed(exception));
+                    state.SetHandled((TResponse)Response.Failed(exception, GetValidationFailures()));
                 }
-                //throw new Microsoft.AspNetCore.Http.BadHttpRequestException(exception.Message, exception);
             }
 
             return Task.CompletedTask;
