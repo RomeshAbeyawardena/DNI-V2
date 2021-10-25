@@ -3,6 +3,7 @@ using DNI.Web.Shared.Abstractions;
 using DNI.Web.Shared.Abstractions.Builders;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Linq;
 using System.Reflection;
 
 namespace DNI.Web.Core.Defaults.Builders
@@ -15,7 +16,9 @@ namespace DNI.Web.Core.Defaults.Builders
 
         public IWebModuleOptions Build(Assembly hostAssembly)
         {
-            return new DefaultWebModuleOptions(configureAction, mvcOptions, useModuleAssemblies, hostAssembly);
+            var opts = new DefaultWebModuleOptions(configureAction, mvcOptions, useModuleAssemblies, hostAssembly);
+            opts.AddRange(this.ToArray());
+            return opts;
         }
 
         public IWebModuleOptionsBuilder ConfigureMvcOptions(Action<IMvcBuilder> mvcOptions)

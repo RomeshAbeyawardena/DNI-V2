@@ -15,8 +15,7 @@ namespace DNI.Test.Modules
         {
             moduleConfigurationBuilder
                 .ConfigureWebModule<MyWebModule>(builder => builder
-                    .AddAssembly<MyWebModule>()
-                        .AddModuleAssemblies())
+                    .AddAssembly<MyDbContext>())
                 .ConfigureMediatorModule(builder => builder.AddModuleAssemblies());
         }
     }
