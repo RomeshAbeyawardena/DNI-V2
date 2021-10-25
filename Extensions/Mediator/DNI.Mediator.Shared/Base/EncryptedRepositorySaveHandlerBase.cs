@@ -1,6 +1,7 @@
 ﻿using DNI.Encryption.Shared.Abstractions;
 using DNI.Mediator.Shared.Abstractions;
 using DNI.Shared.Abstractions;
+using DNI.Shared.Enumerations;
 using DNI.Shared.Exceptions;
 using DNI.Shared.Extensions;
 using MediatR;
@@ -43,16 +44,59 @@ namespace DNI.Mediator.Shared.Base
         protected abstract Task<TKey> SetKey(TModel request, CancellationToken cancellationToken);
         protected abstract TModel GetModel(TRequest request);
 
-        protected virtual Task OnAdd(TModel request, CancellationToken cancellationToken)
+        /// <summary>
+        /// Optional action to take when an insert/update completes
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="eventType"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        protected virtual Task OnAddUpdateSuccessful(TModel request, EventType eventType, CancellationToken cancellationToken)
         {
             return Task.CompletedTask;
         }
 
-        protected virtual Task OnUpdate(TModel request, CancellationToken cancellationToken)
+        /// <summary>
+        /// Optional action to take if an insert/update check fails
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="eventType"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        protected virtual Task OnAddUpdateFailure(TModel request, EventType eventType, CancellationToken cancellationToken)
         {
             return Task.CompletedTask;
         }
 
+        /// <summary>
+        /// Optional final check before an insert occurs
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>Determines whether the check has passed</returns>
+        protected virtual Task<bool> OnAdd(TModel request, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(true);
+        }
+
+        /// <summary>
+        /// Optional final check before an update occurs
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>Determines whether the check has passed</returns>
+        protected virtual Task<bool> OnUpdate(TModel request, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(true);
+        }
+
+        /// <summary>
+        /// Optional validation checks to apply before an insert/update operation can occur
+        /// </summary>
+        /// <param name="model">The model to be inserted/updated</param>
+        /// <param name="cancellationToken"></param>
+        /// <param name="validationFailures"></param>
+        /// <returns>Determines whether validation has passed</returns>
         protected virtual Task<bool> ValidateModel(TModel model, CancellationToken cancellationToken, 
             out IEnumerable<IValidationFailure> validationFailures)
         {
@@ -62,6 +106,17 @@ namespace DNI.Mediator.Shared.Base
 
         public virtual async Task<IResponse<TKey>> Handle(TRequest request, CancellationToken cancellationToken)
         {
+            async Task AttemptHandle(TModel model, Func<TModel, CancellationToken, Task<bool>> conditionalAction, Action<TModel> action, EventType eventType)
+            {
+                if (await conditionalAction(model, cancellationToken))
+                {
+                    action(model);
+                }
+                else await OnAddUpdateFailure(model, eventType, cancellationToken);
+
+                await OnAddUpdateSuccessful(model, eventType, cancellationToken);
+            }
+
             var model = GetModel(request);
             var encryptedCustomer = Encryptor.Encrypt(model);
             if(! await ValidateModel(encryptedCustomer, cancellationToken, out var validationFailures))
@@ -70,16 +125,15 @@ namespace DNI.Mediator.Shared.Base
             }
 
             var key = await GetKey(encryptedCustomer, cancellationToken);
+
             if (key.IsDefault())
             {
                 key = await SetKey(encryptedCustomer, cancellationToken);
-                await OnAdd(encryptedCustomer, cancellationToken);
-                Repository.Add(encryptedCustomer);
+                await AttemptHandle(model, OnAdd, model => Repository.Add(model), EventType.Add);
             }
             else
             {
-                await OnUpdate(encryptedCustomer, cancellationToken);
-                Repository.Update(encryptedCustomer);
+                await AttemptHandle(model, OnUpdate, model => Repository.Update(model), EventType.Update);
             }
 
             await Repository.SaveChangesAsync(cancellationToken);
