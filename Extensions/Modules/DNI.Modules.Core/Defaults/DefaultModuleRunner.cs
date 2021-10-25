@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -63,6 +64,9 @@ namespace DNI.Modules.Core.Defaults
 
         public override Task OnStart(CancellationToken cancellationToken)
         {
+            Stopwatch stopwatch = new();
+
+            stopwatch.Start();
             logger.LogInformation("Module runner starting with {0} modules", moduleConfiguration.ModuleDescriptors.Count);
             ConfigureModuleBuilder(services, new DefaultModuleConfigurationBuilder(moduleConfiguration));
             ConfigureServices(services, moduleConfiguration);
@@ -70,7 +74,8 @@ namespace DNI.Modules.Core.Defaults
             moduleServiceProvider = services.BuildServiceProvider();
             compiledModuleConfiguration = moduleServiceProvider.GetRequiredService<ICompiledModuleConfiguration>();
             moduleConfiguration.ServiceProvider = moduleServiceProvider;
-            logger.LogInformation("Module runner started");
+            stopwatch.Stop();
+            logger.LogInformation("Module runner started in {0}", stopwatch.Elapsed);
 
             List<Task> taskList = new();
             foreach(var module in compiledModuleConfiguration.Modules)

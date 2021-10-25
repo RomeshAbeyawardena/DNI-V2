@@ -17,7 +17,7 @@ dotnet clean
 
 mkdir $tempPath
 
-Copy-Item $path -Destination $tempPath -Recurse
+Copy-Item $path -Destination $tempPath -Recurse -Verbose
 
 cd "$solutionDirectory"
 
