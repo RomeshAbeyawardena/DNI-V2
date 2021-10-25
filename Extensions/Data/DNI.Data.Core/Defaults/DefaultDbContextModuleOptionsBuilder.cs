@@ -1,5 +1,6 @@
 ﻿using DNI.Data.Shared.Abstractions;
 using DNI.Data.Shared.Abstractions.Builders;
+using DNI.Modules.Shared.Base.Buillders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -7,7 +8,7 @@ using System.Collections.Generic;
 
 namespace DNI.Data.Core.Defaults
 {
-    public class DefaultDbContextModuleOptionsBuilder : IDbContextModuleOptionsBuilder
+    public class DefaultDbContextModuleOptionsBuilder : ModuleOptionsBuilderBase<IDbContextModuleOptions>, IDbContextModuleOptionsBuilder
     {
         private readonly List<IDbContextTypeOptions> options;
 
@@ -30,7 +31,7 @@ namespace DNI.Data.Core.Defaults
             return this;
         }
 
-        public IDbContextModuleOptions Build()
+        public override IDbContextModuleOptions Build()
         {
             return new DefaultDbContextModuleOptions(options);
         }

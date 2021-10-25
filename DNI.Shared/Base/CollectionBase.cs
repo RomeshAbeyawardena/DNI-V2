@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace DNI.Shared.Base
 {
-    public abstract class CollectionBase<T> : ICollectionBase<T>
+    public abstract class CollectionBase<T> : Abstractions.ICollection<T>
     {
         private readonly List<T> collection;
 

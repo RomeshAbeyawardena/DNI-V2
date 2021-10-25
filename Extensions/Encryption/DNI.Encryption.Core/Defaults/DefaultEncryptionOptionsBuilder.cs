@@ -1,14 +1,15 @@
 ﻿using DNI.Encryption.Shared.Abstractions;
 using DNI.Encryption.Shared.Abstractions.Builders;
+using DNI.Modules.Shared.Base.Buillders;
 using System;
 
 namespace DNI.Encryption.Core.Defaults
 {
-    public class DefaultEncryptionOptionsBuilder : IEncryptionOptionsBuilder
+    public class DefaultEncryptionOptionsBuilder : ModuleOptionsBuilderBase<IEncryptionModuleOptions>, IEncryptionOptionsBuilder
     {
         private readonly DefaultEncryptionModuleOptions encryptionModuleOptions = new();
 
-        public IEncryptionModuleOptions Build()
+        public override IEncryptionModuleOptions Build()
         {
             return encryptionModuleOptions;
         }

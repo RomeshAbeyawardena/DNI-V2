@@ -9,6 +9,6 @@ namespace DNI.Shared.Abstractions
         IAssemblyOptionsBuilder AddAssembly<T>();
         IAssemblyOptionsBuilder AddAssembly(Type type);
         IAssemblyOptionsBuilder AddAssembly(Assembly assembly);
-        IEnumerable<Assembly> Build();
+        IEnumerable<Assembly> BuildAssemblies();
     }
 }

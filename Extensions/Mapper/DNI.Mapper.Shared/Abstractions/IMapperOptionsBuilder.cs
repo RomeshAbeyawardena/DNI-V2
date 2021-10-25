@@ -1,12 +1,12 @@
-﻿using System.Reflection;
+﻿using DNI.Modules.Shared.Builders;
+using System.Reflection;
 
 namespace DNI.Mapper.Shared.Abstractions
 {
-    public interface IMapperOptionsBuilder
+    public interface IMapperOptionsBuilder : IModuleOptionsAssemblyBuilder<IMapperOptions>
     {
-        IMapperOptionsBuilder AddAssembly(Assembly assembly);
-        IMapperOptionsBuilder AddAssembly<T>();
+        new IMapperOptionsBuilder AddAssembly(Assembly assembly);
+        new IMapperOptionsBuilder AddAssembly<T>();
         IMapperOptionsBuilder AddModuleAssemblies();
-        IMapperOptions Build();
     }
 }

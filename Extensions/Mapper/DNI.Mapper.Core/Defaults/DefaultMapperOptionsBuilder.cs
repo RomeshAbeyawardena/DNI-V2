@@ -1,27 +1,21 @@
 ﻿using DNI.Mapper.Shared.Abstractions;
+using DNI.Modules.Shared.Base.Builders;
 using System.Collections.Generic;
 using System.Reflection;
 
 namespace DNI.Mapper.Core.Defaults
 {
-    public class DefaultMapperOptionsBuilder : IMapperOptionsBuilder
+    public class DefaultMapperOptionsBuilder : ModuleOptionsAssemblyBuilderBase<IMapperOptions>, IMapperOptionsBuilder
     {
-        private readonly List<Assembly> assemblies;
-        
         private bool useModuleAssemblies = false;
         
-        public DefaultMapperOptionsBuilder()
+        public new IMapperOptionsBuilder AddAssembly(Assembly assembly)
         {
-            assemblies = new();
-        }
-
-        public IMapperOptionsBuilder AddAssembly(Assembly assembly)
-        {
-            assemblies.Add(assembly);
+            base.AddAssembly(assembly);
             return this;
         }
 
-        public IMapperOptionsBuilder AddAssembly<T>()
+        public new IMapperOptionsBuilder AddAssembly<T>()
         {
             return AddAssembly(typeof(T).Assembly);
         }
@@ -32,10 +26,10 @@ namespace DNI.Mapper.Core.Defaults
             return this;
         }
 
-        public IMapperOptions Build()
+        public override IMapperOptions BuildOptions(IEnumerable<Assembly> builtAssemblies)
         {
             var opts = new DefaultMapperOptions { UseModuleAssemblies = useModuleAssemblies };
-            opts.AddRange(assemblies);
+            opts.AddRange(builtAssemblies);
             return opts;
         }
     }

@@ -23,7 +23,7 @@ namespace DNI.Shared.Base
             return this;
         }
 
-        public IEnumerable<Assembly> Build()
+        public IEnumerable<Assembly> BuildAssemblies()
         {
             return this;
         }

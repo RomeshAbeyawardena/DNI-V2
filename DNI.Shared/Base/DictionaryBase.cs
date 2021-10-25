@@ -26,9 +26,9 @@ namespace DNI.Shared.Base
 
         public TValue this[TKey key] { get => dictionary[key]; set => dictionary[key] = value; }
 
-        public ICollection<TKey> Keys => dictionary.Keys;
+        public System.Collections.Generic.ICollection<TKey> Keys => dictionary.Keys;
 
-        public ICollection<TValue> Values => dictionary.Values;
+        public System.Collections.Generic.ICollection<TValue> Values => dictionary.Values;
 
         public int Count => dictionary.Count;
 

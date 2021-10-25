@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\DNI.Shared\DNI.Shared.csproj" />
+    <ProjectReference Include="..\..\Modules\DNI.Modules.Shared\DNI.Modules.Shared.csproj" />
   </ItemGroup>
 
 </Project>

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DNI.Shared.Abstractions
 {
-    public interface ICollectionBase<T> : IList<T>, IEnumerable<T>
+    public interface ICollection<T> : IList<T>, IEnumerable<T>
     {
         
     }

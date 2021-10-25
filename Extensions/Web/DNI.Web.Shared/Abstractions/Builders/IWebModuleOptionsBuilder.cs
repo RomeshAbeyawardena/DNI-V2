@@ -1,4 +1,5 @@
-﻿using DNI.Shared.Abstractions;
+﻿using DNI.Modules.Shared.Builders;
+using DNI.Shared.Abstractions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -6,7 +7,7 @@ using System.Reflection;
 
 namespace DNI.Web.Shared.Abstractions.Builders
 {
-    public interface IWebModuleOptionsBuilder : IAssemblyOptionsBuilder
+    public interface IWebModuleOptionsBuilder : IModuleOptionsAssemblyBuilder<IWebModuleOptions>
     {
         new IWebModuleOptionsBuilder AddAssembly<T>();
         new IWebModuleOptionsBuilder AddAssembly(Type type);
@@ -15,6 +16,5 @@ namespace DNI.Web.Shared.Abstractions.Builders
         IWebModuleOptionsBuilder ConfigureMvcOptions(Action<IMvcBuilder> mvcOptions);
         IWebModuleOptionsBuilder UseDefaultMvcOptions();
         IWebModuleOptionsBuilder AddModuleAssemblies();
-        IWebModuleOptions Build(Assembly hostAssembly);
     }
 }

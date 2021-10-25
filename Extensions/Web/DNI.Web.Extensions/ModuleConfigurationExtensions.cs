@@ -15,9 +15,9 @@ namespace DNI.Web.Extensions
             Assembly hostAssembly,
             Action<IWebModuleOptionsBuilder> buildAction)
         {
-            IWebModuleOptionsBuilder webModuleOptionsBuilder = new DefaultWebModuleOptionsBuilder();
+            IWebModuleOptionsBuilder webModuleOptionsBuilder = new DefaultWebModuleOptionsBuilder(hostAssembly);
             buildAction?.Invoke(webModuleOptionsBuilder);
-            moduleConfiguration.ConfigureOptions(moduleDescriptor, webModuleOptionsBuilder.Build(hostAssembly));
+            moduleConfiguration.ConfigureOptions(moduleDescriptor, webModuleOptionsBuilder.Build());
             return moduleConfiguration;
         }
     }
