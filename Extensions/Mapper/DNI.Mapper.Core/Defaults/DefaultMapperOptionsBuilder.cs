@@ -1,5 +1,6 @@
 ﻿using DNI.Mapper.Shared.Abstractions;
 using DNI.Modules.Shared.Base.Builders;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -15,9 +16,14 @@ namespace DNI.Mapper.Core.Defaults
             return this;
         }
 
+        public new IMapperOptionsBuilder AddAssembly(Type type)
+        {
+            return AddAssembly(type.Assembly);
+        }
+
         public new IMapperOptionsBuilder AddAssembly<T>()
         {
-            return AddAssembly(typeof(T).Assembly);
+            return AddAssembly(typeof(T));
         }
 
         public IMapperOptionsBuilder AddModuleAssemblies()
@@ -32,5 +38,6 @@ namespace DNI.Mapper.Core.Defaults
             opts.AddRange(builtAssemblies);
             return opts;
         }
+
     }
 }
