@@ -8,6 +8,7 @@ using DNI.Core.Defaults;
 using DNI.Encryption.Shared.Abstractions;
 using DNI.Mediator.Shared.Base;
 using DNI.Shared.Abstractions;
+using DNI.Shared.Enumerations;
 using DNI.Tests.Shared.Models;
 using DNI.Tests.Shared.Request;
 
@@ -35,6 +36,26 @@ namespace DNI.Test.Core.Handlers
             var key = Guid.NewGuid();
             request.Id = key;
             return Task.FromResult(key);
+        }
+
+        protected override Task<bool> OnAdd(Customer request, CancellationToken cancellationToken)
+        {
+            return base.OnAdd(request, cancellationToken);
+        }
+
+        protected override Task<bool> OnUpdate(Customer request, CancellationToken cancellationToken)
+        {
+            return base.OnUpdate(request, cancellationToken);
+        }
+
+        protected override Task OnAddUpdateFailure(Customer request, EventType eventType, CancellationToken cancellationToken)
+        {
+            return base.OnAddUpdateFailure(request, eventType, cancellationToken);
+        }
+
+        protected override Task OnAddUpdateSuccessful(Customer request, EventType eventType, CancellationToken cancellationToken)
+        {
+            return base.OnAddUpdateSuccessful(request, eventType, cancellationToken);
         }
 
         protected override Task<bool> ValidateModel(Customer model, CancellationToken cancellationToken, out IEnumerable<IValidationFailure> validationFailures)
