@@ -11,6 +11,16 @@ namespace DNI.Mediator.Extensions
 {
     public static class ControllerBaseExtensions
     {
+        public static async Task<IActionResult> Process<T>(this ControllerBase controllerBase, Task<IResponse<T>> response)
+        {
+            return Process(controllerBase, await response);
+        }
+
+        public static async Task<IActionResult> Process(this ControllerBase controllerBase, Task<IResponse> response)
+        {
+            return Process(controllerBase, await response);
+        }
+
         public static IActionResult Process(this ControllerBase controllerBase, IResponse response)
         {
             if (response.Succeeded)
