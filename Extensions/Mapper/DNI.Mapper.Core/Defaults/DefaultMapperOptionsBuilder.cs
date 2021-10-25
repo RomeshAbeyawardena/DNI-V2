@@ -34,7 +34,9 @@ namespace DNI.Mapper.Core.Defaults
 
         public IMapperOptions Build()
         {
-            return new DefaultMapperOptions { Assemblies = assemblies, UseModuleAssemblies = useModuleAssemblies };
+            var opts = new DefaultMapperOptions { UseModuleAssemblies = useModuleAssemblies };
+            opts.AddRange(assemblies);
+            return opts;
         }
     }
 }

@@ -1,10 +1,11 @@
-﻿using System;
+﻿using DNI.Shared.Abstractions;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
 namespace DNI.Shared.Base
 {
-    public abstract class CollectionBase<T> : IList<T>, IEnumerable<T>
+    public abstract class CollectionBase<T> : ICollectionBase<T>
     {
         private readonly List<T> collection;
 

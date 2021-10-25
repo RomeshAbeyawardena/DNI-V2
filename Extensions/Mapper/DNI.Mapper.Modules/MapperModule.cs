@@ -4,6 +4,9 @@ using DNI.Modules.Extensions;
 using DNI.Modules.Shared.Abstractions;
 using DNI.Modules.Shared.Base;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace DNI.Mapper.Modules
 {
@@ -13,14 +16,18 @@ namespace DNI.Mapper.Modules
         {
             var mapperOptions = moduleConfiguration.GetOptions<IMapperOptions>(ModuleDescriptor);
 
-            var assemblies = mapperOptions.Assemblies;
+            List<Assembly> assemblyList = new();
+            if (mapperOptions.Any()) 
+            {
+                assemblyList.AddRange(mapperOptions); 
+            }
 
             if (mapperOptions.UseModuleAssemblies)
             {
-                assemblies = assemblies.AppendMany(moduleConfiguration.GetModuleAssemblies());
+                assemblyList.AddRange(moduleConfiguration.GetModuleAssemblies());
             }
 
-            services.AddAutoMapper(assemblies);
+            services.AddAutoMapper(assemblyList);
         }
     }
 }

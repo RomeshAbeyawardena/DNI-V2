@@ -12,15 +12,15 @@ namespace DNI.Test.Core.Controller
 {
     public class MyController : ApiControllerBase
     {
-        public async Task<IActionResult> Test(CancellationToken cancellationToken)
+        public Task<IActionResult> Test(CancellationToken cancellationToken)
         {
-            return this.Process(await this.Send(new TestRequest(), cancellationToken));
+            return this.Process(this.Send(new TestRequest(), cancellationToken));
         }
 
         [Route("save")]
-        public async Task<IActionResult> Test2(CancellationToken cancellationToken)
+        public Task<IActionResult> Test2(CancellationToken cancellationToken)
         {
-            return this.Process(await this.Send(new TestSaveRequest(), cancellationToken));
+            return this.Process(this.Send(new TestSaveRequest(), cancellationToken));
         }
     }
 }
