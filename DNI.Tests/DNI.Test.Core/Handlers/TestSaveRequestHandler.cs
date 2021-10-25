@@ -9,6 +9,7 @@ using DNI.Encryption.Shared.Abstractions;
 using DNI.Mediator.Shared.Base;
 using DNI.Shared.Abstractions;
 using DNI.Shared.Enumerations;
+using DNI.Tests.Shared.Extensions;
 using DNI.Tests.Shared.Models;
 using DNI.Tests.Shared.Request;
 
@@ -61,12 +62,17 @@ namespace DNI.Test.Core.Handlers
         protected override Task<bool> ValidateModel(Customer model, CancellationToken cancellationToken, out IEnumerable<IValidationFailure> validationFailures)
         {
             List<IValidationFailure> validationFailuresList = new();
+            if(string.IsNullOrWhiteSpace(model.FirstName))
+                validationFailuresList.Add(ValidationFailure.Create(model, new ArgumentException("First name must be more than 2 characters long", "FirstName"), "FirstName"));
 
-            validationFailuresList.Add(ValidationFailure.Create(model, new ArgumentException("First name must be more than 2 characters long", "FirstName"), "FirstName"));
-            validationFailuresList.Add(ValidationFailure.Create(model, new ArgumentException("Last name must be more than 2 characters long", "LastName"), "LastName"));
-            validationFailuresList.Add(ValidationFailure.Create(model, new ArgumentException("Email Address must be a valid e-mail address", "EmailAddress"), "EmailAddress"));
+            if (string.IsNullOrWhiteSpace(model.LastName))
+                validationFailuresList.Add(ValidationFailure.Create(model, new ArgumentException("Last name must be more than 2 characters long", "LastName"), "LastName"));
+
+            if (string.IsNullOrWhiteSpace(model.EmailAddress) || !model.EmailAddress.IsEmail())
+                validationFailuresList.Add(ValidationFailure.Create(model, new ArgumentException("Email Address must be a valid e-mail address", "EmailAddress"), "EmailAddress"));
+
             validationFailures = validationFailuresList;
-            return Task.FromResult(false);
+            return Task.FromResult(!validationFailures.Any());
         }
     }
 }

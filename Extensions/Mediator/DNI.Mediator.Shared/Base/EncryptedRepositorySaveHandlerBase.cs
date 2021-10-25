@@ -106,20 +106,19 @@ namespace DNI.Mediator.Shared.Base
 
         public virtual async Task<IResponse<TKey>> Handle(TRequest request, CancellationToken cancellationToken)
         {
-            async Task AttemptHandle(TModel model, Func<TModel, CancellationToken, Task<bool>> conditionalAction, Action<TModel> action, EventType eventType)
+            async Task AttemptHandle(TModel model, TModel encryptedModel, Func<TModel, CancellationToken, Task<bool>> conditionalAction, Action<TModel> action, EventType eventType)
             {
                 if (await conditionalAction(model, cancellationToken))
                 {
                     action(model);
+                    await OnAddUpdateSuccessful(encryptedModel, eventType, cancellationToken);
                 }
-                else await OnAddUpdateFailure(model, eventType, cancellationToken);
-
-                await OnAddUpdateSuccessful(model, eventType, cancellationToken);
+                else await OnAddUpdateFailure(encryptedModel, eventType, cancellationToken);
             }
 
             var model = GetModel(request);
             var encryptedCustomer = Encryptor.Encrypt(model);
-            if(! await ValidateModel(encryptedCustomer, cancellationToken, out var validationFailures))
+            if(! await ValidateModel(model, cancellationToken, out var validationFailures))
             {
                 throw new ModelStateException(encryptedCustomer, validationFailures);
             }
@@ -129,11 +128,11 @@ namespace DNI.Mediator.Shared.Base
             if (key.IsDefault())
             {
                 key = await SetKey(encryptedCustomer, cancellationToken);
-                await AttemptHandle(model, OnAdd, model => Repository.Add(model), EventType.Add);
+                await AttemptHandle(model, encryptedCustomer, OnAdd, model => Repository.Add(model), EventType.Add);
             }
             else
             {
-                await AttemptHandle(model, OnUpdate, model => Repository.Update(model), EventType.Update);
+                await AttemptHandle(model, encryptedCustomer, OnUpdate, model => Repository.Update(model), EventType.Update);
             }
 
             await Repository.SaveChangesAsync(cancellationToken);

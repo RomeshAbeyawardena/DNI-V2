@@ -18,9 +18,9 @@ namespace DNI.Test.Core.Controller
         }
 
         [Route("save")]
-        public Task<IActionResult> Test2(CancellationToken cancellationToken)
+        public Task<IActionResult> Test2(Customer customer, CancellationToken cancellationToken)
         {
-            return this.Process(this.Send(new TestSaveRequest(), cancellationToken));
+            return this.Process(this.Send(new TestSaveRequest { Customer = customer }, cancellationToken));
         }
     }
 }

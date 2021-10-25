@@ -117,6 +117,11 @@ namespace DNI.Shared.Extensions
             Func<bool, DateTimeOffset> offSetfactoryMethod = null,
             Func<bool, DateTime> factoryMethod = null)
         {
+            if(value == null)
+            {
+                return;
+            }
+
             if (offSetfactoryMethod == null)
             {
                 offSetfactoryMethod = (useUtc) => useUtc ? DateTimeOffset.UtcNow : DateTimeOffset.Now;

@@ -3,6 +3,7 @@ using DNI.Mediator.Shared.Abstractions;
 using DNI.Web.Shared.Base;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ControllerBase = DNI.Web.Shared.Base.ControllerBase;
@@ -29,7 +30,7 @@ namespace DNI.Mediator.Extensions
             }
 
             if(response.ValidationFailures != null 
-                && response.ValidationFailures.Count > 1)
+                && response.ValidationFailures.Any())
             {
                 response.ValidationFailures.ForEach(a => controllerBase.ModelState.AddModelError(a.Property.Name, a.Exception.Message));
                 return controllerBase.BadRequest(controllerBase.ModelState);
