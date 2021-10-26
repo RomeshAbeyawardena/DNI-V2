@@ -1,7 +1,6 @@
 ﻿using DNI.Mediator.Extensions;
 using DNI.Mediator.Shared.Abstractions;
 using DNI.Modules.Extensions;
-using DNI.Modules.Shared.Abstractions;
 using DNI.Modules.Shared.Abstractions.Builders;
 using System;
 

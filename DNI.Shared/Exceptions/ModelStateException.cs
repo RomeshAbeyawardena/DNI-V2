@@ -3,9 +3,6 @@ using DNI.Shared.Abstractions.Collections;
 using DNI.Shared.Defaults.Collections;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DNI.Shared.Exceptions
 {

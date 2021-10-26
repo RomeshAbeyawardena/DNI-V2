@@ -3,7 +3,6 @@ using DNI.Mediator.Shared.Abstractions;
 using DNI.Modules.Extensions;
 using DNI.Modules.Shared.Abstractions;
 using DNI.Modules.Shared.Base;
-using DNI.Shared.Attributes;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;

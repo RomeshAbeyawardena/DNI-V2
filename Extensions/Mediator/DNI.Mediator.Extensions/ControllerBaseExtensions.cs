@@ -1,6 +1,5 @@
 ﻿using DNI.Extensions;
 using DNI.Mediator.Shared.Abstractions;
-using DNI.Web.Shared.Base;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;

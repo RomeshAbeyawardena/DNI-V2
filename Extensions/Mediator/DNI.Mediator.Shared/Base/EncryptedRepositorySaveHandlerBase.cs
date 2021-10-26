@@ -1,14 +1,8 @@
 ﻿using DNI.Encryption.Shared.Abstractions;
 using DNI.Mediator.Shared.Abstractions;
 using DNI.Shared.Abstractions;
-using DNI.Shared.Enumerations;
-using DNI.Shared.Exceptions;
-using DNI.Shared.Extensions;
 using MediatR;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 namespace DNI.Mediator.Shared.Base
@@ -31,6 +25,11 @@ namespace DNI.Mediator.Shared.Base
     {
         protected IModelEncryptor Encryptor { get; }
 
+        protected virtual Task<TModel> OnProcess(TModel model, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(model);
+        }
+
         public EncryptedRepositorySaveHandlerBase(
             IModelEncryptor encryptor,
             IAsyncRepository<TModel> modelRepository)
@@ -41,7 +40,7 @@ namespace DNI.Mediator.Shared.Base
 
         public override Task<TModel> Process(TModel model, CancellationToken cancellationToken)
         {
-            return Task.FromResult(Encryptor.Encrypt(model));
+            return OnProcess(Encryptor.Encrypt(model), cancellationToken);
         }
     }
 }

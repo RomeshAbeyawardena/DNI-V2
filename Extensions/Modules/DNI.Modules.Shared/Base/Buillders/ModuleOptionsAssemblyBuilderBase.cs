@@ -1,15 +1,12 @@
 ﻿using DNI.Modules.Shared.Base.Buillders;
 using DNI.Modules.Shared.Builders;
 using DNI.Shared.Abstractions;
-using DNI.Shared.Base;
 using DNI.Shared.Defaults.Collections;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DNI.Modules.Shared.Base.Builders
 {

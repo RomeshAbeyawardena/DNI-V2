@@ -1,11 +1,9 @@
 ﻿using DNI.Modules.Shared.Base.Builders;
-using DNI.Shared.Base;
 using DNI.Web.Shared.Abstractions;
 using DNI.Web.Shared.Abstractions.Builders;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 namespace DNI.Web.Core.Defaults.Builders

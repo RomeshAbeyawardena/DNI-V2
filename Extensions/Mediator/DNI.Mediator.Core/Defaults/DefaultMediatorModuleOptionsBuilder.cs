@@ -1,6 +1,5 @@
 ﻿using DNI.Mediator.Shared.Abstractions;
 using DNI.Modules.Shared.Base.Builders;
-using DNI.Shared.Base;
 using System;
 using System.Collections.Generic;
 using System.Reflection;

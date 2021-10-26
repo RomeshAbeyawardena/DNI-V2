@@ -3,8 +3,6 @@ using DNI.Tests.Shared.Models;
 using DNI.Tests.Shared.Request;
 using DNI.Web.Shared.Base;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 

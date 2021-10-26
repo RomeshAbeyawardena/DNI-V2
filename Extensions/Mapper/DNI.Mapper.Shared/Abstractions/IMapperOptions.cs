@@ -1,7 +1,4 @@
-﻿using DNI.Shared.Abstractions;
-using DNI.Shared.Base;
-using System.Collections.Generic;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace DNI.Mapper.Shared.Abstractions
 {

@@ -3,12 +3,7 @@ using DNI.Modules.Shared.Base;
 using DNI.Web.Modules.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DNI.Test.Modules
 {
