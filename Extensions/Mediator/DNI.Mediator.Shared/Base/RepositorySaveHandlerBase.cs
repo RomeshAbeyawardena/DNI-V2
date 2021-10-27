@@ -20,7 +20,6 @@ namespace DNI.Mediator.Shared.Base
         public RepositorySaveHandlerBase(
             IServiceProvider serviceProvider)
             : base(serviceProvider)
-            : base(serviceProvider)
         {
             this.Repository = this.GetService<IAsyncRepository<TModel>>();
         }
