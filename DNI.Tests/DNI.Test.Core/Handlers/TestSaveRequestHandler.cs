@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using DNI.Core.Defaults;
 using DNI.Encryption.Shared.Abstractions;
+using DNI.FluentValidation.Extensions;
 using DNI.Mediator.Shared.Base;
 using DNI.Shared.Abstractions;
 using DNI.Shared.Enumerations;
@@ -16,8 +17,8 @@ namespace DNI.Test.Core.Handlers
 {
     public class TestSaveRequestHandler : EncryptedRepositorySaveHandlerBase<TestSaveRequest, Customer>
     {
-        public TestSaveRequestHandler(IModelEncryptor encryptor, IAsyncRepository<Customer> modelRepository) 
-            : base(encryptor, modelRepository)
+        public TestSaveRequestHandler(IServiceProvider serviceProvider, IModelEncryptor encryptor, IAsyncRepository<Customer> modelRepository) 
+            : base(serviceProvider, encryptor, modelRepository)
         {
         }
 
@@ -60,6 +61,8 @@ namespace DNI.Test.Core.Handlers
 
         protected override Task<bool> ValidateModel(Customer model, CancellationToken cancellationToken, out IEnumerable<IValidationFailure> validationFailures)
         {
+            this.Validate(model, cancellationToken);
+
             List<IValidationFailure> validationFailuresList = new();
             if(string.IsNullOrWhiteSpace(model.FirstName))
                 validationFailuresList.Add(ValidationFailure.Create(model, new ArgumentException("First name must be more than 2 characters long", "FirstName"), "FirstName"));

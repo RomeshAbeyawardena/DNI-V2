@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Extensions\Data\DNI.Data.Shared\DNI.Data.Shared.csproj" />
     <ProjectReference Include="..\..\Extensions\Encryption\DNI.Encryption.Shared\DNI.Encryption.Shared.csproj" />
+    <ProjectReference Include="..\..\Extensions\FluentValidation\DNI.FluentValidation.Extensions\DNI.FluentValidation.Extensions.csproj" />
     <ProjectReference Include="..\..\Extensions\Mediator\DNI.Mediator.Extensions\DNI.Mediator.Extensions.csproj" />
     <ProjectReference Include="..\..\Extensions\Web\DNI.Web.Shared\DNI.Web.Shared.csproj" />
     <ProjectReference Include="..\DNI.Tests.Shared\DNI.Tests.Shared.csproj" />
