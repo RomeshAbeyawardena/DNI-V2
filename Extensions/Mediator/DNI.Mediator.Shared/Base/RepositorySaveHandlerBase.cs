@@ -94,7 +94,8 @@ namespace DNI.Mediator.Shared.Base
 
         public virtual async Task<IResponse<TKey>> Handle(TRequest request, CancellationToken cancellationToken)
         {
-            async Task AttemptHandle(TModel model, TModel processedModel, Func<TModel, CancellationToken, Task<bool>> conditionalAction, Action<TModel> action, EventType eventType)
+            async Task AttemptHandle(TModel model, TModel processedModel,
+                Func<TModel, CancellationToken, Task<bool>> conditionalAction, Action<TModel> action, EventType eventType)
             {
                 if (await conditionalAction(model, cancellationToken))
                 {
@@ -105,7 +106,7 @@ namespace DNI.Mediator.Shared.Base
             }
 
             var model = GetModel(request);
-            
+
             if (!await ValidateModel(model, cancellationToken, out var validationFailures))
             {
                 throw new ModelStateException(model, validationFailures);
