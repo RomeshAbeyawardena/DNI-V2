@@ -9,6 +9,7 @@ namespace DNI.FluentValidation.Shared.Abstractions
 {
     public interface IFluentValidationModuleOptions
     {
+        bool UseModuleAssemblies { get; }
         IEnumerable<Assembly> Assemblies { get; }
     }
 }

@@ -13,9 +13,11 @@ namespace DNI.FluentValidation.Core.Defaults.Builders
 {
     public class DefaultFluentValidationModuleOptionsBuilder : ModuleOptionsAssemblyBuilderBase<IFluentValidationModuleOptions>, IFluentValidationModuleOptionsBuilder
     {
+        private bool useModuleAssemblies = false;
+
         public override IFluentValidationModuleOptions BuildOptions(IEnumerable<Assembly> builtAssemblies)
         {
-            return new DefaultFluentValidationModuleOptions { Assemblies = builtAssemblies };
+            return new DefaultFluentValidationModuleOptions { Assemblies = builtAssemblies, UseModuleAssemblies = useModuleAssemblies };
         }
 
         public new IFluentValidationModuleOptionsBuilder AddAssembly(Assembly assembly)
@@ -32,6 +34,12 @@ namespace DNI.FluentValidation.Core.Defaults.Builders
         public new IFluentValidationModuleOptionsBuilder AddAssembly<T>()
         {
             return AddAssembly(typeof(T));
+        }
+
+        public IFluentValidationModuleOptionsBuilder AddModuleAssemblies()
+        {
+            useModuleAssemblies = true;
+            return this;
         }
     }
 }

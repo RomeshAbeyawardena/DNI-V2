@@ -14,5 +14,7 @@ namespace DNI.FluentValidation.Shared.Abstractions.Builders
         new IFluentValidationModuleOptionsBuilder AddAssembly(Assembly assembly);
         new IFluentValidationModuleOptionsBuilder AddAssembly(Type type);
         new IFluentValidationModuleOptionsBuilder AddAssembly<T>();
+
+        IFluentValidationModuleOptionsBuilder AddModuleAssemblies();
     }
 }

@@ -9,11 +9,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FluentValidation.Modules.Extensions
+namespace DNI.FluentValidation.Modules.Extensions
 {
     public static class ModuleConfigurationBuilderExtensions
     {
-        public static IModuleConfigurationBuilder AddFluentValidation(this IModuleConfigurationBuilder moduleConfigurationBuilder, 
+        public static IModuleConfigurationBuilder ConfigureFluentValidation(this IModuleConfigurationBuilder moduleConfigurationBuilder, 
             Action<IFluentValidationModuleOptionsBuilder> configure)
         {
             return moduleConfigurationBuilder.AddModule<FluentValidationModule>((moduleDescriptor, moduleConfiguration) => moduleConfiguration.ConfigureFluentValidation(moduleDescriptor, configure));

@@ -36,6 +36,7 @@
     <ProjectReference Include="..\..\Extensions\Encryption\DNI.Encryption.Extensions\DNI.Encryption.Extensions.csproj" />
     <ProjectReference Include="..\..\Extensions\Encryption\DNI.Encryption.Modules\DNI.Encryption.Modules.csproj" />
     <ProjectReference Include="..\..\Extensions\Encryption\DNI.Encryption.Shared\DNI.Encryption.Shared.csproj" />
+    <ProjectReference Include="..\..\Extensions\FluentValidation\DNI.FluentValidation.Extensions\DNI.FluentValidation.Extensions.csproj" />
     <ProjectReference Include="..\..\Extensions\Mapper\DNI.Mapper.Extensions\DNI.Mapper.Extensions.csproj" />
     <ProjectReference Include="..\..\Extensions\Mapper\DNI.Mapper.Modules\DNI.Mapper.Modules.csproj" />
     <ProjectReference Include="..\..\Extensions\Mapper\DNI.Mapper.Shared\DNI.Mapper.Shared.csproj" />
