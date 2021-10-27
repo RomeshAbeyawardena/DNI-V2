@@ -3,6 +3,7 @@ using DNI.Shared.Abstractions;
 using DNI.Shared.Enumerations;
 using DNI.Shared.Exceptions;
 using DNI.Shared.Extensions;
+using DNI.Mediator.Shared.Extensions;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -17,11 +18,10 @@ namespace DNI.Mediator.Shared.Base
         protected IAsyncRepository<TModel> Repository { get; }
 
         public RepositorySaveHandlerBase(
-            IServiceProvider serviceProvider,
-            IAsyncRepository<TModel> modelRepository)
+            IServiceProvider serviceProvider)
             : base(serviceProvider)
         {
-            this.Repository = modelRepository;
+            this.Repository = this.GetService<IAsyncRepository<TModel>>();
         }
 
 

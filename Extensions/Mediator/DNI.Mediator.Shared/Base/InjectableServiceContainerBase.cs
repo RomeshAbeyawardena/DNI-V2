@@ -8,7 +8,7 @@ namespace DNI.Mediator.Shared.Base
 {
     public class InjectableServiceContainerBase
     {
-        private readonly IServiceProvider serviceProvider;
+        protected readonly IServiceProvider serviceProvider;
 
         public object GetService(Type serviceType)
         {

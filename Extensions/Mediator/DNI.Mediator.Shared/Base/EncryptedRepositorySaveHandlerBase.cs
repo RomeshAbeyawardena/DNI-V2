@@ -1,6 +1,6 @@
 ﻿using DNI.Encryption.Shared.Abstractions;
 using DNI.Mediator.Shared.Abstractions;
-using DNI.Shared.Abstractions;
+using DNI.Mediator.Shared.Extensions;
 using MediatR;
 using System;
 using System.Threading;
@@ -12,10 +12,8 @@ namespace DNI.Mediator.Shared.Base
         where TRequest : Abstractions.IRequest<Guid>
     {
         public EncryptedRepositorySaveHandlerBase(
-           IServiceProvider serviceProvider,
-           IModelEncryptor encryptor,
-           IAsyncRepository<TModel> modelRepository)
-            : base(serviceProvider, encryptor, modelRepository)
+           IServiceProvider serviceProvider)
+            : base(serviceProvider)
         {
 
         }
@@ -31,13 +29,10 @@ namespace DNI.Mediator.Shared.Base
             return Task.FromResult(model);
         }
 
-        public EncryptedRepositorySaveHandlerBase(
-            IServiceProvider serviceProvider,
-            IModelEncryptor encryptor,
-            IAsyncRepository<TModel> modelRepository)
-            : base(serviceProvider, modelRepository)
+        public EncryptedRepositorySaveHandlerBase(IServiceProvider serviceProvider)
+            : base(serviceProvider)
         {
-            this.Encryptor = encryptor;
+            this.Encryptor = this.GetService<IModelEncryptor>();
         }
 
         public override Task<TModel> Process(TModel model, CancellationToken cancellationToken)
