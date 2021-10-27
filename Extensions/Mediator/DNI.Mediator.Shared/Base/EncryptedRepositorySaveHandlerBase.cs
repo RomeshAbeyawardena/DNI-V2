@@ -12,9 +12,10 @@ namespace DNI.Mediator.Shared.Base
         where TRequest : Abstractions.IRequest<Guid>
     {
         public EncryptedRepositorySaveHandlerBase(
+           IServiceProvider serviceProvider,
            IModelEncryptor encryptor,
            IAsyncRepository<TModel> modelRepository)
-            : base(encryptor, modelRepository)
+            : base(serviceProvider, encryptor, modelRepository)
         {
 
         }
@@ -31,9 +32,10 @@ namespace DNI.Mediator.Shared.Base
         }
 
         public EncryptedRepositorySaveHandlerBase(
+            IServiceProvider serviceProvider,
             IModelEncryptor encryptor,
             IAsyncRepository<TModel> modelRepository)
-            : base(modelRepository)
+            : base(serviceProvider, modelRepository)
         {
             this.Encryptor = encryptor;
         }

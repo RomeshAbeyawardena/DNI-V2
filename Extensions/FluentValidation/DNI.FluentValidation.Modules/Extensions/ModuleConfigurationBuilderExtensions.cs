@@ -1,4 +1,5 @@
-﻿using DNI.FluentValidation.Modules;
+﻿using DNI.FluentValidation.Extensions;
+using DNI.FluentValidation.Modules;
 using DNI.FluentValidation.Shared.Abstractions.Builders;
 using DNI.Modules.Extensions;
 using DNI.Modules.Shared.Abstractions.Builders;

@@ -15,7 +15,23 @@ namespace DNI.FluentValidation.Core.Defaults.Builders
     {
         public override IFluentValidationModuleOptions BuildOptions(IEnumerable<Assembly> builtAssemblies)
         {
-            throw new NotImplementedException();
+            return new DefaultFluentValidationModuleOptions { Assemblies = builtAssemblies };
+        }
+
+        public new IFluentValidationModuleOptionsBuilder AddAssembly(Assembly assembly)
+        {
+            AddAssembly(assembly);
+            return this;
+        }
+
+        public new IFluentValidationModuleOptionsBuilder AddAssembly(Type type)
+        {
+            return AddAssembly(type.Assembly);
+        }
+
+        public new IFluentValidationModuleOptionsBuilder AddAssembly<T>()
+        {
+            return AddAssembly(typeof(T));
         }
     }
 }

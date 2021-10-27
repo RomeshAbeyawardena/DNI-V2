@@ -16,8 +16,8 @@ namespace DNI.Test.Core.Handlers
 {
     public class TestSaveRequestHandler : EncryptedRepositorySaveHandlerBase<TestSaveRequest, Customer>
     {
-        public TestSaveRequestHandler(IModelEncryptor encryptor, IAsyncRepository<Customer> modelRepository) 
-            : base(encryptor, modelRepository)
+        public TestSaveRequestHandler(IServiceProvider serviceProvider, IModelEncryptor encryptor, IAsyncRepository<Customer> modelRepository) 
+            : base(serviceProvider, encryptor, modelRepository)
         {
         }
 
