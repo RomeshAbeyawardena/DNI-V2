@@ -29,13 +29,18 @@ namespace DNI.Modules.Extensions
             return default;
         }
 
+        /// <summary>
+        /// Gets a list of assemblies for each module and any global assemblies configured by the instance of <see cref="Shared.Abstractions.Builders.IModuleConfigurationBuilder"/>
+        /// </summary>
+        /// <param name="moduleConfiguration"></param>
+        /// <returns></returns>
         public static IEnumerable<Assembly> GetModuleAssemblies(this IModuleConfiguration moduleConfiguration)
         {
             var assemblies = new List<Assembly>();
 
             if(moduleConfiguration.GlobalAssemblies != null && moduleConfiguration.GlobalAssemblies.Any())
             {
-                assemblies.AddRange(moduleConfiguration.GlobalAssemblies);
+                assemblies.AddRange(moduleConfiguration.GlobalAssemblies.Distinct());
             }
 
             foreach (var moduleType in moduleConfiguration.ModuleDescriptors)
