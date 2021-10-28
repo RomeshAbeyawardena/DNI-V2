@@ -1,14 +1,16 @@
 ﻿using DNI.Mediator.Shared.Abstractions;
 using DNI.Mediator.Shared.Base;
+using DNI.Shared.Abstractions;
+using DNI.Shared.Defaults.Collections;
 using FluentValidation;
 using FluentValidation.Results;
-using System;
+using DNI.Core.Defaults;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-
+using ValidationFailure = FluentValidation.Results.ValidationFailure;
 namespace DNI.FluentValidation.Extensions
 {
     public static class RepositorySaveHandlerBaseExtensions
@@ -19,6 +21,12 @@ namespace DNI.FluentValidation.Extensions
             var validator = (IValidator)handler.GetService(typeof(IValidator<TModel>));
 
             return validator.ValidateAsync(new ValidationContext<TModel>(model), cancellationToken);
+        }
+
+        public static IEnumerable<IValidationFailure> GetValidationFailures<TRequest, TModel, TKey>(this RepositorySaveHandlerBase<TRequest, TModel, TKey> handler, IEnumerable<ValidationFailure> validationFailures)
+            where TRequest : IRequest<TKey>
+        {
+            return validationFailures.Select(a => DNI.Core.Defaults.ValidationFailure.Create(a.AttemptedValue, new System.Exception(a.ErrorMessage), a.PropertyName));
         }
     }
 }
