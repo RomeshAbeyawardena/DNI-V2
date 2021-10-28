@@ -33,6 +33,11 @@ namespace DNI.Modules.Extensions
         {
             var assemblies = new List<Assembly>();
 
+            if(moduleConfiguration.GlobalAssemblies != null && moduleConfiguration.GlobalAssemblies.Any())
+            {
+                assemblies.AddRange(moduleConfiguration.GlobalAssemblies);
+            }
+
             foreach (var moduleType in moduleConfiguration.ModuleDescriptors)
             {
                 var requiresDependenciesAttribute = moduleType.Type.GetCustomAttribute<RequiresDependenciesAttribute>();

@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace DNI.Modules.Core.Defaults
@@ -17,6 +18,8 @@ namespace DNI.Modules.Core.Defaults
         {
             options = new Dictionary<IModuleDescriptor, object>();
         }
+
+        public IEnumerable<Assembly> GlobalAssemblies { get; set; }
 
         public IEnumerable<ServiceDescriptor> ServiceDescriptors { get; set; }
 

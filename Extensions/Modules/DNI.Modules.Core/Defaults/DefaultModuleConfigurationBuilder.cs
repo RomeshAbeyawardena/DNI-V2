@@ -4,6 +4,7 @@ using DNI.Modules.Shared.Abstractions.Builders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace DNI.Modules.Core.Defaults
 {
@@ -22,7 +23,10 @@ namespace DNI.Modules.Core.Defaults
             defaultModuleConfiguration = moduleConfiguration;
         }
 
-        public DefaultModuleConfigurationBuilder() : this(new DefaultModuleConfiguration())
+        public IEnumerable<Assembly> GlobalAssemblies { get; set; }
+
+        public DefaultModuleConfigurationBuilder() 
+            : this(new DefaultModuleConfiguration())
         {
 
         }
@@ -38,6 +42,7 @@ namespace DNI.Modules.Core.Defaults
         {
             defaultModuleConfiguration.ModuleDescriptors = new DefaultModuleDescriptorCollection(moduleTypes);
             defaultModuleConfiguration.ServiceProvider = serviceProvider;
+            defaultModuleConfiguration.GlobalAssemblies = GlobalAssemblies;
             return defaultModuleConfiguration;
         }
     }
