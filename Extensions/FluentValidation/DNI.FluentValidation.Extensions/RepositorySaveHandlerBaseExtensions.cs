@@ -20,7 +20,12 @@ namespace DNI.FluentValidation.Extensions
         {
             var validator = (IValidator)handler.GetService(typeof(IValidator<TModel>));
 
-            return validator.ValidateAsync(new ValidationContext<TModel>(model), cancellationToken);
+            if (validator != null)
+            {
+                return validator.ValidateAsync(new ValidationContext<TModel>(model), cancellationToken);
+            }
+
+            return Task.FromResult(new ValidationResult());
         }
 
         public static IEnumerable<IValidationFailure> GetValidationFailures<TRequest, TModel, TKey>(this RepositorySaveHandlerBase<TRequest, TModel, TKey> handler, IEnumerable<ValidationFailure> validationFailures)

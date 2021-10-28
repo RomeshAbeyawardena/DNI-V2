@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using DNI.Mediator.Shared.Defaults;
 
 namespace DNI.Mediator.Shared.Base
 {
@@ -87,10 +88,8 @@ namespace DNI.Mediator.Shared.Base
         /// <param name="cancellationToken"></param>
         /// <param name="validationFailures"></param>
         /// <returns>Determines whether validation has passed</returns>
-        protected virtual Task<bool> ValidateModel(TModel model, CancellationToken cancellationToken,
-            out IEnumerable<IValidationFailure> validationFailures)
+        protected virtual Task<bool> ValidateModel(TModel model, IValidationState validationState, CancellationToken cancellationToken)
         {
-            validationFailures = Array.Empty<IValidationFailure>();
             return Task.FromResult(true);
         }
 
@@ -108,10 +107,10 @@ namespace DNI.Mediator.Shared.Base
             }
 
             var model = GetModel(request);
-
-            if (!await ValidateModel(model, cancellationToken, out var validationFailures))
+            var validationState = new DefaultValidationState();
+            if (!await ValidateModel(model, validationState, cancellationToken))
             {
-                throw new ModelStateException(model, validationFailures);
+                throw new ModelStateException(model, validationState.ValidationFailures);
             }
 
             var key = await GetKey(model, cancellationToken);

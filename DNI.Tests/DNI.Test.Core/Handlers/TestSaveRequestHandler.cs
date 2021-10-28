@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DNI.Core.Defaults;
 using DNI.Encryption.Shared.Abstractions;
 using DNI.FluentValidation.Extensions;
+using DNI.Mediator.Shared.Abstractions;
 using DNI.Mediator.Shared.Base;
 using DNI.Shared.Abstractions;
 using DNI.Shared.Enumerations;
@@ -59,7 +60,7 @@ namespace DNI.Test.Core.Handlers
             return base.OnAddUpdateSuccessful(request, eventType, cancellationToken);
         }
 
-        protected override Task<bool> ValidateModel(Customer model, CancellationToken cancellationToken, out IEnumerable<IValidationFailure> validationFailures)
+        protected override Task<bool> ValidateModel(Customer model, IValidationState validationState, CancellationToken cancellationToken)
         {
             this.Validate(model, cancellationToken);
 
@@ -73,8 +74,8 @@ namespace DNI.Test.Core.Handlers
             if (string.IsNullOrWhiteSpace(model.EmailAddress) || !model.EmailAddress.IsEmail())
                 validationFailuresList.Add(ValidationFailure.Create(model, new ArgumentException("Email Address must be a valid e-mail address", "EmailAddress"), "EmailAddress"));
 
-            validationFailures = validationFailuresList;
-            return Task.FromResult(!validationFailures.Any());
+            validationState.SetValidationErrors(validationFailuresList);
+            return Task.FromResult(validationFailuresList.Count != 0);
         }
     }
 }
