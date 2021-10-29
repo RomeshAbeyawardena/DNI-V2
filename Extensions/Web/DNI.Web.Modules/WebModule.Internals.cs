@@ -17,12 +17,13 @@ namespace DNI.Web.Modules
     {
         private void ConfigureServices(IServiceCollection services)
         {
+            Options.ConfigureServices?.Invoke(services);
+
             var mvcBuilder = services
                 .AddApiVersioning()
                 .AddControllers();
 
             IEnumerable<Assembly> assemblies = Options.ToArray();
-            Options.ConfigureServices?.Invoke(services);
             Options.ConfigureMvcOptions?.Invoke(mvcBuilder);
 
             if (Options.UseModuleAssemblies)
@@ -49,11 +50,11 @@ namespace DNI.Web.Modules
 
         private void Configure(IApplicationBuilder applicationBuilder)
         {
-            applicationBuilder
-                .UseRouting()
-                .UseEndpoints(e => e.MapControllers());
+            applicationBuilder.UseRouting();
 
             Options.ConfigureApplicationBuilder?.Invoke(applicationBuilder);
+
+            applicationBuilder.UseEndpoints(e => e.MapControllers());
         }
     }
 }
