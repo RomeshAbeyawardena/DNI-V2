@@ -11,8 +11,9 @@ namespace DNI.Web.Core.Defaults.Builders
     public class DefaultWebModuleOptionsBuilder : ModuleOptionsAssemblyBuilderBase<IWebModuleOptions>, IWebModuleOptionsBuilder
     {
         private readonly Assembly hostAssembly;
-        private Action<IMvcBuilder> mvcOptions;
+        private Action<IMvcBuilder> configureMvcOptions;
         private Action<Microsoft.AspNetCore.Hosting.IWebHostBuilder> configureAction;
+        private Action<IServiceCollection> configureServiceAction; 
         private bool useModuleAssemblies;
 
         public DefaultWebModuleOptionsBuilder(Assembly hostAssembly)
@@ -22,14 +23,14 @@ namespace DNI.Web.Core.Defaults.Builders
 
         public override IWebModuleOptions BuildOptions(IEnumerable<Assembly> builtAssemblies)
         {
-            var opts = new DefaultWebModuleOptions(configureAction, mvcOptions, useModuleAssemblies, hostAssembly);
+            var opts = new DefaultWebModuleOptions(configureAction, configureMvcOptions, configureServiceAction, useModuleAssemblies, hostAssembly);
             opts.AddRange(builtAssemblies);
             return opts;
         }
 
         public IWebModuleOptionsBuilder ConfigureMvcOptions(Action<IMvcBuilder> mvcOptions)
         {
-            this.mvcOptions = mvcOptions;
+            this.configureMvcOptions = mvcOptions;
             return this;
         }
 
@@ -65,6 +66,12 @@ namespace DNI.Web.Core.Defaults.Builders
         IWebModuleOptionsBuilder IWebModuleOptionsBuilder.AddAssembly(Assembly assembly)
         {
             AddAssembly(assembly);
+            return this;
+        }
+
+        public IWebModuleOptionsBuilder ConfigureServices(Action<IServiceCollection> services)
+        {
+            configureServiceAction = services;
             return this;
         }
     }

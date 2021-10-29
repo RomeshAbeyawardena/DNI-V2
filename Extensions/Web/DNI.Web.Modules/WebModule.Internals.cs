@@ -22,7 +22,7 @@ namespace DNI.Web.Modules
                 .AddControllers();
 
             IEnumerable<Assembly> assemblies = Options.ToArray();
-
+            Options.ConfigureServices?.Invoke(services);
             Options.ConfigureMvcOptions?.Invoke(mvcBuilder);
 
             if (Options.UseModuleAssemblies)
