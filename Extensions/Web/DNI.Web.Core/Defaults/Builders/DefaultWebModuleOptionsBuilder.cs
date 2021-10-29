@@ -1,6 +1,7 @@
 ﻿using DNI.Modules.Shared.Base.Builders;
 using DNI.Web.Shared.Abstractions;
 using DNI.Web.Shared.Abstractions.Builders;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,8 @@ namespace DNI.Web.Core.Defaults.Builders
         private readonly Assembly hostAssembly;
         private Action<IMvcBuilder> configureMvcOptions;
         private Action<Microsoft.AspNetCore.Hosting.IWebHostBuilder> configureAction;
-        private Action<IServiceCollection> configureServiceAction; 
+        private Action<IServiceCollection> configureServiceAction;
+        private Action<IApplicationBuilder> configureApplicationBuilder;
         private bool useModuleAssemblies;
 
         public DefaultWebModuleOptionsBuilder(Assembly hostAssembly)
@@ -23,9 +25,16 @@ namespace DNI.Web.Core.Defaults.Builders
 
         public override IWebModuleOptions BuildOptions(IEnumerable<Assembly> builtAssemblies)
         {
-            var opts = new DefaultWebModuleOptions(configureAction, configureMvcOptions, configureServiceAction, useModuleAssemblies, hostAssembly);
+            var opts = new DefaultWebModuleOptions(configureAction, configureMvcOptions, configureServiceAction, 
+                configureApplicationBuilder, useModuleAssemblies, hostAssembly);
             opts.AddRange(builtAssemblies);
             return opts;
+        }
+
+        public IWebModuleOptionsBuilder ConfigureApplicationBuilder(Action<IApplicationBuilder> configureApplicationBuilder)
+        {
+            this.configureApplicationBuilder = configureApplicationBuilder;
+            return this;
         }
 
         public IWebModuleOptionsBuilder ConfigureMvcOptions(Action<IMvcBuilder> mvcOptions)

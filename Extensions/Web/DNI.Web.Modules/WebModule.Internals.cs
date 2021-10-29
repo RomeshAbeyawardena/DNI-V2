@@ -52,6 +52,8 @@ namespace DNI.Web.Modules
             applicationBuilder
                 .UseRouting()
                 .UseEndpoints(e => e.MapControllers());
+
+            Options.ConfigureApplicationBuilder?.Invoke(applicationBuilder);
         }
     }
 }
