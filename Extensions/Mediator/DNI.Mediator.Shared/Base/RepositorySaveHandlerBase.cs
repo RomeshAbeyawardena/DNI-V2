@@ -13,7 +13,7 @@ using DNI.Mediator.Shared.Defaults;
 
 namespace DNI.Mediator.Shared.Base
 {
-    public abstract class RepositorySaveHandlerBase<TRequest, TModel, TKey> : InjectableServiceContainerBase, IRequestHandler<TRequest, IResponse<TKey>>
+    public abstract class RepositorySaveHandlerBase<TRequest, TModel, TKey> : InjectableServiceContainerBase, IRequestResponseHandler<TRequest, TKey>
         where TRequest : Abstractions.IRequest<TKey>
     {
         protected IAsyncRepository<TModel> Repository { get; }
