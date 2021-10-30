@@ -22,6 +22,7 @@ namespace DNI.Core.Defaults
         public DefaultValidationFailure(object model, Exception exception, string propertyName)
             : this(model, exception)
         {
+            PropertyName = propertyName;
             if (model != null && !string.IsNullOrWhiteSpace(propertyName))
             {
                 Property = model.GetType().GetProperty(propertyName);
@@ -33,7 +34,10 @@ namespace DNI.Core.Defaults
             Model = model;
             Exception = exception;
             Property = property;
+            PropertyName = property?.Name;
         }
+
+        public string PropertyName { get; }
 
         public object Model { get; }
 
