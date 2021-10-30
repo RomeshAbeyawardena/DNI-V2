@@ -22,7 +22,7 @@ namespace DNI.Core.Defaults
         public DefaultValidationFailure(object model, Exception exception, string propertyName)
             : this(model, exception)
         {
-            if (!string.IsNullOrWhiteSpace(propertyName))
+            if (model != null && !string.IsNullOrWhiteSpace(propertyName))
             {
                 Property = model.GetType().GetProperty(propertyName);
             }

@@ -1,4 +1,5 @@
-﻿using DNI.Modules.Core.Defaults;
+﻿using DNI.Extensions;
+using DNI.Modules.Core.Defaults;
 using DNI.Modules.Shared.Abstractions;
 using DNI.Shared.Attributes;
 using Microsoft.Extensions.DependencyInjection;
@@ -45,12 +46,7 @@ namespace DNI.Modules.Extensions
 
             foreach (var moduleType in moduleConfiguration.ModuleDescriptors)
             {
-                var requiresDependenciesAttribute = moduleType.Type.GetCustomAttribute<RequiresDependenciesAttribute>();
-
-                if (requiresDependenciesAttribute != null)
-                {
-                    assemblies.AddRange(requiresDependenciesAttribute.RequiredTypes.Select(a => a.Assembly));
-                }
+                assemblies.AddRange(moduleType.Type.GetRequiredDependencyAssemblies());
             }
 
             assemblies.AddRange(moduleConfiguration.ModuleDescriptors.Select(a => a.Type.Assembly).Distinct());

@@ -57,6 +57,8 @@ namespace DNI.Modules.Shared.Base.Builders
 
         public override TOptions Build()
         {
+
+
             return BuildOptions(assemblyCollection.ToArray());
         }
 

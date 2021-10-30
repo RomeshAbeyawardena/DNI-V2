@@ -20,7 +20,7 @@ namespace DNI.Mediator.Modules
         {
             var options = moduleConfiguration.GetOptions<IMediatorModuleOptions>(ModuleDescriptor);
 
-            List<Assembly> assemblyList = new();
+            List<Assembly> assemblyList = new(typeof(MediatorModule).GetRequiredDependencyAssemblies());
             assemblyList.AddRange(options);
 
             if (options.UseModuleAssemblies)

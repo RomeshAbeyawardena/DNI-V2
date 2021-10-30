@@ -10,6 +10,7 @@ namespace DNI.Mediator.Core.Defaults
     {
         private bool useModuleAssemblies;
         private IEnumerable<Type> handledExceptionTypes;
+
         public IMediatorModuleOptionsBuilder AddModuleAssemblies()
         {
             useModuleAssemblies = true;
