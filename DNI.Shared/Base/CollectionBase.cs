@@ -17,7 +17,7 @@ namespace DNI.Shared.Base
         public CollectionBase(IEnumerable<T> items, bool isReadonly = false)
 
         {
-            collection = new List<T>(items);
+            collection = new List<T>(items ?? Array.Empty<T>());
             IsReadOnly = isReadonly;
         }
 

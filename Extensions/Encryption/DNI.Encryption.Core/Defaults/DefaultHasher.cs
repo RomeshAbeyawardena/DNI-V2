@@ -23,7 +23,11 @@ namespace DNI.Encryption.Core.Defaults
             if (encryptionOptions == null)
                 encryptionOptions = this.encryptionOptions;
 
-            using (var hashAlgorithm = hasherAlogrithmFactory.GetHashAlgorithm(encryptionOptions.HashAlgorithm.Value))
+            Console.WriteLine("Using: {0}", encryptionOptions);
+
+            using (var hashAlgorithm = hasherAlogrithmFactory.GetHashAlgorithm(encryptionOptions.HashAlgorithm.HasValue 
+                ? encryptionOptions.HashAlgorithm.Value 
+                : Shared.Enumerations.HashAlgorithm.HMACSHA512))
                 return Convert.ToBase64String(hashAlgorithm.ComputeHash(encryptionOptions.Encoding.GetBytes(value)));
         }
     }

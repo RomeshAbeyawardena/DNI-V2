@@ -58,5 +58,10 @@ namespace DNI.Core.Defaults
             encryptionOptions.Key = key;
             return encryptionOptions;
         }
+
+        public override string ToString()
+        {
+            return $"{Encoding}, {Algorithm}, {HashAlgorithm}, {Key}, {InitialVector}";
+        }
     }
 }
