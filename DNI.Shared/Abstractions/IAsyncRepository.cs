@@ -7,7 +7,7 @@ namespace DNI.Shared.Abstractions
 {
     public interface IAsyncRepository<T> : IRepository<T>, IAsyncDisposable
     {
-        Task<T> FindAsync(IEnumerable<T> parameters, CancellationToken cancellationToken);
+        Task<T> FindAsync(IEnumerable<object> parameters, CancellationToken cancellationToken);
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

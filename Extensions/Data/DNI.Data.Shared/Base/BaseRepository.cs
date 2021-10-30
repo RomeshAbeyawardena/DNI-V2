@@ -15,7 +15,7 @@ namespace DNI.Data.Shared.Base
         public abstract ValueTask DisposeAsync();
         public abstract void OnDispose(bool disposing);
         public abstract T Find(params object[] parameters);
-        public abstract Task<T> FindAsync(IEnumerable<T> parameters, CancellationToken cancellationToken);
+        public abstract Task<T> FindAsync(IEnumerable<object> parameters, CancellationToken cancellationToken);
         public abstract int SaveChanges();
         public abstract Task<int> SaveChangesAsync(CancellationToken cancellationToken);
         public abstract void Update(T item);

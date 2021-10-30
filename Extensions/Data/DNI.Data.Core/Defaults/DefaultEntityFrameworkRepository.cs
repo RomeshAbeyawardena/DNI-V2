@@ -53,7 +53,7 @@ namespace DNI.Data.Core.Defaults
             return dbSet.Find(parameters);
         }
 
-        public override Task<T> FindAsync(IEnumerable<T> parameters, CancellationToken cancellationToken)
+        public override Task<T> FindAsync(IEnumerable<object> parameters, CancellationToken cancellationToken)
         {
             return dbSet.FindAsync(parameters.ToArray(), cancellationToken: cancellationToken).AsTask();
         }
