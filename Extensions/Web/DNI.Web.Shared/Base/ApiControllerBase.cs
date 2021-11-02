@@ -3,13 +3,13 @@
 namespace DNI.Web.Shared.Base
 {
     [Route("api/[version]/{controller}")]
-    [ApiVersion("1.0.0")]
+    [ApiController, ApiVersion("1.0.0")]
     public abstract class ApiVersionControllerBase : ControllerBase
     {
 
     }
 
-    [Route("api/{controller}")]
+    [ApiController, Route("api/{controller}")]
     public abstract class ApiControllerBase : ControllerBase
     {
 
