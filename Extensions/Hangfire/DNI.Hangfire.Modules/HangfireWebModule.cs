@@ -8,7 +8,6 @@ using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace DNI.Hangfire.Modules
 {

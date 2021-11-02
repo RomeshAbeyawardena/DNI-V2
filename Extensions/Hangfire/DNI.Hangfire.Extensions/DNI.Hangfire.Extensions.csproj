@@ -4,4 +4,10 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Modules\DNI.Modules.Extensions\DNI.Modules.Extensions.csproj" />
+    <ProjectReference Include="..\DNI.Hangfire.Core\DNI.Hangfire.Core.csproj" />
+    <ProjectReference Include="..\DNI.Hangfire.Shared\DNI.Hangfire.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

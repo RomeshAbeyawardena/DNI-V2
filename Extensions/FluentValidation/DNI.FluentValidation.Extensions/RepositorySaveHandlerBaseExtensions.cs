@@ -1,13 +1,10 @@
 ﻿using DNI.Mediator.Shared.Abstractions;
 using DNI.Mediator.Shared.Base;
 using DNI.Shared.Abstractions;
-using DNI.Shared.Defaults.Collections;
 using FluentValidation;
 using FluentValidation.Results;
-using DNI.Core.Defaults;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ValidationFailure = FluentValidation.Results.ValidationFailure;

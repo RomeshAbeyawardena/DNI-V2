@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using DNI.Core.Defaults;
-using DNI.Encryption.Shared.Abstractions;
 using DNI.FluentValidation.Extensions;
 using DNI.Mediator.Shared.Abstractions;
 using DNI.Mediator.Shared.Base;

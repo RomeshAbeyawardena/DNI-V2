@@ -15,6 +15,7 @@
     <ProjectReference Include="..\..\Web\DNI.Web.Extensions\DNI.Web.Extensions.csproj" />
     <ProjectReference Include="..\..\Web\DNI.Web.Modules\DNI.Web.Modules.csproj" />
     <ProjectReference Include="..\..\Web\DNI.Web.Shared\DNI.Web.Shared.csproj" />
+    <ProjectReference Include="..\DNI.Hangfire.Extensions\DNI.Hangfire.Extensions.csproj" />
     <ProjectReference Include="..\DNI.Hangfire.Shared\DNI.Hangfire.Shared.csproj" />
   </ItemGroup>
 
