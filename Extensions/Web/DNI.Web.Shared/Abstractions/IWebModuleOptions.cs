@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -15,5 +16,6 @@ namespace DNI.Web.Shared.Abstractions
         Action<IMvcBuilder> ConfigureMvcOptions { get; }
         bool UseModuleAssemblies { get; }
         Assembly HostAssembly { get; }
+        Action<IEndpointRouteBuilder> ConfigureEndpoints { get; }
     }
 }

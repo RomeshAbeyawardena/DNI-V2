@@ -2,6 +2,7 @@
 using DNI.Web.Shared.Abstractions;
 using DNI.Web.Shared.Abstractions.Builders;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace DNI.Web.Core.Defaults.Builders
         private Action<Microsoft.AspNetCore.Hosting.IWebHostBuilder> configureAction;
         private Action<IServiceCollection> configureServiceAction;
         private Action<IApplicationBuilder> configureApplicationBuilder;
+        private Action<IEndpointRouteBuilder> configureEndpointRouteBuilder;
         private bool useModuleAssemblies;
 
         public DefaultWebModuleOptionsBuilder(Assembly hostAssembly)
@@ -26,7 +28,7 @@ namespace DNI.Web.Core.Defaults.Builders
         public override IWebModuleOptions BuildOptions(IEnumerable<Assembly> builtAssemblies)
         {
             var opts = new DefaultWebModuleOptions(configureAction, configureMvcOptions, configureServiceAction, 
-                configureApplicationBuilder, useModuleAssemblies, hostAssembly);
+                configureApplicationBuilder, configureEndpointRouteBuilder, useModuleAssemblies, hostAssembly);
             opts.AddRange(builtAssemblies);
             return opts;
         }
@@ -81,6 +83,12 @@ namespace DNI.Web.Core.Defaults.Builders
         public IWebModuleOptionsBuilder ConfigureServices(Action<IServiceCollection> services)
         {
             configureServiceAction = services;
+            return this;
+        }
+
+        public IWebModuleOptionsBuilder ConfigureEndpoints(Action<IEndpointRouteBuilder> configure)
+        {
+            configureEndpointRouteBuilder = configure;
             return this;
         }
     }

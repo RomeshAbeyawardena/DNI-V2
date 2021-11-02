@@ -54,7 +54,7 @@ namespace DNI.Web.Modules
 
             Options.ConfigureApplicationBuilder?.Invoke(applicationBuilder);
 
-            applicationBuilder.UseEndpoints(e => e.MapControllers());
+            applicationBuilder.UseEndpoints(e => { e.MapControllers(); Options.ConfigureEndpoints?.Invoke(e); });
         }
     }
 }

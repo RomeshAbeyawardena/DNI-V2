@@ -1,6 +1,7 @@
 ﻿using DNI.Modules.Shared.Builders;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Reflection;
@@ -18,5 +19,6 @@ namespace DNI.Web.Shared.Abstractions.Builders
         IWebModuleOptionsBuilder ConfigureServices(Action<IServiceCollection> services);
         IWebModuleOptionsBuilder UseDefaultMvcOptions();
         IWebModuleOptionsBuilder AddModuleAssemblies();
+        IWebModuleOptionsBuilder ConfigureEndpoints(Action<IEndpointRouteBuilder> configure);
     }
 }

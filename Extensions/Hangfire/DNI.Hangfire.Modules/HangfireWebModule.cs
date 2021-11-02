@@ -6,12 +6,13 @@ using DNI.Modules.Shared.Base;
 using DNI.Web.Modules.Extensions;
 using Hangfire;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
 namespace DNI.Hangfire.Modules
 {
-    public class HangfireModule : ModuleBase
+    public class HangfireWebModule : ModuleBase
     {
         private readonly IModuleConfiguration moduleConfiguration;
 
@@ -20,9 +21,18 @@ namespace DNI.Hangfire.Modules
         public override void ConfigureModuleBuilder(IServiceCollection services, IModuleConfigurationBuilder moduleConfigurationBuilder)
         {
             moduleConfigurationBuilder
-                .ConfigureWebModule<HangfireModule>(configure => configure
+                .ConfigureWebModule<HangfireWebModule>(configure => configure
                     .ConfigureServices(ConfigureServices)
-                    .ConfigureApplicationBuilder(ConfigureAppBuilder));
+                    .ConfigureApplicationBuilder(ConfigureAppBuilder)
+                    .ConfigureEndpoints(ConfigureEndpoints));
+        }
+
+        private void ConfigureEndpoints(IEndpointRouteBuilder endpointRouteBuilder)
+        {
+            if (Options.UseHangfireDashboard)
+            {
+                endpointRouteBuilder.MapHangfireDashboard();
+            }
         }
 
         private void ConfigureAppBuilder(IApplicationBuilder applicationBuilder)
@@ -34,7 +44,7 @@ namespace DNI.Hangfire.Modules
             }
         }
 
-        public HangfireModule(IModuleConfiguration moduleConfiguration)
+        public HangfireWebModule(IModuleConfiguration moduleConfiguration)
         {
             this.moduleConfiguration = moduleConfiguration;
         }
