@@ -1,6 +1,5 @@
 ﻿using DNI.Modules.Extensions;
 using DNI.Modules.Shared.Abstractions;
-using DNI.Modules.Shared.Base;
 using DNI.Shared.Attributes;
 using DNI.Web.Shared.Abstractions;
 using Microsoft.AspNetCore.Hosting;
@@ -8,7 +7,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;

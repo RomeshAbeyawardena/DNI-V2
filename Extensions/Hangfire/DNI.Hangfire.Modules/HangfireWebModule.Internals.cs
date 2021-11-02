@@ -1,17 +1,16 @@
-﻿using Hangfire;
+﻿using DNI.Hangfire.Core.Defaults;
+using DNI.Hangfire.Shared.Abstractions;
+using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DNI.Hangfire.Modules
 {
     public partial class HangfireWebModule
     {
+        
         private void ConfigureEndpoints(IEndpointRouteBuilder endpointRouteBuilder)
         {
             if (Options.UseHangfireDashboard)
@@ -33,12 +32,15 @@ namespace DNI.Hangfire.Modules
         private void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddHangfire(c => ConfigureService(c))
+                .AddSingleton<IJobActivator, DefaultJobActivator>()
+                .AddHangfire(ConfigureService)
                 .AddHangfireServer();
         }
 
-        private void ConfigureService(IGlobalConfiguration configuration)
+        private void ConfigureService(IServiceProvider serviceProvider, IGlobalConfiguration configuration)
         {
+            var jobActivator = serviceProvider.GetRequiredService<IJobActivator>();
+            configuration.UseActivator(jobActivator.JobActivator);
             Options.ConfigureHangfire?.Invoke(configuration);
         }
     }

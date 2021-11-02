@@ -25,8 +25,6 @@ namespace DNI.Hangfire.Modules
         public HangfireWebModule(IModuleConfiguration moduleConfiguration)
             : base(moduleConfiguration)
         {
-            
         }
-
     }
 }
