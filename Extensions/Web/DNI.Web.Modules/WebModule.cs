@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,12 +19,14 @@ namespace DNI.Web.Modules
     public partial class WebModule : ModuleBase<IWebModuleOptions>
     {
         private IHost host;
-        
+        private readonly ILogger<WebModule> logger;
+
         public WebModule(
-            IModuleConfiguration moduleConfiguration)
+            IModuleConfiguration moduleConfiguration,
+            ILogger<WebModule> logger)
             : base(moduleConfiguration)
         {
-            
+            this.logger = logger;
         }
 
         public override void ConfigureServices(IServiceCollection services, IModuleConfiguration moduleConfiguration)
@@ -30,7 +34,7 @@ namespace DNI.Web.Modules
             moduleConfiguration.ServiceDescriptors = services.ToArray();
         }
 
-        public override Task OnStart(CancellationToken cancellationToken)
+        public override async Task OnStart(CancellationToken cancellationToken)
         {
             host = Host.CreateDefaultBuilder()
                 .ConfigureAppConfiguration(c => c
@@ -40,7 +44,9 @@ namespace DNI.Web.Modules
                 .ConfigureWebHostDefaults(ConfigureWebHost)
                 .Build();
 
-            return host.RunAsync(cancellationToken);
+            logger.LogTrace("Running module {0}:", ModuleDescriptor.Id);
+
+            await host.RunAsync(cancellationToken);
         }
 
         public override void OnDispose(bool disposing)

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -51,10 +52,13 @@ namespace DNI.Web.Modules
         private void Configure(IApplicationBuilder applicationBuilder)
         {
             applicationBuilder.UseRouting();
-
+            logger.LogTrace("Configuring module {0}", this.ModuleDescriptor.Id);
             Options.ConfigureApplicationBuilder?.Invoke(applicationBuilder);
 
-            applicationBuilder.UseEndpoints(e => { e.MapControllers(); Options.ConfigureEndpoints?.Invoke(e); });
+            applicationBuilder.UseEndpoints(e => { 
+                e.MapControllers(); 
+                Options.ConfigureEndpoints?.Invoke(e); 
+            });
         }
     }
 }
