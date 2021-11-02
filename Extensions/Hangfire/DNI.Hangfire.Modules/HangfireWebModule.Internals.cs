@@ -1,5 +1,6 @@
 ﻿using DNI.Hangfire.Core.Defaults;
 using DNI.Hangfire.Shared.Abstractions;
+using DNI.Web.Shared.Abstractions.Providers;
 using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
@@ -39,7 +40,9 @@ namespace DNI.Hangfire.Modules
 
         private void ConfigureService(IServiceProvider serviceProvider, IGlobalConfiguration configuration)
         {
-            var jobActivator = serviceProvider.GetRequiredService<IJobActivator>();
+            var webServiceProvider = serviceProvider.GetRequiredService<IWebServiceProvider>();
+
+            var jobActivator = webServiceProvider.GetRequiredService<IJobActivator>();
             configuration.UseActivator(jobActivator.JobActivator);
             Options.ConfigureHangfire?.Invoke(configuration);
         }
