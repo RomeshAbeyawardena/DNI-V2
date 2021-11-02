@@ -9,7 +9,7 @@ namespace DNI.Web.Shared.Base
 
     }
 
-    [ApiController, Route("api/{controller}")]
+    [Route("api/{controller}")]
     public abstract class ApiControllerBase : ControllerBase
     {
 

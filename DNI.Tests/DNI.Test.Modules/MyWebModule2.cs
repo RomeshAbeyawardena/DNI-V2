@@ -25,7 +25,8 @@ namespace DNI.Test.Modules
         {
             
             moduleConfigurationBuilder
-                .ConfigureWebModule<MyWebModule2>(options => options.AddModuleAssemblies().ConfigureWebHost(Configure))
+                .ConfigureWebModule<MyWebModule2>(options => options
+                .AddModuleAssemblies().ConfigureWebHost(Configure))
                 .ConfigureHangfireModule<MyWebModule2>(options => options
                     .UseHangfireDashboard()
                     .ConfigureOptions("/hangfire", new DashboardOptions(), null)

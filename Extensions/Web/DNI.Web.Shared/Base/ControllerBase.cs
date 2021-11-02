@@ -30,7 +30,8 @@ namespace DNI.Web.Shared.Base
             return true;
         }
 
-        public string GetAllowedOrigins()
+        [NonAction]
+        private string GetAllowedOrigins()
         {
             var origins = Type
                 .GetCustomAttributes<ClientControllerAllowedOriginsAttribute>()
@@ -49,7 +50,8 @@ namespace DNI.Web.Shared.Base
             return string.Empty;
         }
 
-        public string GetAllowedHeaders()
+        [NonAction]
+        private string GetAllowedHeaders()
         {
             var headers = Type
                 .GetCustomAttributes<ClientControllerAllowedHeadersAttribute>()
@@ -68,7 +70,8 @@ namespace DNI.Web.Shared.Base
             return string.Empty;
         }
 
-        public string GetAllowedMethods()
+        [NonAction]
+        private string GetAllowedMethods()
         {
             var methods = Type
                 .GetCustomAttributes<ClientControllerAllowedMethodsAttribute>()
@@ -87,7 +90,8 @@ namespace DNI.Web.Shared.Base
             return string.Empty;
         }
 
-        public string GetMaxAge()
+        [NonAction]
+        private string GetMaxAge()
         {
             var maxAgeAttribute = Type.GetCustomAttribute<ClientControllerMaxAgeAttribute>();
 

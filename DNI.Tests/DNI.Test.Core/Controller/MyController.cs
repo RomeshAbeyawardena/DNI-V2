@@ -1,6 +1,7 @@
 ﻿using DNI.Mediator.Extensions;
 using DNI.Tests.Shared.Models;
 using DNI.Tests.Shared.Request;
+using DNI.Web.Shared.Attributes;
 using DNI.Web.Shared.Base;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
@@ -8,6 +9,10 @@ using System.Threading.Tasks;
 
 namespace DNI.Test.Core.Controller
 {
+    [ClientController,
+     ClientControllerAllowedOrigins(ClientControllerAllowedOriginsAttribute.Any),
+     ClientControllerAllowedHeaders(ClientControllerAllowedOriginsAttribute.Any),
+     ClientControllerAllowedMethods(ClientControllerAllowedMethodsAttribute.Any)]
     public class MyController : ApiControllerBase
     {
         public Task<IActionResult> Test(CancellationToken cancellationToken)
