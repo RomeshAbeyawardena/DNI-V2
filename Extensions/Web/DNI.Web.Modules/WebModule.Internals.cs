@@ -55,9 +55,9 @@ namespace DNI.Web.Modules
             logger.LogTrace("Configuring module {0}", this.ModuleDescriptor.Id);
             Options.ConfigureApplicationBuilder?.Invoke(applicationBuilder);
 
-            applicationBuilder.UseEndpoints(e => { 
-                e.MapControllers(); 
-                Options.ConfigureEndpoints?.Invoke(e); 
+            applicationBuilder.UseEndpoints(e => {  
+                Options.ConfigureEndpoints?.Invoke(e);
+                e.MapControllers();
             });
         }
     }

@@ -1,6 +1,6 @@
 ﻿namespace DNI.Hangfire.Core
 {
-    public class Class1
+    public static class This
     {
     }
 }

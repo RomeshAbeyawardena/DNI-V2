@@ -103,22 +103,29 @@ namespace DNI.Web.Shared.Base
             return maxAgeAttribute.TimeSpanInSeconds;
         }
 
-        public override OkResult Ok()
+        [NonAction]
+        private void SetHeaders()
         {
             if (IsClientController())
             {
-                var headers = Request.Headers;
+                var headers = Response.Headers;
                 headers.Add("Access-Control-Allow-Origin", GetAllowedOrigins());
                 headers.Add("Access-Control-Allow-Methods", GetAllowedMethods());
                 headers.Add("Access-Control-Allow-Headers", GetAllowedHeaders());
                 headers.Add("Access-Control-Max-Age", GetMaxAge());
             }
 
+        }
+
+        public override OkResult Ok()
+        {
+            SetHeaders();   
             return base.Ok();
         }
 
         public override OkObjectResult Ok([ActionResultObjectValue] object value)
         {
+            SetHeaders();
             return base.Ok(value);
         }
 

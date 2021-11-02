@@ -11,7 +11,7 @@ namespace DNI.Test.Core.Controller
 {
     [ClientController,
      ClientControllerAllowedOrigins(ClientControllerAllowedOriginsAttribute.Any),
-     ClientControllerAllowedHeaders(ClientControllerAllowedOriginsAttribute.Any),
+     ClientControllerAllowedHeaders(ClientControllerAllowedHeadersAttribute.Any),
      ClientControllerAllowedMethods(ClientControllerAllowedMethodsAttribute.Any)]
     public class MyController : ApiControllerBase
     {
