@@ -14,17 +14,15 @@ using System.Threading.Tasks;
 namespace DNI.Web.Modules
 {
     [RequiresDependencies(typeof(DNI.Core.This))]
-    public partial class WebModule : ModuleBase
+    public partial class WebModule : ModuleBase<IWebModuleOptions>
     {
         private IHost host;
-        private readonly IModuleConfiguration moduleConfiguration;
-
-        private IWebModuleOptions Options => moduleConfiguration.GetOptions<IWebModuleOptions>(ModuleDescriptor);
-
+        
         public WebModule(
             IModuleConfiguration moduleConfiguration)
+            : base(moduleConfiguration)
         {
-            this.moduleConfiguration = moduleConfiguration;
+            
         }
 
         public override void ConfigureServices(IServiceCollection services, IModuleConfiguration moduleConfiguration)

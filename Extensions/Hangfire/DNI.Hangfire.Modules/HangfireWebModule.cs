@@ -2,18 +2,13 @@
 using DNI.Modules.Extensions;
 using DNI.Modules.Shared.Abstractions;
 using DNI.Modules.Shared.Abstractions.Builders;
-using DNI.Modules.Shared.Base;
 using DNI.Web.Modules.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DNI.Hangfire.Modules
 {
-    public partial class HangfireWebModule : ModuleBase
+    public partial class HangfireWebModule : ModuleBase<IHangfireModuleOptions>
     {
-        private readonly IModuleConfiguration moduleConfiguration;
-
-        private IHangfireModuleOptions Options => moduleConfiguration.GetOptions<IHangfireModuleOptions>(ModuleDescriptor);
-
         public override void ConfigureModuleBuilder(IServiceCollection services, IModuleConfigurationBuilder moduleConfigurationBuilder)
         {
             moduleConfigurationBuilder
@@ -24,8 +19,9 @@ namespace DNI.Hangfire.Modules
         }
 
         public HangfireWebModule(IModuleConfiguration moduleConfiguration)
+            : base(moduleConfiguration)
         {
-            this.moduleConfiguration = moduleConfiguration;
+            
         }
 
     }
