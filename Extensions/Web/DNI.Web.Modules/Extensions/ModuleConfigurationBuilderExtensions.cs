@@ -8,10 +8,17 @@ namespace DNI.Web.Modules.Extensions
 {
     public static class ModuleConfigurationBuilderExtensions
     {
-        public static IModuleConfigurationBuilder ConfigureWebModule<T>(this IModuleConfigurationBuilder builder, Action<IWebModuleOptionsBuilder> configure)
+
+        public static IModuleConfigurationBuilder ConfigureWebModule(this IModuleConfigurationBuilder builder, Type type, Action<IWebModuleOptionsBuilder> configure)
         {
-            builder.AddModule<WebModule>((moduleDescriptor, cfg) => cfg.ConfigureWebModule(moduleDescriptor, typeof(T).Assembly, configure));
+            builder.AddModule<WebModule>((moduleDescriptor, cfg) => cfg.ConfigureWebModule(moduleDescriptor, type.Assembly, configure));
             return builder;
         }
+
+        public static IModuleConfigurationBuilder ConfigureWebModule<T>(this IModuleConfigurationBuilder builder, Action<IWebModuleOptionsBuilder> configure)
+        {
+            return ConfigureWebModule(builder, typeof(T), configure);
+        }
+
     }
 }

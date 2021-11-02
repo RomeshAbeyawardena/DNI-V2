@@ -6,6 +6,7 @@ namespace DNI.Hangfire.Shared.Abstractions
 {
     public interface IHangfireModuleOptions
     {
+        Type ParentType { get; }
         bool UseHangfireDashboard { get; }
         Action<IGlobalConfiguration> ConfigureHangfire { get; }
         Action<IWebHostBuilder> ConfigureWebHost { get; }

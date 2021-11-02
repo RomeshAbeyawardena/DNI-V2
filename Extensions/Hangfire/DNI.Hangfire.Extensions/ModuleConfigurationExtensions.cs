@@ -8,10 +8,10 @@ namespace DNI.Hangfire.Extensions
 {
     public static class ModuleConfigurationExtensions
     {
-        public static IModuleConfiguration ConfigureHangfireModule(this IModuleConfiguration moduleConfiguration, IModuleDescriptor moduleDescriptor, Action<IHangfireModuleOptionsBuilder> configure)
+        public static IModuleConfiguration ConfigureHangfireModule(this IModuleConfiguration moduleConfiguration, IModuleDescriptor moduleDescriptor, Type parentType, Action<IHangfireModuleOptionsBuilder> configure)
         {
             var hangfireModuleOptionsBuilder = new DefaultHangfireModuleOptionsBuilder();
-
+            hangfireModuleOptionsBuilder.SetParentType(parentType);
             configure(hangfireModuleOptionsBuilder);
             moduleConfiguration.ConfigureOptions(moduleDescriptor, hangfireModuleOptionsBuilder.Build());
             return moduleConfiguration;

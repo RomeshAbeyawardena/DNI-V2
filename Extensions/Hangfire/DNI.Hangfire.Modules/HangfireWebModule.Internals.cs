@@ -18,6 +18,7 @@ namespace DNI.Hangfire.Modules
             {
                 endpointRouteBuilder.MapHangfireDashboard();
             }
+
         }
 
         private void ConfigureAppBuilder(IApplicationBuilder applicationBuilder)
@@ -38,7 +39,7 @@ namespace DNI.Hangfire.Modules
 
         private void ConfigureService(IGlobalConfiguration configuration)
         {
-            Options.ConfigureHangfire(configuration);
+            Options.ConfigureHangfire?.Invoke(configuration);
         }
     }
 }

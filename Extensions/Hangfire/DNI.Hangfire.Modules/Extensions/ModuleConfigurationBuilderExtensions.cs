@@ -8,9 +8,9 @@ namespace DNI.Hangfire.Modules.Extensions
 {
     public static class ModuleConfigurationBuilderExtensions
     {
-        public static IModuleConfigurationBuilder ConfigureHangfireModule(this IModuleConfigurationBuilder builder, Action<IHangfireModuleOptionsBuilder> configure)
+        public static IModuleConfigurationBuilder ConfigureHangfireModule<T>(this IModuleConfigurationBuilder builder, Action<IHangfireModuleOptionsBuilder> configure)
         {
-            return builder.AddModule<HangfireWebModule>((moduleDescriptor, configuration) => configuration.ConfigureHangfireModule(moduleDescriptor, configure));
+            return builder.AddModule<HangfireWebModule>((moduleDescriptor, configuration) => configuration.ConfigureHangfireModule(moduleDescriptor, typeof(T), configure));
         }
     }
 }

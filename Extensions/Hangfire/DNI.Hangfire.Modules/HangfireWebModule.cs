@@ -12,10 +12,10 @@ namespace DNI.Hangfire.Modules
         public override void ConfigureModuleBuilder(IServiceCollection services, IModuleConfigurationBuilder moduleConfigurationBuilder)
         {
             moduleConfigurationBuilder
-                .ConfigureWebModule<HangfireWebModule>(configure => configure
+                .ConfigureWebModule(Options.ParentType, configure => configure
                     .ConfigureServices(ConfigureServices)
                     .ConfigureApplicationBuilder(ConfigureAppBuilder)
-                    .ConfigureWebHost(Options.ConfigureWebHost)
+                    .ConfigureWebHost(w => Options.ConfigureWebHost?.Invoke(w))
                     .ConfigureEndpoints(ConfigureEndpoints));
         }
 

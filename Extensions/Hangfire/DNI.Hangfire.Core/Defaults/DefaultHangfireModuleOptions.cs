@@ -9,8 +9,8 @@ namespace DNI.Hangfire.Core.Defaults
     {
         public bool UseHangfireDashboard { get; }
 
-        public DefaultHangfireModuleOptions(bool useHangfireDashboard, Action<IGlobalConfiguration> configureHangfire, string pathMatch, 
-            DashboardOptions dashboardOptions, JobStorage jobStorage, Action<IWebHostBuilder> configureWebHost)
+        public DefaultHangfireModuleOptions(bool useHangfireDashboard, Action<IGlobalConfiguration> configureHangfire, string pathMatch,
+            DashboardOptions dashboardOptions, JobStorage jobStorage, Action<IWebHostBuilder> configureWebHost, Type parentType)
         {
             UseHangfireDashboard = useHangfireDashboard;
             ConfigureHangfire = configureHangfire;
@@ -18,6 +18,7 @@ namespace DNI.Hangfire.Core.Defaults
             DashboardOptions = dashboardOptions;
             JobStorage = jobStorage;
             ConfigureWebHost = configureWebHost;
+            ParentType = parentType;
         }
 
         public Action<IWebHostBuilder> ConfigureWebHost { get; }
@@ -29,5 +30,7 @@ namespace DNI.Hangfire.Core.Defaults
         public DashboardOptions DashboardOptions { get; }
 
         public JobStorage JobStorage { get; }
+
+        public Type ParentType { get; }
     }
 }

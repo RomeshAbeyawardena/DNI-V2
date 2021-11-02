@@ -16,11 +16,18 @@ namespace DNI.Hangfire.Core.Defaults.Builders
         private string pathMatch;
         private DashboardOptions dashboardOptions;
         private JobStorage jobStorage;
+        private Type parentType;
 
         public override IHangfireModuleOptions Build()
         {
             return new DefaultHangfireModuleOptions(useHangfireDashboard, configureHangfire, 
-                pathMatch, dashboardOptions, jobStorage, configureWebHost);
+                pathMatch, dashboardOptions, jobStorage, configureWebHost, parentType);
+        }
+
+        public IHangfireModuleOptionsBuilder SetParentType(Type type)
+        {
+            parentType = type;
+            return this;
         }
 
         public IHangfireModuleOptionsBuilder ConfigureWebHost(Action<IWebHostBuilder> configure)
