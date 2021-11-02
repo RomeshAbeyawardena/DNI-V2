@@ -45,12 +45,12 @@ namespace DNI.Web.Modules
 
         public override void OnDispose(bool disposing)
         {
-            host.Dispose();
+            host?.Dispose();
         }
 
         public override Task OnStop(CancellationToken cancellationToken)
         {
-            return host.StopAsync(cancellationToken);
+            return host?.StopAsync(cancellationToken);
         }
     }
 }
