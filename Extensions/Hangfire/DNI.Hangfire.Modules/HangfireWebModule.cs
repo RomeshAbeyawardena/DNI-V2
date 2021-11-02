@@ -15,6 +15,7 @@ namespace DNI.Hangfire.Modules
                 .ConfigureWebModule<HangfireWebModule>(configure => configure
                     .ConfigureServices(ConfigureServices)
                     .ConfigureApplicationBuilder(ConfigureAppBuilder)
+                    .ConfigureWebHost(Options.ConfigureWebHost)
                     .ConfigureEndpoints(ConfigureEndpoints));
         }
 

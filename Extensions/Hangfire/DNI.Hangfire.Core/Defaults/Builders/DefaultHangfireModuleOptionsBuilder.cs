@@ -2,6 +2,7 @@
 using DNI.Hangfire.Shared.Abstractions.Builder;
 using DNI.Modules.Shared.Base.Buillders;
 using Hangfire;
+using Microsoft.AspNetCore.Hosting;
 using System;
 
 namespace DNI.Hangfire.Core.Defaults.Builders
@@ -11,13 +12,21 @@ namespace DNI.Hangfire.Core.Defaults.Builders
     {
         private bool useHangfireDashboard;
         private Action<IGlobalConfiguration> configureHangfire;
+        private Action<IWebHostBuilder> configureWebHost;
         private string pathMatch;
         private DashboardOptions dashboardOptions;
         private JobStorage jobStorage;
 
         public override IHangfireModuleOptions Build()
         {
-            return new DefaultHangfireModuleOptions(useHangfireDashboard, configureHangfire, pathMatch, dashboardOptions, jobStorage);
+            return new DefaultHangfireModuleOptions(useHangfireDashboard, configureHangfire, 
+                pathMatch, dashboardOptions, jobStorage, configureWebHost);
+        }
+
+        public IHangfireModuleOptionsBuilder ConfigureWebHost(Action<IWebHostBuilder> configure)
+        {
+            configureWebHost = configure;
+            return this;
         }
 
         public IHangfireModuleOptionsBuilder ConfigureHangfire(Action<IGlobalConfiguration> configure)

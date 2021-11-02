@@ -1,5 +1,6 @@
 ﻿using DNI.Modules.Shared.Builders;
 using Hangfire;
+using Microsoft.AspNetCore.Hosting;
 using System;
 
 namespace DNI.Hangfire.Shared.Abstractions.Builder
@@ -8,6 +9,7 @@ namespace DNI.Hangfire.Shared.Abstractions.Builder
     {
         IHangfireModuleOptionsBuilder UseHangfireDashboard();
         IHangfireModuleOptionsBuilder ConfigureHangfire(Action<IGlobalConfiguration> configure);
+        IHangfireModuleOptionsBuilder ConfigureWebHost(Action<IWebHostBuilder> configure);
         IHangfireModuleOptionsBuilder ConfigureOptions(string pathMatch,
             DashboardOptions dashboardOptions,
             JobStorage jobStorage);

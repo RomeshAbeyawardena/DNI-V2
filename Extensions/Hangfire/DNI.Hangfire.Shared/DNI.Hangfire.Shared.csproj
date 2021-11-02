@@ -8,5 +8,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Modules\DNI.Modules.Shared\DNI.Modules.Shared.csproj" />
+    <ProjectReference Include="..\..\Web\DNI.Web.Shared\DNI.Web.Shared.csproj" />
   </ItemGroup>
 </Project>

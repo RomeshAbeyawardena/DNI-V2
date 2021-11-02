@@ -1,5 +1,6 @@
 ﻿using DNI.Hangfire.Shared.Abstractions;
 using Hangfire;
+using Microsoft.AspNetCore.Hosting;
 using System;
 
 namespace DNI.Hangfire.Core.Defaults
@@ -8,14 +9,18 @@ namespace DNI.Hangfire.Core.Defaults
     {
         public bool UseHangfireDashboard { get; }
 
-        public DefaultHangfireModuleOptions(bool useHangfireDashboard, Action<IGlobalConfiguration> configureHangfire, string pathMatch, DashboardOptions dashboardOptions, JobStorage jobStorage)
+        public DefaultHangfireModuleOptions(bool useHangfireDashboard, Action<IGlobalConfiguration> configureHangfire, string pathMatch, 
+            DashboardOptions dashboardOptions, JobStorage jobStorage, Action<IWebHostBuilder> configureWebHost)
         {
             UseHangfireDashboard = useHangfireDashboard;
             ConfigureHangfire = configureHangfire;
             PathMatch = pathMatch;
             DashboardOptions = dashboardOptions;
             JobStorage = jobStorage;
+            ConfigureWebHost = configureWebHost;
         }
+
+        public Action<IWebHostBuilder> ConfigureWebHost { get; }
 
         public Action<IGlobalConfiguration> ConfigureHangfire { get; }
 
