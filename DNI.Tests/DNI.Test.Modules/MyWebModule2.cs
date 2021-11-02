@@ -19,7 +19,12 @@ namespace DNI.Test.Modules
                 .ConfigureHangfireModule<MyWebModule2>(options => options
                     .UseHangfireDashboard()
                     .ConfigureOptions("/hangfire", new DashboardOptions(), null)
-                    .ConfigureWebHost(c => c.ConfigureKestrel(a => a.Listen(IPAddress.Any, 6050))));
+                    .ConfigureWebHost(ConfigureHangFire));
+        }
+
+        private void ConfigureHangFire(IWebHostBuilder webHostBuilder)
+        {
+            webHostBuilder.ConfigureKestrel(a => a.Listen(IPAddress.Any, 5060));
         }
 
         private void Configure(IWebHostBuilder obj)
