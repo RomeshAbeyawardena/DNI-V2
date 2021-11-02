@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DNI.Web.Shared.Attributes
 {
-    [AttributeUsage(AttributeTargets.Class)]
+    [AttributeUsage(AttributeTargets.Class, Inherited = true, AllowMultiple = true)]
     public sealed class ClientControllerAllowedOriginsAttribute : Attribute
     {
         public const string Any = "AnyOrigin";
