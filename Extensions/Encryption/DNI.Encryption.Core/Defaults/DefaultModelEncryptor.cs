@@ -50,7 +50,7 @@ namespace DNI.Core.Defaults
 
             var properties = typeof(T).GetProperties();
 
-            if(model == null)
+            if (model == null)
             {
                 return newInstance;
             }

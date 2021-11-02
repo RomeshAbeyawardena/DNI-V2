@@ -27,7 +27,7 @@ namespace DNI.Web.Core.Defaults.Builders
 
         public override IWebModuleOptions BuildOptions(IEnumerable<Assembly> builtAssemblies)
         {
-            var opts = new DefaultWebModuleOptions(configureAction, configureMvcOptions, configureServiceAction, 
+            var opts = new DefaultWebModuleOptions(configureAction, configureMvcOptions, configureServiceAction,
                 configureApplicationBuilder, configureEndpointRouteBuilder, useModuleAssemblies, hostAssembly);
             opts.AddRange(builtAssemblies);
             return opts;

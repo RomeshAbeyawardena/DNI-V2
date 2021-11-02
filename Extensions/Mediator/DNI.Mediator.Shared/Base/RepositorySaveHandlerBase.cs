@@ -1,13 +1,13 @@
 ﻿using DNI.Mediator.Shared.Abstractions;
+using DNI.Mediator.Shared.Defaults;
+using DNI.Mediator.Shared.Extensions;
 using DNI.Shared.Abstractions;
 using DNI.Shared.Enumerations;
 using DNI.Shared.Exceptions;
 using DNI.Shared.Extensions;
-using DNI.Mediator.Shared.Extensions;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using DNI.Mediator.Shared.Defaults;
 
 namespace DNI.Mediator.Shared.Base
 {

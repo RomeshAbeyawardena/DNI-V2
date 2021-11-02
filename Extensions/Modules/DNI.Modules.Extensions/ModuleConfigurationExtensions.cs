@@ -38,7 +38,7 @@ namespace DNI.Modules.Extensions
         {
             var assemblies = new List<Assembly>();
 
-            if(moduleConfiguration.GlobalAssemblies != null && moduleConfiguration.GlobalAssemblies.Any())
+            if (moduleConfiguration.GlobalAssemblies != null && moduleConfiguration.GlobalAssemblies.Any())
             {
                 assemblies.AddRange(moduleConfiguration.GlobalAssemblies.Distinct());
             }

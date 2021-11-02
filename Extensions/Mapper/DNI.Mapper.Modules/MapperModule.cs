@@ -16,9 +16,9 @@ namespace DNI.Mapper.Modules
             var mapperOptions = moduleConfiguration.GetOptions<IMapperOptions>(ModuleDescriptor);
 
             List<Assembly> assemblyList = new();
-            if (mapperOptions.Any()) 
+            if (mapperOptions.Any())
             {
-                assemblyList.AddRange(mapperOptions); 
+                assemblyList.AddRange(mapperOptions);
             }
 
             if (mapperOptions.UseModuleAssemblies)

@@ -5,7 +5,7 @@ namespace DNI.Modules.Core.Extensions
 {
     public static class ModuleConfigurationExtensions
     {
-        public static bool ApplyConfiguration(this IModuleConfiguration moduleConfiguration, 
+        public static bool ApplyConfiguration(this IModuleConfiguration moduleConfiguration,
             IModuleConfigurationBuilder moduleConfigurationBuilder, out int newCount)
         {
             var ct = moduleConfiguration.ModuleDescriptors.Count;

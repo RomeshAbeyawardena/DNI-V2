@@ -6,7 +6,7 @@ namespace DNI.Web.Shared.Base
     [ApiVersion("1.0.0")]
     public abstract class ApiVersionControllerBase : ControllerBase
     {
-        
+
     }
 
     [Route("api/{controller}")]

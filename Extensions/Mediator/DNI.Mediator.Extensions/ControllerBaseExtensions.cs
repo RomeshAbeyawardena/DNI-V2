@@ -28,7 +28,7 @@ namespace DNI.Mediator.Extensions
                 return controllerBase.Ok(response.Result);
             }
 
-            if(response.ValidationFailures != null 
+            if (response.ValidationFailures != null
                 && response.ValidationFailures.Any())
             {
                 response.ValidationFailures.ForEach(a => controllerBase.ModelState.AddModelError(a.Property?.Name ?? a.PropertyName, a.Exception.Message));

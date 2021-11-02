@@ -14,7 +14,7 @@ namespace DNI.Tests
         [Test]
         public void CalculateETag()
         {
-            Customer customer = new() 
+            Customer customer = new()
             {
                 BusinessEmailAddress = "lisa.wednesbury@business.com",
                 DateOfBirth = DateTime.Parse("1984-11-12"),

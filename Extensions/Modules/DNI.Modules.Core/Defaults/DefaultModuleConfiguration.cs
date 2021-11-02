@@ -31,14 +31,14 @@ namespace DNI.Modules.Core.Defaults
 
         public ICompiledModuleConfiguration Compile(IServiceProvider serviceProvider, IEnumerable<IModule> configuredModules, ILogger logger)
         {
-            
+
             logger.LogInformation("Compiling modules for startup...");
             StringBuilder stringBuilder = new("Modules: \tUnique Id\t\t\t\tName\r\n");
             var activatedModuleList = new List<IModule>();
             foreach (var module in configuredModules)
             {
                 stringBuilder.AppendLine($"   [x]   \t{module.UniqueId}\t{module.ModuleType.Name} ({module.ModuleDescriptor.Id})");
-                
+
                 if (ModuleDescriptors.Contains(module.ModuleDescriptor))
                 {
                     var activatedModule = serviceProvider.Activate<IModule>(module.GetType(), out var disposables);

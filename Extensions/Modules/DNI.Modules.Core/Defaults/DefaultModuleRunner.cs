@@ -23,7 +23,7 @@ namespace DNI.Modules.Core.Defaults
         private readonly List<Action<IServiceCollection, IModuleConfiguration>> serviceConfigurations;
         private readonly List<IModule> configuredModules;
         private readonly ILogger<IModuleRunner> logger;
-        
+
         public DefaultModuleRunner(
             IServiceCollection serviceCollection,
             IServiceProvider serviceProvider,
@@ -78,7 +78,7 @@ namespace DNI.Modules.Core.Defaults
             logger.LogInformation("Module runner started in {0}", stopwatch.Elapsed);
 
             List<Task> taskList = new();
-            foreach(var module in compiledModuleConfiguration.Modules)
+            foreach (var module in compiledModuleConfiguration.Modules)
             {
                 taskList.Add(OnStartModule(module, cancellationToken));
             }

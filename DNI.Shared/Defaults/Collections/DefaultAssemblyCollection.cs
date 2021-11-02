@@ -6,6 +6,6 @@ namespace DNI.Shared.Defaults.Collections
 {
     public class DefaultAssemblyCollection : CollectionBase<Assembly>, IAssemblyCollection
     {
-        
+
     }
 }

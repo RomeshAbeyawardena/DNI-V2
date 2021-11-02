@@ -10,7 +10,7 @@ namespace DNI.Shared.Extensions
         {
             var destinationList = new List<T>(destination);
 
-            foreach(var item in items)
+            foreach (var item in items)
             {
                 if (!destination.Contains(item))
                 {

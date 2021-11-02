@@ -25,7 +25,7 @@ namespace DNI.Modules.Core.Defaults
             return module.StartAsync(cancellationToken);
         }
 
-        private bool ConfigureModulesBuilder(IServiceCollection services, 
+        private bool ConfigureModulesBuilder(IServiceCollection services,
             IModuleConfigurationBuilder moduleConfigurationBuilder, out int newCount)
         {
             newCount = 0;

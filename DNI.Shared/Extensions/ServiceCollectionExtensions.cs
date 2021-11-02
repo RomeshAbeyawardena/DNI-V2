@@ -9,7 +9,7 @@ namespace DNI.Shared.Extensions
         {
             var distinctServices = services.Distinct().ToArray();
 
-            if(distinctServices.Length < services.Count)
+            if (distinctServices.Length < services.Count)
             {
                 services.Clear();
 

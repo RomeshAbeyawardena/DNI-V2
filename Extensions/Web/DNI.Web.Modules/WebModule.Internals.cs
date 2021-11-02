@@ -43,7 +43,7 @@ namespace DNI.Web.Modules
         {
             webHostBuilder
                 .Configure(Configure);
-            
+
             Options.ConfigureWebHost?.Invoke(webHostBuilder);
 
         }

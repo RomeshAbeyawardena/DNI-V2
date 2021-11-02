@@ -26,7 +26,7 @@ namespace DNI.Hangfire.Core.Defaults.Builders
             return this;
         }
 
-        public IHangfireModuleOptionsBuilder ConfigureOptions(string pathMatch, 
+        public IHangfireModuleOptionsBuilder ConfigureOptions(string pathMatch,
             DashboardOptions dashboardOptions, JobStorage jobStorage)
         {
             this.pathMatch = pathMatch;

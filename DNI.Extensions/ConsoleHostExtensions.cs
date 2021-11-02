@@ -11,7 +11,8 @@ namespace DNI.Extensions
     {
         public static IConsoleHost AddDefaultConfiguration(this IConsoleHost consoleHost, Assembly assembly, Action<IConfigurationBuilder> configure = null)
         {
-            return consoleHost.AddConfiguration(c => {
+            return consoleHost.AddConfiguration(c =>
+            {
                 configure?.Invoke(c);
                 c.AddInMemoryCollection()
                 .AddJsonFile("appsettings.json")

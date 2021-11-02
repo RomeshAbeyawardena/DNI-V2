@@ -1,7 +1,7 @@
 ﻿using DNI.Shared.Abstractions;
 using DNI.Shared.Attributes;
-using System;
 using Microsoft.Extensions.Internal;
+using System;
 
 namespace DNI.Core.Defaults
 {
@@ -17,8 +17,8 @@ namespace DNI.Core.Defaults
 
         public DateTime GetDateTime(bool useUtc)
         {
-            return useUtc 
-                ? systemClock.UtcNow.DateTime 
+            return useUtc
+                ? systemClock.UtcNow.DateTime
                 : systemClock.UtcNow.LocalDateTime;
         }
 

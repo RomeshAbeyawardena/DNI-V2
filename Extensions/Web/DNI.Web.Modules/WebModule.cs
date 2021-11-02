@@ -41,7 +41,7 @@ namespace DNI.Web.Modules
                 .ConfigureServices(ConfigureServices)
                 .ConfigureWebHostDefaults(ConfigureWebHost)
                 .Build();
-                
+
             return host.RunAsync(cancellationToken);
         }
 

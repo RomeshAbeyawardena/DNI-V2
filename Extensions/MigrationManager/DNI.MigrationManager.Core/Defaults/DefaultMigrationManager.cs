@@ -23,7 +23,7 @@ namespace DNI.MigrationManager.Core.Defaults
         }
 
         private readonly Dictionary<string, IMigrationOptions> migrationOptionsDictionary;
-        
+
 
         public ConcurrentQueue<IMigrationOptions> Migrations => this;
 

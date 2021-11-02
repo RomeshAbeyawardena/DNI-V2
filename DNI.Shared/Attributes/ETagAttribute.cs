@@ -9,6 +9,6 @@ namespace DNI.Shared.Attributes
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
     public class ETagAttribute : Attribute
     {
-        
+
     }
 }

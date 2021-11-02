@@ -8,7 +8,7 @@ namespace DNI.Modules.Shared.Attributes
         public ModuleDescriptorAttribute(
             string name,
             string uniqueIdentifier = default,
-            string description = default, 
+            string description = default,
             bool allowMultiple = false)
         {
             Name = name;

@@ -9,7 +9,7 @@ namespace DNI.Mapper.Core.Defaults
     public class DefaultMapperOptionsBuilder : ModuleOptionsAssemblyBuilderBase<IMapperOptions>, IMapperOptionsBuilder
     {
         private bool useModuleAssemblies = false;
-        
+
         public new IMapperOptionsBuilder AddAssembly(Assembly assembly)
         {
             base.AddAssembly(assembly);

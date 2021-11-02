@@ -5,6 +5,6 @@ namespace DNI.Modules.Core.Defaults
 {
     public class DefaultAssemblyOptionsBuilder : AssemblyOptionsBuilderBase, IAssemblyOptionsBuilder
     {
-        
+
     }
 }

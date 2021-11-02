@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using DNI.Core.Defaults;
+﻿using DNI.Core.Defaults;
 using DNI.FluentValidation.Extensions;
 using DNI.Mediator.Shared.Abstractions;
 using DNI.Mediator.Shared.Base;
@@ -11,12 +7,16 @@ using DNI.Shared.Enumerations;
 using DNI.Tests.Shared.Extensions;
 using DNI.Tests.Shared.Models;
 using DNI.Tests.Shared.Request;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DNI.Test.Core.Handlers
 {
     public class TestSaveRequestHandler : EncryptedRepositorySaveHandlerBase<TestSaveRequest, Customer>
     {
-        public TestSaveRequestHandler(IServiceProvider serviceProvider) 
+        public TestSaveRequestHandler(IServiceProvider serviceProvider)
             : base(serviceProvider)
         {
         }
@@ -63,7 +63,7 @@ namespace DNI.Test.Core.Handlers
             this.Validate(model, cancellationToken);
 
             List<IValidationFailure> validationFailuresList = new();
-            if(string.IsNullOrWhiteSpace(model.FirstName))
+            if (string.IsNullOrWhiteSpace(model.FirstName))
                 validationFailuresList.Add(ValidationFailure.Create(model, new ArgumentException("First name must be more than 2 characters long", "FirstName"), "FirstName"));
 
             if (string.IsNullOrWhiteSpace(model.LastName))

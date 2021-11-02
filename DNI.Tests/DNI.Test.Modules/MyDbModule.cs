@@ -1,16 +1,15 @@
 ﻿using DNI.Data.Modules;
+using DNI.Encryption.Extensions;
+using DNI.Encryption.Modules.Extensions;
+using DNI.FluentValidation.Modules.Extensions;
+using DNI.Mapper.Modules.Extensions;
 using DNI.Modules.Shared.Abstractions.Builders;
 using DNI.Modules.Shared.Base;
+using DNI.Test.Core;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
-using DNI.Mapper.Modules.Extensions;
-
 using System;
-using DNI.Encryption.Modules.Extensions;
-using DNI.Encryption.Extensions;
-using DNI.Test.Core;
-using DNI.FluentValidation.Modules.Extensions;
 
 namespace DNI.Test.Modules
 {
@@ -18,7 +17,7 @@ namespace DNI.Test.Modules
     {
         public override void ConfigureModuleBuilder(IServiceCollection services, IModuleConfigurationBuilder moduleConfigurationBuilder)
         {
-          
+
             moduleConfigurationBuilder
                 .ConfigureDbContextModule(builder => builder
                     .AddDbContext<MyDbContext>(ConfigureDbBuilder, ServiceLifetime.Scoped))

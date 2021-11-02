@@ -43,8 +43,9 @@ namespace DNI.Mediator.Core.Defaults
 
         public override IMediatorModuleOptions BuildOptions(IEnumerable<Assembly> builtAssemblies)
         {
-            return new DefaultMediatorModuleOptions(builtAssemblies, useModuleAssemblies) { 
-                HandledExceptionTypes = handledExceptionTypes 
+            return new DefaultMediatorModuleOptions(builtAssemblies, useModuleAssemblies)
+            {
+                HandledExceptionTypes = handledExceptionTypes
             };
         }
     }

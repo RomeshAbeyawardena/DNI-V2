@@ -1,8 +1,8 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using DNI.Encryption.Shared.Attributes;
+﻿using DNI.Encryption.Shared.Attributes;
 using DNI.Encryption.Shared.Enumerations;
 using DNI.Shared.Attributes;
+using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace DNI.Tests.Shared.Models
 {

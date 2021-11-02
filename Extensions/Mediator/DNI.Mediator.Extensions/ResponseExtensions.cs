@@ -11,7 +11,7 @@ namespace DNI.Mediator.Extensions
     public static class ResponseExtensions
     {
         public async static Task<IResponse<TResult>> Response<TRequest, TResult>(
-            this IRequestResponseHandler<TRequest, TResult> requestHandler, 
+            this IRequestResponseHandler<TRequest, TResult> requestHandler,
             Func<TResult, bool> validationPassed, Func<IValidationFailureCollection, Task<TResult>> @do)
             where TRequest : IRequest<TResult>
         {

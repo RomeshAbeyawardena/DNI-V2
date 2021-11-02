@@ -28,8 +28,8 @@ namespace DNI.Shared.Extensions
         public static IPayload ExtractPayload(this string value, IPayloadOptions payloadOptions = default, Encoding encoding = default)
         {
             GetEncodingIfNull(ref encoding);
-            
-            if(payloadOptions == null)
+
+            if (payloadOptions == null)
             {
                 payloadOptions = DefaultPayloadOptions.Default;
             }

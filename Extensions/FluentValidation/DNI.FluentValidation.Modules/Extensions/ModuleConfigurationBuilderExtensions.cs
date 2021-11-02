@@ -8,7 +8,7 @@ namespace DNI.FluentValidation.Modules.Extensions
 {
     public static class ModuleConfigurationBuilderExtensions
     {
-        public static IModuleConfigurationBuilder ConfigureFluentValidation(this IModuleConfigurationBuilder moduleConfigurationBuilder, 
+        public static IModuleConfigurationBuilder ConfigureFluentValidation(this IModuleConfigurationBuilder moduleConfigurationBuilder,
             Action<IFluentValidationModuleOptionsBuilder> configure)
         {
             return moduleConfigurationBuilder.AddModule<FluentValidationModule>((moduleDescriptor, moduleConfiguration) => moduleConfiguration.ConfigureFluentValidation(moduleDescriptor, configure));

@@ -1,8 +1,8 @@
 ﻿using DNI.FluentValidation.Shared.Abstractions;
 using DNI.FluentValidation.Shared.Abstractions.Builders;
+using DNI.Modules.Shared.Base.Builders;
 using System;
 using System.Collections.Generic;
-using DNI.Modules.Shared.Base.Builders;
 using System.Reflection;
 
 namespace DNI.FluentValidation.Core.Defaults.Builders

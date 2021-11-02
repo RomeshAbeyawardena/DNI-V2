@@ -7,7 +7,7 @@ namespace DNI.Modules.Core.Defaults
 {
     public class DefaultModuleDescriptor : IModuleDescriptor
     {
-        public DefaultModuleDescriptor(Type type, string usage, Guid? identifier = null, 
+        public DefaultModuleDescriptor(Type type, string usage, Guid? identifier = null,
             bool enabled = true)
         {
             Type = type;

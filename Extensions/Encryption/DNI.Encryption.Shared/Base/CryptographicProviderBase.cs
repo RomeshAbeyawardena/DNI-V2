@@ -19,7 +19,7 @@ namespace DNI.Encryption.Shared.Base
             string value,
             EncryptionCaseConvention encryptionCaseConvention)
         {
-            switch(encryptionCaseConvention)
+            switch (encryptionCaseConvention)
             {
                 default:
                 case EncryptionCaseConvention.Default:
@@ -27,7 +27,7 @@ namespace DNI.Encryption.Shared.Base
                     return value.ToUpperInvariant();
                 case EncryptionCaseConvention.Lowercase:
                     return value.ToLowerInvariant();
-            }    
+            }
         }
 
         protected T ExecuteSymmetricOperation<T>(

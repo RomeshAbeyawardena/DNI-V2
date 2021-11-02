@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace DNI.Mediator.Modules.Defaults
 {
-    public class DefaultExceptionHandler<TRequest, TResponse, TException> 
+    public class DefaultExceptionHandler<TRequest, TResponse, TException>
         : IRequestExceptionHandler<TRequest, TResponse, TException>
         where TException : Exception
     {
@@ -24,7 +24,7 @@ namespace DNI.Mediator.Modules.Defaults
             this.moduleConfiguration = moduleConfiguration;
         }
 
-        public Task Handle(TRequest request, TException exception, 
+        public Task Handle(TRequest request, TException exception,
             RequestExceptionHandlerState<TResponse> state, CancellationToken cancellationToken)
         {
             IEnumerable<IValidationFailure> GetValidationFailures()
@@ -41,14 +41,14 @@ namespace DNI.Mediator.Modules.Defaults
 
             List<Type> handledExceptionTypesList = new();
             handledExceptionTypesList.Add(typeof(ModelStateException));
-            if(options.HandledExceptionTypes != null)
+            if (options.HandledExceptionTypes != null)
             {
                 handledExceptionTypesList.AddRange(options.HandledExceptionTypes);
             }
 
-            if(handledExceptionTypesList.Any(a => a == exception.GetType()))
+            if (handledExceptionTypesList.Any(a => a == exception.GetType()))
             {
-                
+
                 var responseType = typeof(TResponse);
                 var responseBaseType = typeof(IResponse);
                 var responseBaseGenericType = typeof(ResponseBase<>);

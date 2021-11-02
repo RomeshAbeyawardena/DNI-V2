@@ -25,8 +25,8 @@ namespace DNI.Encryption.Core.Defaults
 
             Console.WriteLine("Using: {0}", encryptionOptions);
 
-            using (var hashAlgorithm = hasherAlogrithmFactory.GetHashAlgorithm(encryptionOptions.HashAlgorithm.HasValue 
-                ? encryptionOptions.HashAlgorithm.Value 
+            using (var hashAlgorithm = hasherAlogrithmFactory.GetHashAlgorithm(encryptionOptions.HashAlgorithm.HasValue
+                ? encryptionOptions.HashAlgorithm.Value
                 : Shared.Enumerations.HashAlgorithm.HMACSHA512))
                 return Convert.ToBase64String(hashAlgorithm.ComputeHash(encryptionOptions.Encoding.GetBytes(value)));
         }

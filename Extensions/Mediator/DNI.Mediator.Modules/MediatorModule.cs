@@ -15,7 +15,7 @@ namespace DNI.Mediator.Modules
     [RequiresDependencies(typeof(MediatorModule))]
     public class MediatorModule : ModuleBase
     {
-        public override void ConfigureServices(IServiceCollection services, 
+        public override void ConfigureServices(IServiceCollection services,
             IModuleConfiguration moduleConfiguration)
         {
             var options = moduleConfiguration.GetOptions<IMediatorModuleOptions>(ModuleDescriptor);

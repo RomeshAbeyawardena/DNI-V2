@@ -29,8 +29,8 @@ namespace DNI.Core.Defaults
             }
         }
 
-       public DefaultValidationFailure(object model, Exception exception, PropertyInfo property = null)
-       {
+        public DefaultValidationFailure(object model, Exception exception, PropertyInfo property = null)
+        {
             Model = model;
             Exception = exception;
             Property = property;

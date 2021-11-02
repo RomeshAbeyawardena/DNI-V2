@@ -16,7 +16,7 @@ namespace DNI.Tests
             clockProvider = new Mock<IClockProvider>();
         }
 
-        [Test] 
+        [Test]
         public void UpdateMetaTags_OnAdd()
         {
             Customer customer = new()
@@ -49,7 +49,7 @@ namespace DNI.Tests
             clockProvider.Setup(a => a.GetDateTimeOffset(false))
                 .Returns(expectedDateTime);
 
-            customer.UpdateMetaTags(Shared.Enumerations.MetaAction.Add, 
+            customer.UpdateMetaTags(Shared.Enumerations.MetaAction.Add,
                 clockProvider.Object.GetDateTimeOffset,
                 clockProvider.Object.GetDateTime);
 

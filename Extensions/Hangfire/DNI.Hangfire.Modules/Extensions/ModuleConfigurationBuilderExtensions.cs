@@ -1,8 +1,8 @@
-﻿using DNI.Hangfire.Shared.Abstractions.Builder;
-using DNI.Modules.Shared.Abstractions.Builders;
+﻿using DNI.Hangfire.Extensions;
+using DNI.Hangfire.Shared.Abstractions.Builder;
 using DNI.Modules.Extensions;
+using DNI.Modules.Shared.Abstractions.Builders;
 using System;
-using DNI.Hangfire.Extensions;
 
 namespace DNI.Hangfire.Modules.Extensions
 {

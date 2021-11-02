@@ -21,7 +21,7 @@ namespace DNI.Shared.Extensions
         {
             void SetValue(PropertyInfo property, object oldValue, object newValue)
             {
-                if(oldValue != newValue)
+                if (oldValue != newValue)
                 {
                     property.SetValue(destination, newValue);
                 }
@@ -117,7 +117,7 @@ namespace DNI.Shared.Extensions
             Func<bool, DateTimeOffset> offSetfactoryMethod = null,
             Func<bool, DateTime> factoryMethod = null)
         {
-            if(value == null)
+            if (value == null)
             {
                 return;
             }

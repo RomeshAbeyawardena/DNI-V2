@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 namespace DNI.Mediator.Shared.Base
 {
-    public abstract class EncryptedRepositorySaveHandlerBase<TRequest, TModel> 
+    public abstract class EncryptedRepositorySaveHandlerBase<TRequest, TModel>
         : EncryptedRepositorySaveHandlerBase<TRequest, TModel, Guid>
         where TRequest : Abstractions.IRequest<Guid>
     {

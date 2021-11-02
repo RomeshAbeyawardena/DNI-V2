@@ -25,7 +25,7 @@ namespace DNI.Modules.Core.Defaults
 
         public IEnumerable<Assembly> GlobalAssemblies { get; set; }
 
-        public DefaultModuleConfigurationBuilder() 
+        public DefaultModuleConfigurationBuilder()
             : this(new DefaultModuleConfiguration())
         {
 

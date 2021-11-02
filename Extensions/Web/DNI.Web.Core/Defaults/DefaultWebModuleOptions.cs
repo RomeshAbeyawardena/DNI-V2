@@ -11,9 +11,9 @@ namespace DNI.Web.Core.Defaults
 {
     public class DefaultWebModuleOptions : CollectionBase<Assembly>, IWebModuleOptions
     {
-        
+
         public DefaultWebModuleOptions(Action<IWebHostBuilder> configureWebHost,
-            Action<IMvcBuilder> configureMvcOptions, 
+            Action<IMvcBuilder> configureMvcOptions,
             Action<IServiceCollection> configureServices,
             Action<IApplicationBuilder> configureApplicationBuilder,
             Action<IEndpointRouteBuilder> configureEndpointRouteBuilder,

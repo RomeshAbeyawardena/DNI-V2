@@ -7,10 +7,10 @@ namespace DNI.Tests.Shared.Request
 {
     public class TestRequest : IRequest<IEnumerable<Customer>>
     {
-        
+
     }
 
-    public class TestSaveRequest: IRequest<Guid>
+    public class TestSaveRequest : IRequest<Guid>
     {
         public Customer Customer { get; set; }
     }

@@ -1,8 +1,8 @@
 ﻿using DNI.Encryption.Shared.Abstractions;
 using DNI.Mediator.Shared.Base;
 using DNI.Shared.Abstractions;
-using DNI.Tests.Shared.Request;
 using DNI.Tests.Shared.Models;
+using DNI.Tests.Shared.Request;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
