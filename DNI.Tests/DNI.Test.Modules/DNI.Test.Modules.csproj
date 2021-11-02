@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Hangfire.SqlServer" Version="1.7.26" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <ProjectReference Include="..\..\DNI.Shared\DNI.Shared.csproj" />
     <ProjectReference Include="..\..\Extensions\Data\DNI.Data.Modules\DNI.Data.Modules.csproj" />
     <ProjectReference Include="..\..\Extensions\Encryption\DNI.Encryption.Extensions\DNI.Encryption.Extensions.csproj" />
