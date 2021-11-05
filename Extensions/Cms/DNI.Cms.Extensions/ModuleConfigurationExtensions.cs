@@ -11,11 +11,12 @@ namespace DNI.Cms.Extensions
     {
         public static IModuleConfiguration ConfigureCmsModuleOptions(this IModuleConfiguration moduleConfiguration,
             IModuleDescriptor moduleDescriptor,
+            Type parentType,
             Action<ICmsModuleOptionsBuilder> buildAction)
         {
             var cmsOptions = new DefaultCmsModuleOptionsBuilder();
             buildAction?.Invoke(cmsOptions);
-
+            cmsOptions.SetParentType(parentType);
             return moduleConfiguration.ConfigureOptions(moduleDescriptor, cmsOptions.Build());
         }
     }

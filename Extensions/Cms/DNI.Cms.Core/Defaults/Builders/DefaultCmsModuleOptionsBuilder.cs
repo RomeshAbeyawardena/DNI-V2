@@ -14,14 +14,14 @@ namespace DNI.Cms.Core.Defaults.Builders
     public class DefaultCmsModuleOptionsBuilder : ModuleOptionsAssemblyBuilderBase<ICmsModuleOptions>, ICmsModuleOptionsBuilder
     {
         private Type parentType;
-        private bool enableWebsite;
+        private bool? enableWebsite;
         private Action<IUmbracoApplicationBuilderContext> configureMiddleware;
         private Action<IUmbracoEndpointBuilderContext> configureEndpoints;
 
         public override ICmsModuleOptions BuildOptions(IEnumerable<Assembly> builtAssemblies)
         {
             return new DefaultCmsModuleOptions { 
-                EnableWebsite = enableWebsite,
+                EnableWebsite = enableWebsite.GetValueOrDefault(true),
                 ParentType = parentType,
                 ConfigureEndpoints = configureEndpoints,
                 ConfigureMiddleware = configureMiddleware

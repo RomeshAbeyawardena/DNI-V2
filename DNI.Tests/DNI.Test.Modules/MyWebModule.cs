@@ -1,4 +1,5 @@
-﻿using DNI.Mediator.Modules.Extensions;
+﻿using DNI.Cms.Modules.Extensions;
+using DNI.Mediator.Modules.Extensions;
 using DNI.Modules.Shared.Abstractions.Builders;
 using DNI.Modules.Shared.Base;
 using DNI.Shared.Attributes;
@@ -14,6 +15,7 @@ namespace DNI.Test.Modules
         public override void ConfigureModuleBuilder(IServiceCollection services, IModuleConfigurationBuilder moduleConfigurationBuilder)
         {
             moduleConfigurationBuilder
+                .ConfigureCmsModule<MyWebModule>(builder => builder.AddAssembly<MyDbContext>())
                 .ConfigureWebModule<MyWebModule>(builder => builder
                     .AddAssembly<MyDbContext>())
                 .ConfigureMediatorModule(builder => builder.AddModuleAssemblies());

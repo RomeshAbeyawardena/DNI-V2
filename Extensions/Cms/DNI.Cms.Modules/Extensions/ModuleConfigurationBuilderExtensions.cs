@@ -15,7 +15,12 @@ namespace DNI.Cms.Modules.Extensions
     {
         public static IModuleConfigurationBuilder ConfigureCmsModule<T>(this IModuleConfigurationBuilder moduleConfigurationBuilder, Action<ICmsModuleOptionsBuilder> configure)
         {
-            return moduleConfigurationBuilder.AddModule<CmsModule>((moduleDescriptor, cfg) => cfg.ConfigureCmsModuleOptions(moduleDescriptor, configure));
+            return moduleConfigurationBuilder.ConfigureCmsModule(typeof(T), configure);
+        }
+
+        public static IModuleConfigurationBuilder ConfigureCmsModule(this IModuleConfigurationBuilder moduleConfigurationBuilder, Type parentType, Action<ICmsModuleOptionsBuilder> configure)
+        {
+            return moduleConfigurationBuilder.AddModule<CmsModule>((moduleDescriptor, cfg) => cfg.ConfigureCmsModuleOptions(moduleDescriptor, parentType, configure));
         }
     }
 }
