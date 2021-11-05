@@ -17,8 +17,7 @@ namespace DNI.Data.Extensions
             buildAction(defaultDbContextModuleOptionsBuilder);
 
             var builtOptions = defaultDbContextModuleOptionsBuilder.Build();
-            moduleConfiguration.ConfigureOptions(moduleDescriptor, builtOptions);
-            return moduleConfiguration;
+            return moduleConfiguration.ConfigureOptions(moduleDescriptor, builtOptions);
         }
 
     }

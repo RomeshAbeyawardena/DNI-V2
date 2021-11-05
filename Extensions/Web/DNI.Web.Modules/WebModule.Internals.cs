@@ -19,9 +19,10 @@ namespace DNI.Web.Modules
         {
             Options.ConfigureServices?.Invoke(services);
 
-            var mvcBuilder = services
-                .AddApiVersioning()
-                .AddControllers();
+            services
+                .AddApiVersioning();
+
+            var mvcBuilder = services.AddControllers();
 
             IEnumerable<Assembly> assemblies = Options.ToArray();
             Options.ConfigureMvcOptions?.Invoke(mvcBuilder);

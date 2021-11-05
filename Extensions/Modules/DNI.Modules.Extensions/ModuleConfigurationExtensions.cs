@@ -53,7 +53,7 @@ namespace DNI.Modules.Extensions
             return assemblies.Distinct();
         }
 
-        public static void ConfigureOptions<T>(this IModuleConfiguration moduleConfiguration, IModuleDescriptor moduleDescriptor, T options)
+        public static IModuleConfiguration ConfigureOptions<T>(this IModuleConfiguration moduleConfiguration, IModuleDescriptor moduleDescriptor, T options)
         {
             var optionType = typeof(T);
             if (moduleConfiguration.Options.ContainsKey(moduleDescriptor))
@@ -62,6 +62,8 @@ namespace DNI.Modules.Extensions
             }
 
             moduleConfiguration.Options.Add(moduleDescriptor, options);
+
+            return moduleConfiguration;
         }
 
         public static IModuleRunner ConfigureRunner(this IModuleConfiguration moduleConfiguration, IServiceProvider serviceProvider, IServiceCollection services)

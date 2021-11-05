@@ -11,7 +11,7 @@ namespace DNI.Web.Modules.Extensions
 
         public static IModuleConfigurationBuilder ConfigureWebModule(this IModuleConfigurationBuilder builder, Type type, Action<IWebModuleOptionsBuilder> configure)
         {
-            builder.AddModule<WebModule>((moduleDescriptor, cfg) => cfg.ConfigureWebModule(moduleDescriptor, type.Assembly, configure));
+            builder.AddModule<WebModule>((moduleDescriptor, cfg) => cfg.ConfigureWebModuleOptions(moduleDescriptor, type.Assembly, configure));
             return builder;
         }
 

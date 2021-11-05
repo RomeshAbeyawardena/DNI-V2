@@ -10,7 +10,7 @@ namespace DNI.Web.Extensions
 {
     public static class ModuleConfigurationExtensions
     {
-        public static IModuleConfiguration ConfigureWebModule(this IModuleConfiguration moduleConfiguration,
+        public static IModuleConfiguration ConfigureWebModuleOptions(this IModuleConfiguration moduleConfiguration,
             IModuleDescriptor moduleDescriptor,
             Assembly hostAssembly,
             Action<IWebModuleOptionsBuilder> buildAction)
