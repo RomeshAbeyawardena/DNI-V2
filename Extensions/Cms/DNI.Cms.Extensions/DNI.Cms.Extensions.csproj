@@ -5,6 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="umbraco\**" />
+    <Compile Remove="wwwroot\**" />
+    <EmbeddedResource Remove="umbraco\**" />
+    <EmbeddedResource Remove="wwwroot\**" />
+    <None Remove="umbraco\**" />
+    <None Remove="wwwroot\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Modules\DNI.Modules.Extensions\DNI.Modules.Extensions.csproj" />
     <ProjectReference Include="..\DNI.Cms.Core\DNI.Cms.Core.csproj" />
     <ProjectReference Include="..\DNI.Cms.Shared\DNI.Cms.Shared.csproj" />
