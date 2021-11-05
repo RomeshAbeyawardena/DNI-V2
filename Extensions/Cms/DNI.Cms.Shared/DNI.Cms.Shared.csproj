@@ -3,6 +3,15 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="umbraco\**" />
+    <Compile Remove="wwwroot\**" />
+    <EmbeddedResource Remove="umbraco\**" />
+    <EmbeddedResource Remove="wwwroot\**" />
+    <None Remove="umbraco\**" />
+    <None Remove="wwwroot\**" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Umbraco.Cms" Version="9.1.0-rc" />
   </ItemGroup>
