@@ -11,7 +11,7 @@ namespace DNI.Mediator.Modules.Extensions
         public static IModuleConfigurationBuilder ConfigureMediatorModule(this IModuleConfigurationBuilder builder, Action<IMediatorModuleOptionsBuilder> configure)
         {
             return builder.AddModule<MediatorModule>((moduleDescriptor, configuration) => configuration
-                .ConfigureMediatorModule(moduleDescriptor, configure));
+                .ConfigureMediatorModuleOptions(moduleDescriptor, configure));
         }
     }
 }

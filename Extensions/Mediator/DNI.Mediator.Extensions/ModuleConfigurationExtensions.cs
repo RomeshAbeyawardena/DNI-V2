@@ -9,7 +9,7 @@ namespace DNI.Mediator.Extensions
 {
     public static class ModuleConfigurationExtensions
     {
-        public static IModuleConfiguration ConfigureMediatorModule(
+        public static IModuleConfiguration ConfigureMediatorModuleOptions(
             this IModuleConfiguration moduleConfiguration,
             IModuleDescriptor moduleDescriptor,
             Action<IMediatorModuleOptionsBuilder> buildAction)

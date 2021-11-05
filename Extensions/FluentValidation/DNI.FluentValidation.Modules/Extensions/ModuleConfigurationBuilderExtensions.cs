@@ -11,7 +11,7 @@ namespace DNI.FluentValidation.Modules.Extensions
         public static IModuleConfigurationBuilder ConfigureFluentValidation(this IModuleConfigurationBuilder moduleConfigurationBuilder,
             Action<IFluentValidationModuleOptionsBuilder> configure)
         {
-            return moduleConfigurationBuilder.AddModule<FluentValidationModule>((moduleDescriptor, moduleConfiguration) => moduleConfiguration.ConfigureFluentValidation(moduleDescriptor, configure));
+            return moduleConfigurationBuilder.AddModule<FluentValidationModule>((moduleDescriptor, moduleConfiguration) => moduleConfiguration.ConfigureFluentValidationOptions(moduleDescriptor, configure));
         }
     }
 }

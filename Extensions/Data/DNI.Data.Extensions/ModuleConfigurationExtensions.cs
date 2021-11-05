@@ -8,7 +8,7 @@ namespace DNI.Data.Extensions
 {
     public static class ModuleConfigurationExtensions
     {
-        public static IModuleConfiguration ConfigureDbContextModule(
+        public static IModuleConfiguration ConfigureDbContextModuleOptions(
             this IModuleConfiguration moduleConfiguration,
             IModuleDescriptor moduleDescriptor,
             Action<IDbContextModuleOptionsBuilder> buildAction)

@@ -10,7 +10,7 @@ namespace DNI.Data.Modules
     {
         public static IModuleConfigurationBuilder ConfigureDbContextModule(this IModuleConfigurationBuilder builder, Action<IDbContextModuleOptionsBuilder> configure)
         {
-            return builder.AddModule<DbContextModule>((moduleDescriptor, configuration) => configuration.ConfigureDbContextModule(moduleDescriptor, configure));
+            return builder.AddModule<DbContextModule>((moduleDescriptor, configuration) => configuration.ConfigureDbContextModuleOptions(moduleDescriptor, configure));
         }
     }
 }

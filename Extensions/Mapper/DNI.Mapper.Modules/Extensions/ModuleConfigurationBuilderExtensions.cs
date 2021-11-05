@@ -12,7 +12,7 @@ namespace DNI.Mapper.Modules.Extensions
            Action<IMapperOptionsBuilder> configure)
         {
             return moduleConfigurationBuilder
-                .AddModule<MapperModule>((moduleDescriptor, configuration) => configuration.ConfigureMapperModule(moduleDescriptor, configure));
+                .AddModule<MapperModule>((moduleDescriptor, configuration) => configuration.ConfigureMapperModuleOptions(moduleDescriptor, configure));
         }
     }
 }
