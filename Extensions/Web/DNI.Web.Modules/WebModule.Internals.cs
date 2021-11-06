@@ -51,6 +51,8 @@ namespace DNI.Web.Modules
                 .UseWebRoot(Environment.CurrentDirectory)
                 .UseStaticWebAssets();
 
+            Options.ConfigureWebHost?.Invoke(webHostBuilder);
+
             if (Options.UseStartup)
             {
                 webHostBuilder.UseStartup(Options.StartupType);
@@ -59,8 +61,6 @@ namespace DNI.Web.Modules
             {
                 webHostBuilder
                     .Configure(Configure);
-
-                Options.ConfigureWebHost?.Invoke(webHostBuilder);
             }
         }
 
