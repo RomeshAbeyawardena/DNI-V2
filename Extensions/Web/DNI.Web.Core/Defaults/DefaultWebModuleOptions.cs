@@ -12,33 +12,26 @@ namespace DNI.Web.Core.Defaults
     public class DefaultWebModuleOptions : CollectionBase<Assembly>, IWebModuleOptions
     {
 
-        public DefaultWebModuleOptions(Action<IWebHostBuilder> configureWebHost,
-            Action<IMvcBuilder> configureMvcOptions,
-            Action<IServiceCollection> configureServices,
-            Action<IApplicationBuilder> configureApplicationBuilder,
-            Action<IEndpointRouteBuilder> configureEndpointRouteBuilder,
-            bool useModuleAssemblies, Assembly hostAssembly)
+        public DefaultWebModuleOptions(Assembly hostAssembly)
         {
-            ConfigureWebHost = configureWebHost;
-            ConfigureMvcOptions = configureMvcOptions;
-            ConfigureServices = configureServices;
-            ConfigureApplicationBuilder = configureApplicationBuilder;
-            ConfigureEndpoints = configureEndpointRouteBuilder;
-            UseModuleAssemblies = useModuleAssemblies;
             HostAssembly = hostAssembly;
         }
 
-        public Action<IEndpointRouteBuilder> ConfigureEndpoints { get; }
+        public Action<IEndpointRouteBuilder> ConfigureEndpoints { get; init; }
 
-        public Action<IApplicationBuilder> ConfigureApplicationBuilder { get; }
+        public Action<IApplicationBuilder> ConfigureApplicationBuilder { get; init; }
 
-        public Action<IWebHostBuilder> ConfigureWebHost { get; }
+        public Action<IWebHostBuilder> ConfigureWebHost { get; init; }
 
-        public Action<IMvcBuilder> ConfigureMvcOptions { get; }
+        public Action<IMvcBuilder> ConfigureMvcOptions { get; init; }
 
-        public Action<IServiceCollection> ConfigureServices { get; }
+        public Action<IServiceCollection> ConfigureServices { get; init; }
 
-        public bool UseModuleAssemblies { get; }
+        public bool UseModuleAssemblies { get; init; }
+
+        public bool UseStartup { get; init; }
+
+        public Type StartupType { get; init; }
 
         public Assembly HostAssembly { get; }
     }

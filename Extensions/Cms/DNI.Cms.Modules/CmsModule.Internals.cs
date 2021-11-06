@@ -14,36 +14,7 @@ namespace DNI.Cms.Modules
     {
         private void ConfigureServices(IServiceCollection services)
         {
-            services.AddUmbraco(webHostEnvironment, configuration)
-                .AddBackOffice()
-                .AddWebsite()
-                .AddComposers()
-                .Build();
-        }
-
-        private void ConfigureAppBuilder(IApplicationBuilder app)
-        {
-            app.UseUmbraco()
-                .WithMiddleware(u =>
-                {
-                    Options.ConfigureMiddleware?.Invoke(u);
-                    u.UseBackOffice();
-                    
-                    if (Options.EnableWebsite)
-                    {
-                        u.UseWebsite();
-                    }
-                })
-                .WithEndpoints(u =>
-                {
-                    Options.ConfigureEndpoints?.Invoke(u);
-                    u.UseInstallerEndpoints();
-                    u.UseBackOfficeEndpoints();
-                    if (Options.EnableWebsite)
-                    {
-                        u.UseWebsiteEndpoints();
-                    }
-                });
+            services.AddSingleton(Options);
         }
     }
 }

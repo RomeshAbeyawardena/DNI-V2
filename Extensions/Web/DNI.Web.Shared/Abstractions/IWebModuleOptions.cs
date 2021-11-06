@@ -15,6 +15,8 @@ namespace DNI.Web.Shared.Abstractions
         Action<IWebHostBuilder> ConfigureWebHost { get; }
         Action<IMvcBuilder> ConfigureMvcOptions { get; }
         bool UseModuleAssemblies { get; }
+        bool UseStartup { get; }
+        Type StartupType { get; }
         Assembly HostAssembly { get; }
         Action<IEndpointRouteBuilder> ConfigureEndpoints { get; }
     }
