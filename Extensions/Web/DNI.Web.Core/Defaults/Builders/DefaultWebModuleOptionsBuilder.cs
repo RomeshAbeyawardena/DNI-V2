@@ -10,7 +10,8 @@ using System.Reflection;
 
 namespace DNI.Web.Core.Defaults.Builders
 {
-    public class DefaultWebModuleOptionsBuilder : ModuleOptionsAssemblyBuilderBase<IWebModuleOptions>, IWebModuleOptionsBuilder
+    public class DefaultWebModuleOptionsBuilder : ModuleOptionsAssemblyBuilderBase<IWebModuleOptions>, 
+        IWebModuleOptionsBuilder
     {
         private readonly Assembly hostAssembly;
         private Action<IMvcBuilder> configureMvcOptions;
@@ -19,6 +20,8 @@ namespace DNI.Web.Core.Defaults.Builders
         private Action<IApplicationBuilder> configureApplicationBuilder;
         private Action<IEndpointRouteBuilder> configureEndpointRouteBuilder;
         private bool useModuleAssemblies;
+        private bool useStartup;
+        private Type startupType;
 
         public DefaultWebModuleOptionsBuilder(Assembly hostAssembly)
         {
@@ -27,8 +30,17 @@ namespace DNI.Web.Core.Defaults.Builders
 
         public override IWebModuleOptions BuildOptions(IEnumerable<Assembly> builtAssemblies)
         {
-            var opts = new DefaultWebModuleOptions(configureAction, configureMvcOptions, configureServiceAction,
-                configureApplicationBuilder, configureEndpointRouteBuilder, useModuleAssemblies, hostAssembly);
+            var opts = new DefaultWebModuleOptions(hostAssembly) {
+                ConfigureEndpoints = configureEndpointRouteBuilder,
+                ConfigureApplicationBuilder = configureApplicationBuilder,
+                ConfigureWebHost = configureAction,
+                ConfigureMvcOptions = configureMvcOptions,
+                ConfigureServices = configureServiceAction,
+                UseModuleAssemblies = useModuleAssemblies,
+                UseStartup = useStartup,
+                StartupType = startupType
+            };
+
             opts.AddRange(builtAssemblies);
             return opts;
         }
@@ -90,6 +102,18 @@ namespace DNI.Web.Core.Defaults.Builders
         {
             configureEndpointRouteBuilder = configure;
             return this;
+        }
+
+        public IWebModuleOptionsBuilder UseStartup(Type startupType)
+        {
+            useStartup = true;
+            this.startupType = startupType;
+            return this;
+        }
+
+        public IWebModuleOptionsBuilder UseStartup<T>()
+        {
+            return UseStartup(typeof(T));
         }
     }
 }

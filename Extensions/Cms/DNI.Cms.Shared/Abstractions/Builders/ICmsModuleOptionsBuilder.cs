@@ -1,4 +1,5 @@
 ﻿using DNI.Modules.Shared.Builders;
+using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace DNI.Cms.Shared.Abstractions.Builders
     {
         ICmsModuleOptionsBuilder ConfigureMiddleware(Action<IUmbracoApplicationBuilderContext> configureMiddleware);
         ICmsModuleOptionsBuilder ConfigureEndpoints(Action<IUmbracoEndpointBuilderContext> configureEndpoints);
+        ICmsModuleOptionsBuilder ConfigureWebHost(Action<IWebHostBuilder> configureWebHostBuilder);
         ICmsModuleOptionsBuilder SetParentType(Type type);
         ICmsModuleOptionsBuilder EnableWebsite();
 

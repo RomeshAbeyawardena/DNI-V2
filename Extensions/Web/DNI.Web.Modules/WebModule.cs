@@ -34,10 +34,12 @@ namespace DNI.Web.Modules
 
         public override async Task OnStart(CancellationToken cancellationToken)
         {
-            host = Host.CreateDefaultBuilder()
+            var hostBuilder = Host.CreateDefaultBuilder()
                 .ConfigureAppConfiguration(c => c
                     .AddJsonFile("appsettings.json")
-                    .AddUserSecrets(Options.HostAssembly))
+                    .AddUserSecrets(Options.HostAssembly));
+
+            host = hostBuilder
                 .ConfigureServices(ConfigureServices)
                 .ConfigureWebHostDefaults(ConfigureWebHost)
                 .Build();

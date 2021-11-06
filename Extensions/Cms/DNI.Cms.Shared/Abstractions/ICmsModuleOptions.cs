@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Hosting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,5 +14,6 @@ namespace DNI.Cms.Shared.Abstractions
         Type ParentType { get; }
         Action<IUmbracoApplicationBuilderContext> ConfigureMiddleware { get; }
         Action<IUmbracoEndpointBuilderContext> ConfigureEndpoints { get; }
+        Action<IWebHostBuilder> ConfigureWebHost { get; }
     }
 }

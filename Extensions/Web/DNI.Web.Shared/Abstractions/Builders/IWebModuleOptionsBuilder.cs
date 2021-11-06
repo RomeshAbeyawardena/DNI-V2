@@ -20,5 +20,7 @@ namespace DNI.Web.Shared.Abstractions.Builders
         IWebModuleOptionsBuilder UseDefaultMvcOptions();
         IWebModuleOptionsBuilder AddModuleAssemblies();
         IWebModuleOptionsBuilder ConfigureEndpoints(Action<IEndpointRouteBuilder> configure);
+        IWebModuleOptionsBuilder UseStartup(Type startupType);
+        IWebModuleOptionsBuilder UseStartup<T>();
     }
 }

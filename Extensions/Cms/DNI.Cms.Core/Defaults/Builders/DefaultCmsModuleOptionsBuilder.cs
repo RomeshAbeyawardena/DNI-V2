@@ -1,6 +1,7 @@
 ﻿using DNI.Cms.Shared.Abstractions;
 using DNI.Cms.Shared.Abstractions.Builders;
 using DNI.Modules.Shared.Base.Builders;
+using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,14 +18,16 @@ namespace DNI.Cms.Core.Defaults.Builders
         private bool? enableWebsite;
         private Action<IUmbracoApplicationBuilderContext> configureMiddleware;
         private Action<IUmbracoEndpointBuilderContext> configureEndpoints;
+        private Action<IWebHostBuilder> configureWebHostBuilder;
 
         public override ICmsModuleOptions BuildOptions(IEnumerable<Assembly> builtAssemblies)
         {
-            return new DefaultCmsModuleOptions { 
+            return new DefaultCmsModuleOptions {
                 EnableWebsite = enableWebsite.GetValueOrDefault(true),
                 ParentType = parentType,
                 ConfigureEndpoints = configureEndpoints,
-                ConfigureMiddleware = configureMiddleware
+                ConfigureMiddleware = configureMiddleware,
+                ConfigureWebHost = configureWebHostBuilder
             };
         }
 
@@ -49,6 +52,12 @@ namespace DNI.Cms.Core.Defaults.Builders
         public ICmsModuleOptionsBuilder SetParentType(Type parentType)
         {
             this.parentType = parentType;
+            return this;
+        }
+
+        public ICmsModuleOptionsBuilder ConfigureWebHost(Action<IWebHostBuilder> configureWebHostBuilder)
+        {
+            this.configureWebHostBuilder = configureWebHostBuilder;
             return this;
         }
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -12,38 +13,14 @@ namespace DNI.Cms.Modules
 {
     public partial class CmsModule
     {
-        private void ConfigureServices(IServiceCollection services)
+        private void ConfigureWebHost(IWebHostBuilder webHostBuilder)
         {
-            services.AddUmbraco(webHostEnvironment, configuration)
-                .AddBackOffice()
-                .AddWebsite()
-                .AddComposers()
-                .Build();
+            Options.ConfigureWebHost?.Invoke(webHostBuilder);
         }
 
-        private void ConfigureAppBuilder(IApplicationBuilder app)
+        private void ConfigureServices(IServiceCollection services)
         {
-            app.UseUmbraco()
-                .WithMiddleware(u =>
-                {
-                    Options.ConfigureMiddleware?.Invoke(u);
-                    u.UseBackOffice();
-                    
-                    if (Options.EnableWebsite)
-                    {
-                        u.UseWebsite();
-                    }
-                })
-                .WithEndpoints(u =>
-                {
-                    Options.ConfigureEndpoints?.Invoke(u);
-                    u.UseInstallerEndpoints();
-                    u.UseBackOfficeEndpoints();
-                    if (Options.EnableWebsite)
-                    {
-                        u.UseWebsiteEndpoints();
-                    }
-                });
+            services.AddSingleton(Options);
         }
     }
 }
