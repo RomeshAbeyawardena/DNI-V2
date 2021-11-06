@@ -41,7 +41,9 @@ namespace DNI.Cms.Modules
 
         public override void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            var options = app.ApplicationServices.GetService<ICmsModuleOptions>();
+            var options = app.ApplicationServices
+                .GetService<ICmsModuleOptions>();
+
             app.UseUmbraco()
                .WithMiddleware(u =>
                {

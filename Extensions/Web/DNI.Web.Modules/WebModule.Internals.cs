@@ -48,8 +48,7 @@ namespace DNI.Web.Modules
         private void ConfigureWebHost(IWebHostBuilder webHostBuilder)
         {
             webHostBuilder
-                .UseWebRoot(Environment.CurrentDirectory)
-                .UseStaticWebAssets();
+                .UseWebRoot(Environment.CurrentDirectory);
 
             Options.ConfigureWebHost?.Invoke(webHostBuilder);
 
