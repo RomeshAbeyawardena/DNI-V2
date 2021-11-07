@@ -19,10 +19,10 @@ namespace DNI.Test.Modules
                 .ConfigureCmsModule<MyWebModule>(builder => builder
                     .AddAssembly<MyDbContext>()
                     .ConfigureWebHost(c => c.ConfigureKestrel(k => k.Listen(System.Net.IPAddress.Any, 5090)))
-                )
-                .ConfigureWebModule<MyWebModule>(builder => builder
-                    .AddAssembly<MyDbContext>())
-                .ConfigureMediatorModule(builder => builder.AddModuleAssemblies());
+                );
+                //.ConfigureWebModule<MyWebModule>(builder => builder
+                //    .AddAssembly<MyDbContext>())
+                //.ConfigureMediatorModule(builder => builder.AddModuleAssemblies());
         }
     }
 }

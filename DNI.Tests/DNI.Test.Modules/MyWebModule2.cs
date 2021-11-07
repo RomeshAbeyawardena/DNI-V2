@@ -23,15 +23,14 @@ namespace DNI.Test.Modules
 
         public override void ConfigureModuleBuilder(IServiceCollection services, IModuleConfigurationBuilder moduleConfigurationBuilder)
         {
-            
-            moduleConfigurationBuilder
-                .ConfigureWebModule<MyWebModule2>(options => options
-                .AddModuleAssemblies().ConfigureWebHost(Configure))
-                .ConfigureHangfireModule<MyWebModule2>(options => options
-                    .UseHangfireDashboard()
-                    .ConfigureOptions("/hangfire", new DashboardOptions { }, null)
-                    .ConfigureHangfire(Configure)
-                    .ConfigureWebHost(ConfigureHangFire));
+            //moduleConfigurationBuilder
+            //    .ConfigureWebModule<MyWebModule2>(options => options
+            //    .AddModuleAssemblies().ConfigureWebHost(Configure))
+            //    .ConfigureHangfireModule<MyWebModule2>(options => options
+            //        .UseHangfireDashboard()
+            //        .ConfigureOptions("/hangfire", new DashboardOptions { }, null)
+            //        .ConfigureHangfire(Configure)
+            //        .ConfigureWebHost(ConfigureHangFire));
         }
 
         private void Configure(IGlobalConfiguration configuration)

@@ -17,15 +17,14 @@ namespace DNI.Test.Modules
     {
         public override void ConfigureModuleBuilder(IServiceCollection services, IModuleConfigurationBuilder moduleConfigurationBuilder)
         {
-
-            moduleConfigurationBuilder
-                .ConfigureDbContextModule(builder => builder
-                    .AddDbContext<MyDbContext>(ConfigureDbBuilder, ServiceLifetime.Scoped))
-                .ConfigureFluentValidation(c => c.AddModuleAssemblies())
-                .ConfigureMapperModule(c => c.AddModuleAssemblies())
-                .ConfigureEncryptionModule(builder => builder
-                    .ImportConfiguration()
-                    .ConfigureOptions(s => s.ImportConfiguration("SecurityProfiles/General")));
+            //moduleConfigurationBuilder
+            //    .ConfigureDbContextModule(builder => builder
+            //        .AddDbContext<MyDbContext>(ConfigureDbBuilder, ServiceLifetime.Scoped))
+            //    .ConfigureFluentValidation(c => c.AddModuleAssemblies())
+            //    .ConfigureMapperModule(c => c.AddModuleAssemblies())
+            //    .ConfigureEncryptionModule(builder => builder
+            //        .ImportConfiguration()
+            //        .ConfigureOptions(s => s.ImportConfiguration("SecurityProfiles/General")));
         }
 
         private void ConfigureDbBuilder(IServiceProvider serviceProvider, DbContextOptionsBuilder builder)
