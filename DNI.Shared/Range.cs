@@ -1,59 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using DNI.Shared.Abstractions;
+using DNI.Shared.Ranges;
 
 namespace DNI.Shared
 {
-    public class IpRange : Range<IPAddress>
+    public static class Range
     {
-        private static readonly IEnumerable<int> quantifiedScale = new[] { 8, 4, 2, 1 };
 
-        private static long GetQuantifiedValue(IEnumerable<byte> values,
-                                       IEnumerable<int> quantifiedScale)
+        public static IRange<IPAddress> CreateIPRange(IPAddress start, IPAddress end)
         {
-            var sum = 0;
-            for (int i = 0; i < 4; i++)
-            {
-                sum += values.ElementAt(i) * quantifiedScale.ElementAt(i);
-            }
-            
-            return sum;
+            return new IpRange(start, end);
         }
 
-        public static bool IsGreaterThanOrEqual(IPAddress iPAddress, IPAddress otherIpAddress)
+        public static IRange<long> CreateNumericRange(long start, long end)
         {
-            var addressCount = GetQuantifiedValue(iPAddress.GetAddressBytes(),
-                                                 quantifiedScale);
-            var otherAddressCount = GetQuantifiedValue(otherIpAddress.GetAddressBytes(),
-                                                      quantifiedScale);
-
-            return otherAddressCount >= addressCount;
+            return new NumericRange(start, end);
         }
 
-        public static bool IsLessThanOrEqual(IPAddress iPAddress, IPAddress otherIpAddress)
-        {
-            var addressCount = GetQuantifiedValue(iPAddress.GetAddressBytes(),
-                                                 quantifiedScale);
-            var otherAddressCount = GetQuantifiedValue(otherIpAddress.GetAddressBytes(),
-                                                      quantifiedScale);
-
-            return otherAddressCount <= addressCount;
-        }
-
-        public IpRange(IPAddress start, IPAddress end)
-            : base(start, end, IsLessThanOrEqual, IsGreaterThanOrEqual)
-        {
-
-        }
     }
 
-    public class Range<T> : IRange<T>
+    public abstract class Range<T> : IRange<T>
     {
-        public static bool operator==(Range<T> source, Range<T> target)
+        public static bool operator ==(Range<T> source, Range<T> target)
         {
             return source.Equals(target);
         }
@@ -66,8 +40,8 @@ namespace DNI.Shared
         private readonly Func<T, T, bool> isLessThanOrEqual;
         private readonly Func<T, T, bool> isGreaterThanOrEqual;
 
-        public Range(T start, T end, 
-            Func<T, T, bool> isLessThanOrEqual, 
+        public Range(T start, T end,
+            Func<T, T, bool> isLessThanOrEqual,
             Func<T, T, bool> isGreaterThanOrEqual)
         {
             Start = start;
@@ -82,8 +56,13 @@ namespace DNI.Shared
 
         public bool IsInRange(T value)
         {
-            return isGreaterThanOrEqual(value, Start) 
-                && isLessThanOrEqual(value, End);
+            Debug.WriteLine("First check GTE:");
+            var check1 = isGreaterThanOrEqual(value, Start);
+            
+            Debug.WriteLine("First check LTE: ");
+            var check2 = isLessThanOrEqual(value, End);
+
+            return check1 && check2;
         }
 
         public bool Equals(IRange<T> value)
